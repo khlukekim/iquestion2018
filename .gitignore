@@ -1,0 +1,4 @@
+.env
+*.pyc
+*.otf
+static/images/

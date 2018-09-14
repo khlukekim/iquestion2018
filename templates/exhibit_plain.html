@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>iQuestion</title>
+  <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
+  <script type="text/javascript">
+    var currentStage = 0;
+    var size = {{option.size}};
+    var col = {{option.col}};
+    var row = {{option.row}};
+    var margin = {{option.margin}};
+
+    window.onload = function() {
+      initImageViews();
+      document.onclick = function(e) {
+        nextStage();
+      }
+    }
+
+    function nextStage() {
+      if (currentStage == 0) {
+        showAllImages();
+        currentStage = 1;
+      } else if (currentStage == 1) {
+        hideAllImages();
+        setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
+        currentStage = 2;
+      }
+    }
+
+    function buildStyle(styleDict) {
+      var styleString = '';
+      for (var k in styleDict) {
+        styleString += k + ':' + styleDict[k] + ';'
+      }
+      return styleString;
+    }
+
+    function getImageAddress(index) {
+      var filename = (index+1) + '';
+      while (filename.length < 4) {
+        filename = '0' + filename;
+      }
+
+      return '/static/images/' + filename + '.jpg';
+    }
+
+    function initImageViews() {
+      var centerY = (size * row + margin * (row - 1))/2;
+      var centerX = (size * col + margin * (col - 1))/2;
+      var offsetY = screen.height/2 - centerY;
+      var offsetX = screen.width/2 - centerX;
+      for (var colI = 0; colI < col; colI ++) {
+        for (var rowI = 0; rowI < row; rowI ++) {
+          var htmlImage = new Image();
+          var top = rowI * (size + margin) + offsetY;
+          var left = colI * (size + margin) + offsetX;
+          htmlImage.style = buildStyle({
+            position: 'absolute',
+            width: size + 'px',
+            height: size + 'px',
+            top: top + 'px',
+            left: left + 'px',
+            'background-color': 'black',
+            color: 'white',
+          });
+          htmlImage.id = 'image'+(colI * row + rowI);
+          htmlImage.alt = colI + ', ' + rowI; 
+          htmlImage.src = getImageAddress(colI * row + rowI);
+          htmlImage.className = 'hidden';
+          document.getElementById('main_stage').appendChild(htmlImage);
+        }
+      }
+    }
+
+    function showAllImages() {
+      for (var i = 0; i < row * col; i++) {
+        var im = document.getElementById('image' + i);
+        im.timer = setTimeout(function(el){return function(){el.className='fadein'}}(im), 300 * i);
+      }
+    }
+
+    function hideAllImages() {
+      for (var i = 0; i < row * col; i++) {
+        im = document.getElementById('image'+i);
+        clearTimeout(im.timer);
+        im.className = 'fadeout';
+      }
+    }
+
+    function showImage(imid) {
+      var im = document.getElementById('image' + imid);
+      im.className='fadein';
+    }
+
+    function hideImage(imid) {
+      var im = document.getElementById('image' + imid);
+      im.className='fadeout';
+    }
+  </script>
+</head>
+<body>
+  <div id='main_stage' class='exhibit-stage'>
+    <div id='tagline' class='exhibit-tagline'>
+      I Question이 당신의 사진을 좋아합니다.
+    </div>
+  </div>
+</body>
+</html>
