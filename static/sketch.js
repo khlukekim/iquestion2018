@@ -1,3 +1,4 @@
+
 var activeAnimations = [];
 var nextAnimations = [];
 

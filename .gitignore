@@ -2,3 +2,5 @@
 *.pyc
 *.otf
 static/images/
+__pychache__/
+*.log

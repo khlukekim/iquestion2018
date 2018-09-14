@@ -1,19 +1,20 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>iQuestion</title>
+  <title>I Question</title>
   <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
   <script type="text/javascript">
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
       buttonToStage('stage2-answer-yes', 300);
       buttonToStage('stage2-answer-no', 300);
-      document.getElementById('stage3-uploadbutton').addEventListener('click', loadImage);
+      buttonToStage('stage3-sendbutton', 400);
+      document.getElementById('stage3-uploadbutton').addEventListener('click', function(){
+        document.getElementById('fileinput').click()
+      });
+      document.getElementById('fileinput').addEventListener('change', loadImage);
       stage(100);
-    }
-
-    function loadImage(e) {
-      
     }
 
     function fadeinDiv(divIds, delay) {
@@ -92,9 +93,11 @@
       if (stageId == 100) {
         fadeinDiv(['stage1-title'], 0);
         fadeinDiv(['stage1-startbutton'], 2000);
+        document.getElementById('stage1-midline').className = 'stage1-midline nowidth fillWidth';
       } else if (stageId == 200) {
         fadeoutDiv(['stage1-title'], 0);
         fadeoutDiv(['stage1-startbutton'], 1000);
+        document.getElementById('stage1-midline').className += 'stage1-midline hidden';
         hideDiv('stage1', 3000);
         showDiv('stage2', 0);
         fadeinDiv(['stage2-image'], 2000);
@@ -106,14 +109,40 @@
         hideDiv('stage2', 2000);
         showDiv('stage3', 0);
         fadeinDiv(['stage3-wrapper'], 2000);
+      } else if (stageId == 400) {
+        fadeoutDiv(['stage3-wrapper'], 0);
+        hideDiv('stage3', 2000);
+        showDiv('stage4', 0);
+        fadeinDiv(['stage4-message'], 2000);
+        fadeoutDiv(['stage4-message'], 5000);
+        //fadeinDiv(['stage4-imageswrapper'], 5000);
+        for(var i = 0; i < 100; i++) {
+          fadeinDiv(['stage4-image-'+i], 5000 + i * 200);
+        }
       }
     }
+
+    function loadImage(e) {
+      var selectedFile = e.target.files[0];
+      var reader = new FileReader();
+      reader.onload = (function() {
+        return function(e) {
+          document.getElementById('stage3-image').src = e.target.result;
+        };
+      })();
+      reader.readAsDataURL(selectedFile);
+      document.getElementById('imageSelectButton').value = "";
+    }
+
   </script>
 </head>
 <body>
   <div id='stage1' class='stage'>
     <div id='stage1-title' class='stage1-title hidden'>
-      I QUESTION
+      I Question
+    </div>
+    <div id='stage1-midline' class='stage1-midline nowidth'>
+      &nbsp;
     </div>
     <div id='stage1-startbutton' class='stage1-startbutton hidden textbutton'>
       시작하기
@@ -122,7 +151,7 @@
   <div id='stage2' class='stage none'>
     <div class='stage2-midwrapper'>
       <div id='stage2-image-div' class='stage2-image-div hidden'>
-        <img id='stage2-image' src='{{option.sampleimage}}' class='stage2-image fade-2'>
+        <img id='stage2-image' src='{{option.sampleimage}}{{range(0, 40) | random }}.png' class='stage2-image fade-2'>
       </div>
       <div id='stage2-question' class='stage2-question hidden'>
         <div class='stage2-question-message'>
@@ -143,7 +172,7 @@
   <div id='stage3' class='stage none'>
     <div id='stage3-wrapper' class='stage3-wrapper hidden'>
       SAMPLE MESSAGE
-      <img id='stage3-image' class='stage3-image' src='{{option.sampleimage}}'>
+      <img id='stage3-image' class='stage3-image' src='{{option.sampleimage}}{{range(0, 40) | random }}.png'>
       </img>
       <div id='stage3-uploadbutton' class='stage3-uploadbutton hidden'>
         업로드
@@ -152,18 +181,19 @@
         완료
       </div>
     </div>
-  </div> 
+  </div>
   <div id='stage4' class='stage none'>
-    <div class='stage4-message fade-3'>
+    <div id='stage4-message' class='stage4-message hidden'>
       SAMPLE MESSAGE
     </div>
-    <div class='stage4-imageswrapper fade-3'>
+    <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
       {% for i in range(20) %}
       {% for j in range(5) %}
-      <img class='stage4-image' style='left:{{i*50}}px; top:{{j*50}}px;' src='{{option.sampleimage}}'>
+      <img id='stage4-image-{{i*5+j}}' class='stage4-image hidden' style='left:{{i*50}}px; top:{{j*50}}px;' src='{{option.sampleimage}}{{range(0, 40) | random }}.png'>
       {% endfor %}
       {% endfor %}
     </div>
   </div>
+  <input id='fileinput' type='file' hidden>
 </body>
 </html>
