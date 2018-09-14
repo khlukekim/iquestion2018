@@ -24,7 +24,13 @@
       } else if (currentStage == 1) {
         hideAllImages();
         setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
+        setTimeout(function(){showDiv(document.getElementById('tagline'))}, 4500);
         currentStage = 2;
+      } else if (currentStage == 2) {
+        hideAllImages();
+        hideDiv(document.getElementById('tagline'));
+        setTimeout(function(){showAllImages();}, 2000);
+        currentStage = 1;
       }
     }
 
@@ -97,11 +103,38 @@
       var im = document.getElementById('image' + imid);
       im.className='fadeout';
     }
+
+    function showDiv(div) {
+      var classes = div.className.split(' ');
+      var newClasses = ['fadein'];
+      for (var c of classes) {
+        if (c == 'hidden' || c == 'fadeout') {
+
+        } else {
+          newClasses.push(c);
+        }
+      }
+      div.className = newClasses.join(' ');
+    }
+
+    function hideDiv(div) {
+      var classes = div.className.split(' ');
+      var newClasses = ['fadeout'];
+      for (var c of classes) {
+        if (c == 'fadein') {
+
+        } else {
+          newClasses.push(c);
+        }
+      }
+      div.className = newClasses.join(' ');
+    }
+
   </script>
 </head>
 <body>
   <div id='main_stage' class='exhibit-stage'>
-    <div id='tagline' class='exhibit-tagline'>
+    <div id='tagline' class='exhibit-tagline hidden'>
       I Question이 당신의 사진을 좋아합니다.
     </div>
   </div>
