@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, url_for
+from pymongo import MongoClient
 app = Flask(__name__)
 
 @app.route('/')
@@ -23,3 +24,38 @@ def exhibit(size, col, row, margin):
     'row': row,
     'margin': margin,
     })
+
+@app.route('/image', method='POST')
+def upload_image():
+  # todo
+  # save image
+  # process
+  # insert
+  #   time
+  #   point
+  #  filename
+  #  n id
+  #  hash id
+
+
+
+class MongoDBConnection(object):
+ # MongoDB Connection class for context manager
+ # Check https://medium.com/@ramojol/python-context-managers-and-the-with-statement-8f53d4d9f87
+ #
+ # use like:
+ # with MongoDBConnection(host, port) as mongo:
+ #   collection = mongo.connection.dbname.collectionname
+ #   data = collection.find()
+
+  def __init__(self, host='localhost', port='27017'):
+    self.host = host
+    self.port = port
+    self.connection = None
+
+  def __enter__(self):
+    self.connection = MongoClient(self.host, self.port)
+    return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    self.connection.close()
