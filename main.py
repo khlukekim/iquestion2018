@@ -25,6 +25,7 @@ def exhibit(size, col, row, margin):
     'margin': margin,
     })
 
+
 @app.route('/image', method='POST')
 def upload_image():
   # todo
@@ -37,6 +38,14 @@ def upload_image():
   #  n id
   #  hash id
 
+@app.route('/perf/<int:width>/<int:height>')
+def perform(width, height):
+  return render_template('perform.html', option={
+    'stylecss': url_for('static', filename='style.css'),
+    'sampleimage': url_for('static', filename='images/'),
+    'width': width,
+    'height': height
+    })
 
 
 class MongoDBConnection(object):
@@ -59,3 +68,4 @@ class MongoDBConnection(object):
 
   def __exit__(self, exc_type, exc_val, exc_tb):
     self.connection.close()
+

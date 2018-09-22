@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>I Question Performance Page</title>
+  <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
+</head>
+<body>
+  <script type="text/javascript">
+    window.onload = function () {
+      window.requestAnimationFrame(slideImage);
+    };
+    var imageWidthList = [];
+    for(var i = 0; i < 10; i++) {
+      imageWidthList.push(1000);
+    }
+    var slideWidth = 10000;
+    function imageloaded(e, number) {
+      imageWidthList[number] = e.width;
+      slideWidth = imageWidthList.reduce(function(a, b){return a+b}, 0);
+      document.getElementById('perf-image-wrapper').style.width = slideWidth + 'px';
+    }
+    var direction = -1;
+    var slideLeft = 0;
+    var slideSpeed = 2;
+
+    function slideImage() {
+      slideLeft += direction * slideSpeed;
+      if ((-slideLeft > slideWidth - {{option.width}}) || 
+      (slideLeft > 0)) {
+        direction = - direction;
+        slideLeft += direction * slideSpeed;
+      }
+      document.getElementById('perf-image-wrapper').style.left = slideLeft + 'px';
+      window.requestAnimationFrame(slideImage);
+    }
+  </script>
+  <div class='perf-stage' style='width:{{option.width}}px; height:{{option.height}}px'>
+    <div id='perf-image-wrapper' class='perf-image-wrapper' style='height:{{option.height}}px; width: 10000px'>
+    {% for i in range(10) %}
+      <img id='perf-image-{{i}}' class='perf-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg' onload='imageloaded(event.target, {{i}})'>
+      {% endfor %}
+    </div>
+  </div>
+</body>
+</html>
