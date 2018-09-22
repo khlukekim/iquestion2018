@@ -37,7 +37,7 @@
       document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
       if (currentFlickingTime >= maxFlickingTime) {
         currentFlickingTime = 0;
-        flickingImageN = Math.floor(Math.random() * 600);
+        flickingImageN = Math.floor(Math.random() * col * row);
       }
       window.requestAnimationFrame(flick());
 
