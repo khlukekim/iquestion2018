@@ -31,7 +31,7 @@
       currentOpacity +=  currentFlickDirection * flickingSpeed;
       if (currentOpacity < 0 || currentOpacity >1) {
         currentFlickDirection *= -1;
-        currentOpacity += currentFlickingDirection * flickingSpeed;
+        currentOpacity += currentFlickDirection * flickingSpeed;
         currentFlickingTime += 1;
       }
       document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
