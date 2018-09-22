@@ -34,7 +34,7 @@
         currentOpacity += currentFlickingDirection * flickingSpeed;
         currentFlickingTime += 1;
       }
-      var document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
+      document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
       if (currentFlickingTime >= maxFlickingTime) {
         currentFlickingTime = 0;
         flickingImageN = Math.floor(Math.random() * 600);
