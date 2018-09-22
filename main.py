@@ -23,3 +23,12 @@ def exhibit(size, col, row, margin):
     'row': row,
     'margin': margin,
     })
+
+@app.route('/perf/<int:width>/<int:height>')
+def perform(width, height):
+  return render_template('perform.html', option={
+    'stylecss': url_for('static', filename='style.css'),
+    'sampleimage': url_for('static', filename='images/'),
+    'width': width,
+    'height': height
+    })
