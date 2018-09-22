@@ -95,7 +95,7 @@
         fadeinDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
       } else if (stageId == 200) {
         fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
-        hideDiv('stage1', 0);
+        hideDiv('stage1', 3000);
         showDiv('stage2', 0);
         fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div'], 0);
         setTimeout(function(){stage(210);}, 5000);
@@ -104,12 +104,12 @@
         fadeinDiv(['stage2-question', 'stage2-question-message'], 0);
       } else if (stageId == 220 || stageId == 221) {
         fadeoutDiv(['stage2-question', 'stage2-question-message', 'stage2-image-div']);
-        hideDiv('stage2', 0);
+        hideDiv('stage2', 30000);
         showDiv('stage220', 0);
         fadeinDiv(['stage220-message', 'stage220-next'], 0);
       } else if (stageId == 300) {
         fadeoutDiv(['stage220-message', 'stage220-next'], 0);
-        hideDiv('stage220', 0);
+        hideDiv('stage220', 3000);
         showDiv('stage3', 0);
         fadeinDiv(['stage3-wrapper'], 0);
       } else if (stageId == 310) {
@@ -118,7 +118,7 @@
         setTimeout(function(){stage(400);}, 5000);
       } else if (stageId == 400) {
         fadeoutDiv(['stage3-wrapper'], 0);
-        hideDiv('stage3', 0);
+        hideDiv('stage3', 3000);
         showDiv('stage4', 0);
         fadeinDiv(['stage4-message-top', 'stage4-message-bottom'], 0);
         //fadeinDiv(['stage4-imageswrapper'], 5000);
