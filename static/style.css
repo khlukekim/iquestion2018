@@ -48,11 +48,11 @@ body {
 
 .fadein {
   opacity: 1;
-  /*-webkit-transition: opacity 2s ease-in;
+  -webkit-transition: opacity 2s ease-in;
   -moz-transition: opacity 2s ease-in;
   -ms-transition: opacity 2s ease-in;
   -o-transition: opacity 2s ease-in;
-  transition: opacity 2s ease-in;*/
+  transition: opacity 2s ease-in;
 }
 
 .shown {
@@ -61,7 +61,7 @@ body {
 
 .fadeout {
   opacity: 0;
-  /*-webkit-transition: opacity 2s ease-in;
+  -webkit-transition: opacity 2s ease-in;
   -moz-transition: opacity 2s ease-in;
   -ms-transition: opacity 2s ease-in;
   -o-transition: opacity 2s ease-in;
