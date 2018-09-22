@@ -109,7 +109,7 @@
     function showAllImages() {
       for (var i = 0; i < row * col; i++) {
         var im = document.getElementById('image' + i);
-        im.timer = setTimeout(function(el){return function(){el.className='fadein'}}(im), 300 * i);
+        im.timer = setTimeout(function(el){return function(){el.className='fadein'}}(im), 0 * i);
       }
     }
 
