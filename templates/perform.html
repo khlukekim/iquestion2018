@@ -25,7 +25,7 @@
 
     function slideImage() {
       slideLeft += direction * slideSpeed;
-      if ((-slideLeft > slideWidth - {{option.width}}) || 
+      if ((-slideLeft > slideWidth - {{option.width}}) ||
       (slideLeft > 0)) {
         direction = - direction;
         slideLeft += direction * slideSpeed;
@@ -37,7 +37,7 @@
   <div class='perf-stage' style='width:{{option.width}}px; height:{{option.height}}px'>
     <div id='perf-image-wrapper' class='perf-image-wrapper' style='height:{{option.height}}px; width: 10000px'>
     {% for i in range(10) %}
-      <img id='perf-image-{{i}}' class='perf-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg' onload='imageloaded(event.target, {{i}})'>
+      <img id='perf-image-{{i}}' class='perf-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}_original.jpg' onload='imageloaded(event.target, {{i}})'>
       {% endfor %}
     </div>
   </div>
