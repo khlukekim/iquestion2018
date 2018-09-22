@@ -15,6 +15,33 @@
       document.onclick = function(e) {
         nextStage();
       }
+      flickingImageN = Math.floor(Math.random() * 600);
+      flick();
+    }
+
+    var flickingImageN = 0;
+    var currentFlickLevel = 1;
+    var currentFlickDirection = -1;
+    var flickingSpeed = 0.02;
+    var currentFlickingTime = 0;
+    var maxFlickingTime = 2;
+    var currentOpacity = 1;
+
+    function flick() {
+      currentOpacity +=  currentFlickDirection * flickingSpeed;
+      if (currentOpacity < 0 || currentOpacity >1) {
+        currentFlickDirection *= -1;
+        currentOpacity += currentFlickingDirection * flickingSpeed;
+        currentFlickingTime += 1;
+      }
+      var document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
+      if (currentFlickingTime >= maxFlickingTime) {
+        currentFlickingTime = 0;
+        flickingImageN = Math.floor(Math.random() * 600);
+      }
+      window.requestAnimationFrame(flick());
+
+
     }
 
     function nextStage() {
@@ -71,7 +98,7 @@
             color: 'white',
           });
           htmlImage.id = 'image'+(colI * row + rowI);
-          htmlImage.alt = colI + ', ' + rowI; 
+          htmlImage.alt = colI + ', ' + rowI;
           htmlImage.src = getImageAddress(colI * row + rowI);
           htmlImage.className = 'hidden';
           document.getElementById('main_stage').appendChild(htmlImage);
