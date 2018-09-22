@@ -111,7 +111,7 @@
         fadeoutDiv(['stage220-message', 'stage220-next'], 0);
         hideDiv('stage220', 0);
         showDiv('stage3', 0);
-        fadeinDiv(['stage3-wrapper'], 0); 
+        fadeinDiv(['stage3-wrapper'], 0);
       } else if (stageId == 310) {
         fadeoutDiv(['stage3-message', 'stage3-sendbutton'], 0);
         fadeinDiv(['stage310-message'], 0);
@@ -188,7 +188,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
   <div id='stage220' class='stage none'>
@@ -210,7 +210,7 @@
       <img id='stage3-image' class='stage3-image' src='/static/upload.png'>
       </img>
       <div id='stage3-uploadbutton' class='stage3-uploadbutton hidden'>
-        
+
       </div>
       <div id='stage3-sendbutton' class='stage3-sendbutton textbutton'>
         완료
@@ -227,7 +227,7 @@
     <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
       {% for i in range(60) %}
       {% for j in range(10) %}
-      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
+      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*15}}px; margin-top:{{j*15}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
       {% endfor %}
       {% endfor %}
     </div>

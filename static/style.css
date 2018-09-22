@@ -86,7 +86,7 @@ body {
   top: 50%;
   margin-top: -200px;
   height: 130px;
-  
+
 }
 
 .stage1-subtitle {
@@ -259,7 +259,7 @@ body {
   margin-top: -200px;
   text-align: center;
   font-size: 24px;
-  
+
 }
 
 .stage3-image {
@@ -341,13 +341,13 @@ body {
   margin-right: 20px;
 }
 .stage4-imageswrapper {
-  width: 960px;
-  height: 160px;
+  width: 900px;
+  height: 150px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -80px;
-  margin-left: -480px;
+  margin-top: -75px;
+  margin-left: -450px;
 }
 
 .stage4-image {
@@ -355,7 +355,7 @@ body {
   width: 13px;
   height: 13px;
   border-style: solid;
-  border-width: 3px 3px 0 0;
+  border-width: 2px 2px 0 0;
   border-color: black;
 }
 
