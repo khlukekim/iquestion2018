@@ -16,7 +16,7 @@
       });
       document.getElementById('fileinput').addEventListener('change', loadImage);
       stage(100);
-    }
+    };
 
     function fadeinDiv(divIds, delay) {
       setTimeout(function(){
@@ -141,6 +141,15 @@
       document.getElementById('imageSelectButton').value = "";
     }
 
+    function onMagnifier(img, n) {
+      console.log(img.src, n);
+
+    }
+
+    function offMagnifier() {
+
+    }
+
   </script>
 </head>
 <body>
@@ -228,9 +237,11 @@
     <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
       {% for i in range(60) %}
       {% for j in range(10) %}
-      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*15}}px; margin-top:{{j*15}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
+      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*15}}px; margin-top:{{j*15}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg' mouseenter='onmagnifier(event.target, {{i*10+j}})' mouseleave='offmagnifier()'>
       {% endfor %}
       {% endfor %}
+    </div>
+    <div id='stage4-magnigier' class='stage4-magnifier' style='display:none'>
     </div>
   </div>
   <input id='fileinput' type='file' hidden>
