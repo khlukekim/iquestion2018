@@ -7,9 +7,10 @@
   <script type="text/javascript">
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
-      buttonToStage('stage2-answer-yes', 300);
-      buttonToStage('stage2-answer-no', 300);
-      buttonToStage('stage3-sendbutton', 400);
+      buttonToStage('stage2-answer-yes', 220);
+      buttonToStage('stage2-answer-no', 221);
+      buttonToStage('stage220-next', 300);
+      buttonToStage('stage3-sendbutton', 310);
       document.getElementById('stage3-uploadbutton').addEventListener('click', function(){
         document.getElementById('fileinput').click()
       });
@@ -91,33 +92,38 @@
 
     function stage(stageId) {
       if (stageId == 100) {
-        fadeinDiv(['stage1-title'], 0);
-        fadeinDiv(['stage1-startbutton'], 2000);
-        document.getElementById('stage1-midline').className = 'stage1-midline nowidth fillWidth';
+        fadeinDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
       } else if (stageId == 200) {
-        fadeoutDiv(['stage1-title'], 0);
-        fadeoutDiv(['stage1-startbutton'], 1000);
-        document.getElementById('stage1-midline').className += 'stage1-midline hidden';
-        hideDiv('stage1', 3000);
+        fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
+        hideDiv('stage1', 0);
         showDiv('stage2', 0);
-        fadeinDiv(['stage2-image'], 2000);
-        fadeinDiv(['stage2-image-div'], 2000);
-        fadeinDiv(['stage2-question'], 3000);
+        fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div'], 0);
+        setTimeout(function(){stage(210);}, 5000);
+      } else if (stageId == 210) {
+        fadeoutDiv(['stage2-image-progressbar'], 0)
+        fadeinDiv(['stage2-question', 'stage2-question-message'], 0);
+      } else if (stageId == 220 || stageId == 221) {
+        fadeoutDiv(['stage2-question', 'stage2-question-message', 'stage2-image-div']);
+        hideDiv('stage2', 0);
+        showDiv('stage220', 0);
+        fadeinDiv(['stage220-message', 'stage220-next'], 0);
       } else if (stageId == 300) {
-        fadeoutDiv(['stage2-image-div'], 0);
-        fadeoutDiv(['stage2-question'], 0);
-        hideDiv('stage2', 2000);
+        fadeoutDiv(['stage220-message', 'stage220-next'], 0);
+        hideDiv('stage220', 0);
         showDiv('stage3', 0);
-        fadeinDiv(['stage3-wrapper'], 2000);
+        fadeinDiv(['stage3-wrapper'], 0); 
+      } else if (stageId == 310) {
+        fadeoutDiv(['stage3-message', 'stage3-sendbutton'], 0);
+        fadeinDiv(['stage310-message'], 0);
+        setTimeout(function(){stage(400);}, 5000);
       } else if (stageId == 400) {
         fadeoutDiv(['stage3-wrapper'], 0);
-        hideDiv('stage3', 2000);
+        hideDiv('stage3', 0);
         showDiv('stage4', 0);
-        fadeinDiv(['stage4-message'], 2000);
-        fadeoutDiv(['stage4-message'], 5000);
+        fadeinDiv(['stage4-message-top', 'stage4-message-bottom'], 0);
         //fadeinDiv(['stage4-imageswrapper'], 5000);
-        for(var i = 0; i < 100; i++) {
-          fadeinDiv(['stage4-image-'+i], 5000 + i * 200);
+        for(var i = 0; i < 600; i++) {
+          fadeinDiv(['stage4-image-'+i], 0 + i * 100);
         }
       }
     }
@@ -138,44 +144,73 @@
 </head>
 <body>
   <div id='stage1' class='stage'>
+    <div id='stage1-image' class='stage1-image hidden'>
+    </div>
     <div id='stage1-title' class='stage1-title hidden'>
       I Question
     </div>
-    <div id='stage1-midline' class='stage1-midline nowidth'>
-      &nbsp;
+    <div id='stage1-subtitle' class='stage1-subtitle hidden'>
+      안녕하세요 아이퀘스천입니다<br>함께 생각해볼까요?
     </div>
     <div id='stage1-startbutton' class='stage1-startbutton hidden textbutton'>
-      시작하기
+      START
+    </div>
+    <div id='stage1-about' class='stage1-about hidden'>
+      About
+    </div>
+    <div id='stage1-personalinfo' class='stage1-personalinfo hidden'>
+      개인정보처리방침
     </div>
   </div>
   <div id='stage2' class='stage none'>
+    <div id='stage2-exit' class='stage2-exit'>
+      x
+    </div>
+    <div id='stage2-image-progressbar' class='stage2-image-progressbar hidden'>
+      5초간 사진을 감상해주세요
+    </div>
+    <div id='stage2-question-message' class='stage2-image-progressbar hidden'>
+      이 사진이 예술적으로 보이나요?
+    </div>
     <div class='stage2-midwrapper'>
+
       <div id='stage2-image-div' class='stage2-image-div hidden'>
-        <img id='stage2-image' src='{{option.sampleimage}}{{range(0, 40) | random }}.png' class='stage2-image fade-2'>
-      </div>
-      <div id='stage2-question' class='stage2-question hidden'>
-        <div class='stage2-question-message'>
-          SAMPLE MESSAGE
-        </div>
-        <div class='stage2-question-answer'>
-          <div id='stage2-answer-yes' class='stage2-question-answer-button textbutton'>
-            네
-          </div>
-          |
-          <div id='stage2-answer-no' class='stage2-question-answer-button textbutton'>
-            아니오
+        <img id='stage2-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg' class='stage2-image fade-2'>
+        <div id='stage2-question' class='stage2-question hidden'>
+          <div class='stage2-question-answer'>
+            <div id='stage2-answer-yes' class='stage2-question-answer-button textbutton'>
+              O
+            </div>
+            |
+            <div id='stage2-answer-no' class='stage2-question-answer-button textbutton'>
+              X
+            </div>
           </div>
         </div>
       </div>
+      
+    </div>
+  </div>
+  <div id='stage220' class='stage none'>
+    <div id='stage220-message' class='stage220-message hidden'>
+      오, 제 생각과 비슷하군요.
+    </div>
+    <div id='stage220-next' class='stage220-next textbutton hidden'>
+      Next
     </div>
   </div>
   <div id='stage3' class='stage none'>
     <div id='stage3-wrapper' class='stage3-wrapper hidden'>
-      SAMPLE MESSAGE
-      <img id='stage3-image' class='stage3-image' src='{{option.sampleimage}}{{range(0, 40) | random }}.png'>
+      <div id='stage3-message' class='stage3-message'>
+        당신이 가지고 있는 예술적 사진을 나에게 보여줄래요?
+      </div>
+      <div id='stage310-message' class='stage310-message hidden'>
+        나는 당신의 사진을 감상하고 있습니다
+      </div>
+      <img id='stage3-image' class='stage3-image' src='/static/upload.png'>
       </img>
       <div id='stage3-uploadbutton' class='stage3-uploadbutton hidden'>
-        업로드
+        
       </div>
       <div id='stage3-sendbutton' class='stage3-sendbutton textbutton'>
         완료
@@ -183,13 +218,16 @@
     </div>
   </div>
   <div id='stage4' class='stage none'>
-    <div id='stage4-message' class='stage4-message hidden'>
-      SAMPLE MESSAGE
+    <div id='stage4-message-top' class='stage4-message-top hidden'>
+      나는 최근에 감상한 600장의 사진 중에서 당신의 사진이 152번째로 마음에 듭니다.
+    </div>
+    <div id='stage4-message-bottom' class='stage4-message-bottom hidden'>
+      - 예술적 경계의 스펙트럼 -
     </div>
     <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
-      {% for i in range(20) %}
-      {% for j in range(5) %}
-      <img id='stage4-image-{{i*5+j}}' class='stage4-image hidden' style='left:{{i*50}}px; top:{{j*50}}px;' src='{{option.sampleimage}}{{range(0, 40) | random }}.png'>
+      {% for i in range(60) %}
+      {% for j in range(10) %}
+      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
       {% endfor %}
       {% endfor %}
     </div>

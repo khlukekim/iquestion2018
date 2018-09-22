@@ -9,7 +9,7 @@ def root():
     'sketchjs':url_for('static', filename='sketch.js'),
     'nanumfont':url_for('static', filename='NanumBarunGothicBold.otf'),
     'stylecss': url_for('static', filename='style.css'),
-    'sampleimage': url_for('static', filename='image/test1.png')
+    'sampleimage': url_for('static', filename='images/')
     })
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
