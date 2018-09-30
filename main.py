@@ -26,8 +26,9 @@ def exhibit(size, col, row, margin):
     })
 
 
-@app.route('/image', method='POST')
+@app.route('/image', methods=['POST'])
 def upload_image():
+  pass
   # todo
   # save image
   # process
