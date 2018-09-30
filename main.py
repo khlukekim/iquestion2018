@@ -26,8 +26,8 @@ def exhibit(size, col, row, margin):
     })
 
 
-@app.route('/image', method='POST')
-def upload_image():
+#@app.route('/image', method='POST')
+#def upload_image():
   # todo
   # save image
   # process
@@ -37,6 +37,7 @@ def upload_image():
   #  filename
   #  n id
   #  hash id
+#  pass
 
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
