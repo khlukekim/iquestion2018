@@ -15,6 +15,12 @@
         document.getElementById('fileinput').click()
       });
       document.getElementById('fileinput').addEventListener('change', loadImage);
+      document.getElementById('personalinfo-bg').addEventListener('click', function() {
+        document.getElementById('personalinfo-bg').style.display = 'none';
+      });
+      document.getElementById('stage1-personalinfo').addEventListener('click', function() {
+        document.getElementById('personalinfo-bg').style.display = 'block';
+      })
       stage(100);
     }
 
@@ -230,6 +236,154 @@
       <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
       {% endfor %}
       {% endfor %}
+    </div>
+  </div>
+  <div id='personalinfo-bg' class='personalinfo-bg'>
+    <div class='personalinfo-container'>
+      <div>
+
+      <p><strong>1. 개인정보의 처리 목적</strong></p>
+
+<p style="margin-left: 20px;">(&lsquo;www.ai-question.com&rsquo;이하 &lsquo;I Question&rsquo;) 은(는) 다음의 목적을 위하여 개인정보를 처리하고</p>
+
+<p style="margin-left: 20px;">있으며, 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용하지 않으며, 이용목적이</p>
+
+<p style="margin-left: 20px;">변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할</p>
+
+<p style="margin-left: 20px;">예정입니다.</p>
+
+<p style="margin-left: 40px;">- &lsquo;I Question&rsquo; 은(는) 인간과 기계의 상생적 공진화. 포스트 휴먼의 매체철학적 담론에 집중하며</p>
+
+<p style="margin-left: 40px;">인본주의적 사고의 인본주의적 사고의 코페르니쿠스적 전회 속에서 미래의 진화를 모색하고</p>
+
+<p style="margin-left: 40px;">있습니다. 이번 프로젝트는 인공지능을 직접 구상하고 개발함으로써 인공지능의 개발 과정을 마치</p>
+
+<p style="margin-left: 40px;">식물을 키우는 것처럼 살아있는 진화의 대상으로 바라보고 지속적으로 학습시키기 위해</p>
+
+<p style="margin-left: 40px;">정보주체의 자발적 동의 하에 사진을 수집하고 있으며 수집된 사진은 오직 &lsquo;I Question&rsquo; 프로젝트의</p>
+
+<p style="margin-left: 40px;">전시를 위해 활용되는 것을 목적으로 하고 있습니다.</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>2. 개인정보의 처리 및 보유 기간</strong></p>
+
+<p style="margin-left: 20px;">&lsquo;I Question&rsquo;은(는) 정보주체로부터 개인정보를 수집할 때 동의 받은 개인정보를 법령에 따라</p>
+
+<p style="margin-left: 20px;">프로젝트의 목적 달성 완료 시까지 처리∙보유하며 프로젝트 종료 후 개인 정보를 즉시 파기합니다.</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>3. 정보주체와 법정대리인의 권리∙의무 및 행사방법</strong></p>
+
+<p style="margin-left: 20px;">정보주체는 &lsquo;I Question&rsquo;에 직접 제공한 사진에 대하여 삭제 및 처리정지 요구 등 다음의 권리를</p>
+
+<p style="margin-left: 20px;">행사할 수 있습니다.</p>
+
+<p style="margin-left: 40px;">① 정보주체가 제공한 이미지 삭제 요구</p>
+
+<p style="margin-left: 40px;">② 개인의 초상권 침해가 우려되거나 저작권법 상 위배되는 경우</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>4. 처리하는 개인정보의 항목</strong></p>
+
+<p style="margin-left: 20px;">&lsquo;I Question&rsquo; 은(는) 정보주체가 제공한 사진 외의 웹 사이트 이용과정에서 아래 개인정보 항목이</p>
+
+<p style="margin-left: 20px;">자동으로 생성되어 수집될 수도 있습니다.</p>
+
+<p style="margin-left: 40px;">-접속로그, IP주소, 쿠키, 웹페이지 이용 기록 등</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>5. 개인정보의 파기</strong></p>
+
+<p style="margin-left: 20px;">&lsquo;I Question&rsquo; 은(는) 프로젝트의 목적 달성 혹은 프로젝트 종료로 인한 사이트 폐지에 따라 개인정보가</p>
+
+<p style="margin-left: 20px;">불필요하게 되었을 때에는 개인정보 보호 책임자의 주체 하에 지체없이 (5일 이내) 해당 개인정보를</p>
+
+<p style="margin-left: 20px;">파기합니다.</p>
+
+<p style="margin-left: 20px;">또한 정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 프로젝트의 목적에 따라</p>
+
+<p style="margin-left: 20px;">개인정보를 계속 보존하여야 하는 경우에는 해당 개인정보를 전산화하여 보존합니다.</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>6. 개인정보 자동 수집 장치의 설치∙운영 및 거부에 관한 사항</strong></p>
+
+<p style="margin-left: 20px;">① &lsquo;I Question&rsquo; 은(는) 개별적인 맞춤서비스를 제공하기 위해 이용정보를 저장하고 수시로 불러오는</p>
+
+<p style="margin-left: 20px;">&lsquo;쿠키(cookie)&rsquo;를 사용합니다.</p>
+
+<p style="margin-left: 20px;">② 쿠키는 웹사이트를 운영하는데 이용되는 서버(http)가 이용자의 컴퓨터 브라우저에게 보내는</p>
+
+<p style="margin-left: 20px;">소량의 정보이며 이용자들의 PC 컴퓨터내의 하드디스크에 저장되기도 합니다.</p>
+
+<p style="margin-left: 40px;">가. 쿠키의 사용 목적 : 이용자가 방문한 각 서비스와 웹 사이트들에 대한 방문 및 이용형태보안접속</p>
+
+<p style="margin-left: 40px;">여부, 등을 파악하여 이용자에게 최적화된 정보 제공을 위해 사용됩니다.</p>
+
+<p style="margin-left: 40px;">나. 쿠키의 설치∙운영 및 거부 : 웹브라우저 상단의 도구 &gt; 인터넷 옵션 &gt;&nbsp; 개인정보 메뉴의 옵션 설정을</p>
+
+<p style="margin-left: 40px;">통해 쿠키 저장을 거부 할 수 있습니다.</p>
+
+<p style="margin-left: 40px;">다. 쿠키 저장을 거부할 경우 맞춤형 서비스 이용에 어려움이 발생할 수 있습니다.</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>7. 개인정보 보호책임자에 관한 사항</strong></p>
+
+<p style="margin-left: 20px;">&lsquo;I Question&rsquo;의 개인정보 관리 및 보호의 책임자는 다음과 같습니다.</p>
+
+<p style="margin-left: 20px;">개인정보 보호책임자</p>
+
+<p style="margin-left: 40px;">:김제민(Jaemin Kim) / veritas2537@hanmail.net</p>
+
+<p style="margin-left: 20px;">이 밖에 기타 개인정보침해의 신고 및 상담에 대하여는 아래의 기관에 문의 가능합니다.</p>
+
+<p style="margin-left: 40px;">① 개인분쟁조정위원회 : (국번없이)118</p>
+
+<p style="margin-left: 40px;">② 정보보호마크인증위원회 : 02-550-9531</p>
+
+<p style="margin-left: 40px;">③ 대검찰청 사이버범죄수사단 : 02-3480-3571</p>
+
+<p style="margin-left: 40px;">④ 경찰청 사이버테러대응센터 : 1566-0112</p>
+
+<p style="margin-left: 40px;">
+  <br>
+</p>
+
+<p><strong>8. 개인정보 처리방침 변경</strong></p>
+
+<p>이 개인정보처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및</p>
+
+<p>정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다.</p>
+
+<p>
+  <br>
+</p>
+
+<p><strong>9.개인정보의 안전성 확보 조치</strong></p>
+
+<p>&lsquo;I Question&rsquo;은(는) 개인정보보호법 제29조에 따라 개인정보의 보호 및 안전한 관리를 위해 개인정보</p>
+
+<p>취급 인력은 최소화하고 있으며 접속 기록이 위∙변조 및 도난, 분실되지 않도록 보안 기능을 적용하는</p>
+
+<p>등 안전성 확보에 필요한 기술적/관리적 및 물리적 조치를 하고 있습니다.</p>
+</div>
     </div>
   </div>
   <input id='fileinput' type='file' hidden>
