@@ -22,6 +22,17 @@
         document.getElementById('personalinfo-bg').style.display = 'block';
       })
       document.addEventListener('contextmenu', event => event.preventDefault());
+      for (var eb of ['stage2-exit', 'stage3-exit', 'stage4-exit']) {
+        document.getElementById(eb).addEventListener('click', function() {
+          document.getElementById('exit-bg').style.display = 'block';
+        });
+      }
+      document.getElementById('exit-cancel').addEventListener('click', function() {
+        document.getElementById('exit-bg').style.display = 'none';
+      });
+      document.getElementById('exit-confirm').addEventListener('click', function() {
+        location.reload();
+      })
 
       stage(100);
     }
@@ -171,7 +182,7 @@
     </div>
   </div>
   <div id='stage2' class='stage none'>
-    <div id='stage2-exit' class='stage2-exit'>
+    <div id='stage2-exit' class='exitbutton'>
       x
     </div>
     <div id='stage2-image-progressbar' class='stage2-image-progressbar hidden'>
@@ -208,6 +219,9 @@
     </div>
   </div>
   <div id='stage3' class='stage none'>
+    <div id='stage3-exit' class='exitbutton'>
+      x
+    </div>
     <div id='stage3-wrapper' class='stage3-wrapper hidden'>
       <div id='stage3-message' class='stage3-message'>
         당신이 가지고 있는 예술적 사진을 나에게 보여줄래요?
@@ -226,6 +240,9 @@
     </div>
   </div>
   <div id='stage4' class='stage none'>
+    <div id='stage4-exit' class='exitbutton'>
+      x
+    </div>
     <div id='stage4-message-top' class='stage4-message-top hidden'>
       나는 최근에 감상한 600장의 사진 중에서 당신의 사진이 152번째로 마음에 듭니다.
     </div>
@@ -233,14 +250,24 @@
       - 예술적 경계의 스펙트럼 -
     </div>
     <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
-      {% for i in range(60) %}
+      <!--{% for i in range(60) %}
       {% for j in range(10) %}
       <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
       {% endfor %}
-      {% endfor %}
+      {% endfor %}-->
     </div>
   </div>
-  <div id='personalinfo-bg' class='personalinfo-bg'>
+  <div id='exit-bg' class='overlay-bg'>
+    <div class='exit-confirm-container'>
+      <div id='exit-cancel' class='exit-cancel textbutton'>
+        취소
+      </div>
+      <div id='exit-confirm' class='exit-confirm textbutton'>
+        나가기
+      </div>
+    </div>
+  </div>
+  <div id='personalinfo-bg' class='overlay-bg'>
     <div class='personalinfo-container'>
       <div>
 
