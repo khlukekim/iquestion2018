@@ -48,11 +48,11 @@ body {
 
 .fadein {
   opacity: 1;
-  /*-webkit-transition: opacity 2s ease-in;
+  -webkit-transition: opacity 2s ease-in;
   -moz-transition: opacity 2s ease-in;
   -ms-transition: opacity 2s ease-in;
   -o-transition: opacity 2s ease-in;
-  transition: opacity 2s ease-in;*/
+  transition: opacity 2s ease-in;
 }
 
 .shown {
@@ -61,7 +61,7 @@ body {
 
 .fadeout {
   opacity: 0;
-  /*-webkit-transition: opacity 2s ease-in;
+  -webkit-transition: opacity 2s ease-in;
   -moz-transition: opacity 2s ease-in;
   -ms-transition: opacity 2s ease-in;
   -o-transition: opacity 2s ease-in;
@@ -86,7 +86,7 @@ body {
   top: 50%;
   margin-top: -200px;
   height: 130px;
-  
+
 }
 
 .stage1-subtitle {
@@ -287,7 +287,7 @@ body {
   left: 50%;
   top: 50%;
   margin-left: -45px;
-  margin-top: 170px;
+  margin-top: 140px;
   padding-top: 30px;
 }
 
@@ -299,7 +299,7 @@ body {
   margin-top: -200px;
   text-align: center;
   font-size: 24px;
-  
+
 }
 
 .stage3-image {
@@ -381,13 +381,13 @@ body {
   margin-right: 20px;
 }
 .stage4-imageswrapper {
-  width: 960px;
-  height: 160px;
+  width: 900px;
+  height: 150px;
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-top: -80px;
-  margin-left: -480px;
+  margin-top: -75px;
+  margin-left: -450px;
 }
 
 .stage4-image {
@@ -395,7 +395,7 @@ body {
   width: 13px;
   height: 13px;
   border-style: solid;
-  border-width: 3px 3px 0 0;
+  border-width: 2px 2px 0 0;
   border-color: black;
 }
 

@@ -11,6 +11,7 @@
       buttonToStage('stage2-answer-yes', 220);
       buttonToStage('stage2-answer-no', 221);
       buttonToStage('stage220-next', 300);
+
       document.getElementById('stage3-sendbutton').addEventListener('click', function() {
         uploadImage();
         document.getElementById('stage3-sendbutton').hidden = true;
@@ -45,7 +46,7 @@
 
       startDownloadingImages();
       stage(100);
-    }
+    };
 
     function magnify(i) {
       var magnifier = document.getElementById('stage4-magnifier');
@@ -68,7 +69,7 @@
       for (var i = 0; i< 600; i++) {
         var im = document.getElementById('stage4-image-'+i);
         im.imageid = Math.floor( 1000 * Math.random()) + 1;
-        document.getElementById('stage4-image-'+i).src = '{{option.sampleimage}}' + zeropadding(im.imageid) + '.jpg';
+        document.getElementById('stage4-image-'+i).src = '{{option.image13}}' + zeropadding(im.imageid) + '.jpg';
       }
     }
 
@@ -181,35 +182,34 @@
         fadeinDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
       } else if (stageId == 200) {
         fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
-        hideDiv('stage1', 0);
+        hideDiv('stage1', 3000);
         showDiv('stage2', 0);
-        fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div', 'stage2-next'], 0);
-        //setTimeout(function(){stage(210);}, 5000);
+        fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div', 'stage2-next'], 3000);
       } else if (stageId == 210) {
         fadeoutDiv(['stage2-image-progressbar', 'stage2-next'], 0)
-        fadeinDiv(['stage2-question', 'stage2-question-message'], 0);
+        fadeinDiv(['stage2-question', 'stage2-question-message', 'stage2-image-div'], 0);
       } else if (stageId == 220 || stageId == 221) {
         fadeoutDiv(['stage2-question', 'stage2-question-message', 'stage2-image-div']);
-        hideDiv('stage2', 0);
+        hideDiv('stage2', 3000);
         showDiv('stage220', 0);
-        fadeinDiv(['stage220-message', 'stage220-next'], 0);
+        fadeinDiv(['stage220-message', 'stage220-next'], 2000);
       } else if (stageId == 300) {
         fadeoutDiv(['stage220-message', 'stage220-next'], 0);
-        hideDiv('stage220', 0);
+        hideDiv('stage220', 3000);
         showDiv('stage3', 0);
-        fadeinDiv(['stage3-wrapper'], 0); 
+        fadeinDiv(['stage3-wrapper'], 3000);
       } else if (stageId == 310) {
         fadeoutDiv(['stage3-message', 'stage3-sendbutton'], 0);
         fadeinDiv(['stage310-message'], 0);
         setTimeout(function(){stage(400);}, 5000);
       } else if (stageId == 400) {
         fadeoutDiv(['stage3-wrapper'], 0);
-        hideDiv('stage3', 0);
+        hideDiv('stage3', 3000);
         showDiv('stage4', 0);
-        fadeinDiv(['stage4-message-top', 'stage4-message-bottom'], 0);
+        fadeinDiv(['stage4-message-top', 'stage4-message-bottom'], 3000);
         //fadeinDiv(['stage4-imageswrapper'], 5000);
         for(var i = 0; i < 600; i++) {
-          fadeinDiv(['stage4-image-'+i], 0 + i * 100);
+          fadeinDiv(['stage4-image-'+i], 0 + i * 20);
         }
       }
     }
@@ -220,9 +220,19 @@
       reader.onload = (function() {
         return function(e) {
           document.getElementById('stage3-image').src = e.target.result;
+          stage(310);
         };
       })();
       reader.readAsDataURL(selectedFile);
+    }
+
+    function onMagnifier(img, n) {
+      console.log(img.src, n);
+
+    }
+
+    function offMagnifier() {
+
     }
 
   </script>
@@ -263,7 +273,7 @@
     <div class='stage2-midwrapper'>
 
       <div id='stage2-image-div' class='stage2-image-div hidden'>
-        <img id='stage2-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg' class='stage2-image fade-2'>
+        <img id='stage2-image' src='{{option.imageoriginal}}{{'%04d' % (range(1, 1001) | random) }}.jpg' class='stage2-image fade-2'>
         <div id='stage2-question' class='stage2-question hidden'>
           <div class='stage2-question-answer'>
             <div id='stage2-answer-yes' class='stage2-question-answer-button textbutton'>
@@ -276,7 +286,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
   </div>
   <div id='stage220' class='stage none'>
@@ -301,7 +311,7 @@
       <img id='stage3-image' class='stage3-image' src='/static/upload.png'>
       </img>
       <div id='stage3-uploadbutton' class='stage3-uploadbutton hidden'>
-        
+
       </div>
       <div id='stage3-sendbutton' class='stage3-sendbutton textbutton'>
         완료
@@ -483,6 +493,8 @@
 
 <p>등 안전성 확보에 필요한 기술적/관리적 및 물리적 조치를 하고 있습니다.</p>
 </div>
+    </div>
+    <div id='stage4-magnigier' class='stage4-magnifier' style='display:none'>
     </div>
   </div>
   <form id='imageForm' hidden>

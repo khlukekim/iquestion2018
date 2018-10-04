@@ -18,7 +18,7 @@ def option():
   return {
     'sketchjs':url_for('static', filename='sketch.js'),
     'stylecss': url_for('static', filename='style.css'),
-    'sampleimage': url_for('static', filename='images/'),
+    'imageoriginal': url_for('static', filename='images/'),
     'image13': url_for('static', filename='images/'),
     'image100': url_for('static', filename='images/'),
     }
@@ -43,7 +43,6 @@ def exhibit(size, col, row, margin):
     'row': row,
     'margin': margin,
     })
-
 
 @app.route('/image', methods=['POST'])
 def upload_image():
@@ -78,6 +77,7 @@ def upload_image():
       return jsonify({
         'r': 's'
         })
+
 
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
