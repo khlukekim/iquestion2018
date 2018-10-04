@@ -35,13 +35,37 @@
         location.reload();
       })
 
+      for (var i = 0; i < 600; i++) {
+        document.getElementById('stage4-image-'+i).addEventListener('mouseover', function(i){return function(){magnify(i)}}(i));
+        document.getElementById('stage4-image-'+i).addEventListener('mouseleave', function(i){return function(){unmagnify(i)}}(i));
+      }
+
       startDownloadingImages();
       stage(100);
     }
 
+    function magnify(i) {
+      var magnifier = document.getElementById('stage4-magnifier');
+      magnifier.style.display = 'block';
+      var im = document.getElementById('stage4-image-' + i);
+      magnifier.src = '{{option.image100}}' + zeropadding(im.imageid) + '.jpg';
+      if (i < 300) { 
+        magnifier.style.left = (Math.floor(i / 10)+1) * 16 + 'px';
+      } else {
+        magnifier.style.left = (Math.floor(i / 10) * 16 - 143) + 'px';
+      }
+    }
+
+    function unmagnify(i) {
+      document.getElementById('stage4-magnifier').style.display = 'none';
+      document.getElementById('stage4-magnifier').src = '';
+    }
+
     function startDownloadingImages() {
       for (var i = 0; i< 600; i++) {
-        document.getElementById('stage4-image-'+i).src = '{{option.sampleimage}}' + zeropadding(Math.floor( 1000 * Math.random())) + '.jpg';
+        var im = document.getElementById('stage4-image-'+i);
+        im.imageid = Math.floor( 1000 * Math.random()) + 1;
+        document.getElementById('stage4-image-'+i).src = '{{option.sampleimage}}' + zeropadding(im.imageid) + '.jpg';
       }
     }
 
@@ -273,11 +297,12 @@
       - 예술적 경계의 스펙트럼 -
     </div>
     <div id='stage4-imageswrapper' class='stage4-imageswrapper'>
-      <!--{% for i in range(60) %}
+      {% for i in range(60) %}
       {% for j in range(10) %}
-      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}.jpg'>
+      <img id='stage4-image-{{i*10+j}}' class='stage4-image hidden' style='margin-left:{{i*16}}px; margin-top:{{j*16}}px;' src=''>
       {% endfor %}
-      {% endfor %}-->
+      {% endfor %}
+      <img id='stage4-magnifier' class='stage4-magnifier'>
     </div>
   </div>
   <div id='exit-bg' class='overlay-bg'>
