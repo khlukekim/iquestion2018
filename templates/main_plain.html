@@ -7,6 +7,7 @@
   <script type="text/javascript">
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
+      buttonToStage('stage2-next', 210);
       buttonToStage('stage2-answer-yes', 220);
       buttonToStage('stage2-answer-no', 221);
       buttonToStage('stage220-next', 300);
@@ -116,10 +117,10 @@
         fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
         hideDiv('stage1', 0);
         showDiv('stage2', 0);
-        fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div'], 0);
-        setTimeout(function(){stage(210);}, 5000);
+        fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div', 'stage2-next'], 0);
+        //setTimeout(function(){stage(210);}, 5000);
       } else if (stageId == 210) {
-        fadeoutDiv(['stage2-image-progressbar'], 0)
+        fadeoutDiv(['stage2-image-progressbar', 'stage2-next'], 0)
         fadeinDiv(['stage2-question', 'stage2-question-message'], 0);
       } else if (stageId == 220 || stageId == 221) {
         fadeoutDiv(['stage2-question', 'stage2-question-message', 'stage2-image-div']);
@@ -186,7 +187,10 @@
       x
     </div>
     <div id='stage2-image-progressbar' class='stage2-image-progressbar hidden'>
-      5초간 사진을 감상해주세요
+      사진을 감상해주세요
+    </div>
+    <div id='stage2-next' class='stage2-next textbutton hidden'>
+      Next
     </div>
     <div id='stage2-question-message' class='stage2-image-progressbar hidden'>
       이 사진이 예술적으로 보이나요?
