@@ -4,3 +4,6 @@
 static/images/
 __pychache__/
 *.log
+images/user_image
+database
+static/userimage/

@@ -11,7 +11,10 @@
       buttonToStage('stage2-answer-yes', 220);
       buttonToStage('stage2-answer-no', 221);
       buttonToStage('stage220-next', 300);
-      buttonToStage('stage3-sendbutton', 310);
+      document.getElementById('stage3-sendbutton').addEventListener('click', function() {
+        uploadImage();
+        document.getElementById('stage3-sendbutton').hidden = true;
+      });
       document.getElementById('stage3-uploadbutton').addEventListener('click', function(){
         document.getElementById('fileinput').click()
       });
@@ -67,6 +70,26 @@
         im.imageid = Math.floor( 1000 * Math.random()) + 1;
         document.getElementById('stage4-image-'+i).src = '{{option.sampleimage}}' + zeropadding(im.imageid) + '.jpg';
       }
+    }
+
+    function uploadImage() {
+      var XHR = new XMLHttpRequest();
+      var FD = new FormData(document.getElementById('imageForm'));
+      XHR.addEventListener("load", function(event) {
+        if (JSON.parse(event.target.responseText).r == 's') {
+          stage(310);
+          setTimeout(function() {document.getElementById('stage3-sendbutton').hidden = false;}, 3000);
+        } else {
+          alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
+          document.getElementById('stage3-sendbutton').hidden = false;
+        }
+      });
+      XHR.addEventListener("error", function(event) {
+        alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
+        document.getElementById('stage3-sendbutton').hidden = false;
+      });
+      XHR.open("POST", "/image")
+      XHR.send(FD);
     }
 
     function zeropadding(n) {
@@ -200,7 +223,6 @@
         };
       })();
       reader.readAsDataURL(selectedFile);
-      document.getElementById('imageSelectButton').value = "";
     }
 
   </script>
@@ -463,6 +485,8 @@
 </div>
     </div>
   </div>
-  <input id='fileinput' type='file' hidden>
+  <form id='imageForm' hidden>
+    <input id='fileinput' type='file' name='user_image' hidden>
+  </form>
 </body>
 </html>
