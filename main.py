@@ -5,6 +5,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
+  return render_template('park.html')
+
+@app.route('/test')
+def test():
   return render_template('main_plain.html', option={
     'sketchjs':url_for('static', filename='sketch.js'),
     'nanumfont':url_for('static', filename='NanumBarunGothicBold.otf'),
