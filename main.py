@@ -4,7 +4,11 @@ from pymongo import MongoClient
 app = Flask(__name__)
 
 @app.route('/')
-def root():
+def index():
+  return render_template('park.html')
+
+@app.route('/test')
+def user():
   return render_template('main_plain.html', option={
     'sketchjs':url_for('static', filename='sketch.js'),
     'nanumfont':url_for('static', filename='NanumBarunGothicBold.otf'),
