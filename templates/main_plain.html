@@ -35,7 +35,26 @@
         location.reload();
       })
 
+      startDownloadingImages();
       stage(100);
+    }
+
+    function startDownloadingImages() {
+      for (var i = 0; i< 600; i++) {
+        document.getElementById('stage4-image-'+i).src = '{{option.sampleimage}}' + zeropadding(Math.floor( 1000 * Math.random())) + '.jpg';
+      }
+    }
+
+    function zeropadding(n) {
+      if (n < 10) {
+        return '000' + n;
+      } else if (n < 100) {
+        return '00' + n;
+      } else if (n < 1000) {
+        return '0' + n;
+      } else {
+        return '' + n;
+      }
     }
 
     function fadeinDiv(divIds, delay) {
