@@ -47,6 +47,9 @@ def perform(width, height):
     'height': height
     })
 
+@app.route('/test')
+def test():
+  return render_template('image_upload_test.html')
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
