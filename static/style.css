@@ -277,18 +277,18 @@ body {
 }
 
 .stage220-next {
-  font-size: 10px;
+  font-size: 30px;
   text-align: center;
-  width: 30px;
-  height: 20px;
+  width: 90px;
+  height: 60px;
   color: white;
   background-color: orange;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin-left: -15px;
-  margin-top: 200px;
-  padding-top: 10px;
+  margin-left: -45px;
+  margin-top: 170px;
+  padding-top: 30px;
 }
 
 .stage3-wrapper {
