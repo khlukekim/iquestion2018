@@ -399,6 +399,17 @@ body {
   border-color: black;
 }
 
+.stage4-magnifier {
+  position: absolute;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  display: none;
+  z-index: 100;
+}
+
 .overlay-bg {
   display: none;
   width: 100%;
