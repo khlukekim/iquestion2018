@@ -2,7 +2,7 @@
 from flask import Flask, render_template, url_for, request, jsonify
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename 
-import datetime, os
+import datetime, os, time
 
 app = Flask(__name__)
 
@@ -13,15 +13,21 @@ database_information = ['127.0.0.1', '27017']
 with open('database') as f:
   database_information = [x.strip() for x in f.readlines()]
 
+app.config['pf-control-updated'] = []
 
-def option():
-  return {
+def get_option(d={}):
+  o = {
     'sketchjs':url_for('static', filename='sketch.js'),
     'stylecss': url_for('static', filename='style.css'),
     'imageoriginal': url_for('static', filename='images/'),
     'image13': url_for('static', filename='images/'),
     'image100': url_for('static', filename='images/'),
+    'jquery': url_for('static', filename='jquery-3.3.1.min.js')
     }
+  if d:
+    for k in d:
+      o[k] = d[k]
+  return o
 
 @app.route('/')
 def root():
@@ -29,7 +35,7 @@ def root():
 
 @app.route('/test')
 def test():
-  return render_template('main_plain.html', option=option())
+  return render_template('main_plain.html', option=get_option())
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
@@ -81,13 +87,32 @@ def upload_image():
 
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
-  return render_template('perform.html', option={
-    'stylecss': url_for('static', filename='style.css'),
-    'sampleimage': url_for('static', filename='images/'),
+  app.config['pf-control-updated'] = [];
+  return render_template('perform.html', option=get_option({
     'width': width,
     'height': height
+    }))
+
+@app.route('/control')
+def control():
+  return render_template('control.html', option=get_option())
+
+@app.route('/pf-update')
+def pfUpdate():
+  while len(app.config['pf-control-updated']) == 0:
+    time.sleep(0.5)
+  message = app.config['pf-control-updated'][0]
+  app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
+  return jsonify({
+    'm': message
     })
 
+@app.route('/pf-message/<message>')
+def pfMessage(message):
+  app.config['pf-control-updated'].append(message)
+  return jsonify({
+    'r': 's'
+    })
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
@@ -110,3 +135,5 @@ class MongoDBConnection(object):
   def __exit__(self, exc_type, exc_val, exc_tb):
     self.connection.close()
 
+if __name__ == '__main__':
+    app.run(threaded=True)

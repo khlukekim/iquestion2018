@@ -3,12 +3,43 @@
 <head>
   <title>I Question Performance Page</title>
   <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
+  <script type="text/javascript" src="{{option.jquery}}"></script>
 </head>
 <body>
   <script type="text/javascript">
+
     window.onload = function () {
       window.requestAnimationFrame(slideImage);
+      getUpdated();
     };
+
+    var updating = false;
+
+    function getUpdated() {
+      if (!updating) {
+        updating = true;
+        $.ajax({
+          url: '/pf-update',
+          success: updated,
+          complete: function() {
+            updating = false;
+            getUpdated();
+          },
+          timeout: 60000
+        });
+      }
+    }
+
+    function updated(data) {
+      console.log(data);
+    }
+
+    function stage3(i) {
+      var im = document.getElementById('perf3-image');
+      im.src = document.getElementById('perf-image-' + i).src;
+      im.style.marginLeft = ({{option.width}} - document.getElementById('perf-image-' + i).width - 40) / 2 + 'px';
+    }
+
     var imageWidthList = [];
     for(var i = 0; i < 10; i++) {
       imageWidthList.push(1000);
@@ -17,28 +48,40 @@
     function imageloaded(e, number) {
       imageWidthList[number] = e.width;
       slideWidth = imageWidthList.reduce(function(a, b){return a+b}, 0);
-      document.getElementById('perf-image-wrapper').style.width = slideWidth + 'px';
+      document.getElementById('stage1').style.width = slideWidth + 'px';
+      document.getElementById('perf2-image-'+number).src = e.src;
+      for (var i = 0; i< 10; i++) {
+        document.getElementById('perf2-image-'+number).style.width = e.width / slideWidth * {{option.width}} + 'px';
+      }
     }
     var direction = -1;
     var slideLeft = 0;
-    var slideSpeed = 2;
+    var slideSpeed = 1;
 
     function slideImage() {
-      slideLeft += direction * slideSpeed;
+      slideLeft += Math.floor(direction * slideSpeed * (2 + 8 * Math.pow(Math.min(1, Math.min(Math.abs(slideLeft), Math.abs(slideWidth - {{option.width}} + slideLeft))/100), 2) / 10));
       if ((-slideLeft > slideWidth - {{option.width}}) ||
       (slideLeft > 0)) {
         direction = - direction;
         slideLeft += direction * slideSpeed;
       }
-      document.getElementById('perf-image-wrapper').style.left = slideLeft + 'px';
+      document.getElementById('stage1').style.left = slideLeft + 'px';
       window.requestAnimationFrame(slideImage);
     }
   </script>
-  <div class='perf-stage' style='width:{{option.width}}px; height:{{option.height}}px'>
-    <div id='perf-image-wrapper' class='perf-image-wrapper' style='height:{{option.height}}px; width: 10000px'>
-    {% for i in range(10) %}
-      <img id='perf-image-{{i}}' class='perf-image' src='{{option.sampleimage}}{{'%04d' % (range(1, 1001) | random) }}_original.jpg' onload='imageloaded(event.target, {{i}})'>
+  <div id='stage' class='perf-stage' style='width:{{option.width}}px; height:{{option.height}}px'>
+    <div id='stage1' class='perf-image-wrapper' style='display:none; height:{{option.height}}px; width: 10000px'>
+      {% for i in range(10) %}
+      <img id='perf-image-{{i}}' class='perf-image' src='{{option.imageoriginal}}{{'%04d' % (range(1, 1001) | random) }}.jpg' onload='imageloaded(event.target, {{i}})'>
       {% endfor %}
+    </div>
+    <div id='stage2' style='display:none;  width: {{option.width}}px'>
+      {% for i in range(10) %}
+      <img id='perf2-image-{{i}}' class='perf-image'> 
+      {% endfor %}
+    </div>
+    <div id='stage3' style='display:block; width: {{option.width}}px; height: {{option.height}}px; padding:20px'>
+      <img id='perf3-image' style='max-width:100%; max-height:100%''>
     </div>
   </div>
 </body>
