@@ -21,31 +21,31 @@
     }
 
     function Flick(imageN) {
-      self.direction = -1;
-      self.speed = 0.01;
-      self.time = 0;
-      self.maxTime = 2;
-      self.opacity = 1;
-      self.N = imageN;
+      this.direction = -1;
+      this.speed = 0.01;
+      this.time = 0;
+      this.maxTime = 2;
+      this.opacity = 1;
+      this.N = imageN;
 
-      self.init = function() {
-        self.opacity = 1;
-        self.direction = -1;
-        self.time = 0;
+      this.init = function() {
+        this.opacity = 1;
+        this.direction = -1;
+        this.time = 0;
       }
 
-      self.flick = function() {
-        self.opacity += self.direction * self.speed;
-        if (self.opacity < 0 || self.opacity > 1) {
-          self.direction *= -1;
-          self.opacity += self.direction * self.speed;
-          self.time += 1;
+      this.flick = function() {
+        this.opacity += this.direction * this.speed;
+        if (this.opacity < 0 || this.opacity > 1) {
+          this.direction *= -1;
+          this.opacity += this.direction * this.speed;
+          this.time += 1;
         }
-        document.getElementById('image'+self.N).style.opacity = self.opacity;
-        if (self.time >= self.maxTime) {
+        document.getElementById('image'+this.N).style.opacity = this.opacity;
+        if (this.time >= this.maxTime) {
 
         } else {
-          window.requestAnimationFrame(self.flick);
+          window.requestAnimationFrame(this.flick);
         }
       }
     }
