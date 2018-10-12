@@ -25,7 +25,7 @@
     function triggerFlick() {
       var done = false;
       var counter = 0;
-      while (!done && counter < 600) {
+      while (!done && counter < 640) {
         var n = Math.floor(Math.random() * row * col);
         var ex = false;
         for (var i = 0; i<flickers.length; i++) {
@@ -39,7 +39,7 @@
         }
         counter ++;
       }
-      setTimeout(triggerFlick, Math.floor(Math.random() * 100))
+      setTimeout(triggerFlick, Math.floor(Math.random() * 50))
     }
 
     function Flick(imageN) {
