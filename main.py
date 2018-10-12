@@ -2,7 +2,7 @@
 from flask import Flask, render_template, url_for, request, jsonify
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename 
-import datetime, os, time
+import datetime, os, time, random
 
 app = Flask(__name__)
 
@@ -14,6 +14,8 @@ with open('database') as f:
   database_information = [x.strip() for x in f.readlines()]
 
 app.config['pf-control-updated'] = []
+app.config['pf-hash'] = 0
+app.config['pf-images'] = []
 
 def get_option(d={}):
   o = {
@@ -88,9 +90,12 @@ def upload_image():
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
   app.config['pf-control-updated'] = [];
+  app.config['pf-images'] = [];
   return render_template('perform.html', option=get_option({
     'width': width,
-    'height': height
+    'height': height,
+    'fontsize': 64,
+    'cellsize': 10
     }))
 
 @app.route('/control')
@@ -99,20 +104,76 @@ def control():
 
 @app.route('/pf-update')
 def pfUpdate():
+  hash_value = random.getrandbits(100)
+  app.config['pf-hash'] = hash_value
   while len(app.config['pf-control-updated']) == 0:
     time.sleep(0.5)
-  message = app.config['pf-control-updated'][0]
-  app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
-  return jsonify({
-    'm': message
-    })
+  if (hash_value == app.config['pf-hash']):
+    message = app.config['pf-control-updated'][0]
+    app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
+    print('sending: ', message)
+    return jsonify({
+      'm': message
+      })
+  else :
+    return jsonify({
+      'm': '',
+      's': 'hash changed'
+      })
 
 @app.route('/pf-message/<message>')
 def pfMessage(message):
   app.config['pf-control-updated'].append(message)
+  print('rec: ', app.config['pf-control-updated'])
   return jsonify({
     'r': 's'
     })
+
+@app.route('/pf-upload-image')
+def pf_upload_image_get():
+  return render_template('pf_upload_image.html')
+  
+@app.route('/pf-upload', methods=['POST'])
+def pf_upload_image():
+  if 'user_image' not in request.files:
+    # no file
+    # what should I do?
+    # maybe just redirect back
+    # or use json error response
+    return jsonify({
+      'r': 'f',
+      'c': 'nofile'
+      })
+  file = request.files['user_image']
+  if file.filename == '':
+    return jsonify({
+      'r': 'f',
+      'c': 'nofile'
+      })
+  if file:
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      coll = mongo.connection.iquestion.userImages 
+      data = {
+        'created_at': datetime.datetime.now(),
+        'prediction_point': 0,
+        'original_filename': file.filename,
+      } 
+      db_result = coll.insert_one(data)
+
+      filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
+      file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
+      app.config['pf-images'].append(filename)
+      
+      return jsonify({
+        'r': 's'
+        })
+
+@app.route('/pf-update-image')
+def pf_update_image():
+  return jsonify({
+      'r': 's',
+      'f': app.config['pf-images']
+      })
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager

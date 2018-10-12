@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+  .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .button2 {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .shown {
+    display: inline-block;
+  }
+  </style>
+</head>
+<body>
+<script type="text/javascript">
+  function loadImage(e) {
+    var selectedFile = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = (function() {
+      return function(e) {
+        document.getElementById('image').src = e.target.result;
+        document.getElementById('button2').className = 'button2 shown';
+      };
+    })();
+    reader.readAsDataURL(selectedFile);
+  }
+  function send() {
+    document.getElementById('button2').className = 'button2 hidden';
+    var XHR = new XMLHttpRequest();
+    var FD = new FormData(document.getElementById('imageForm'));
+    XHR.addEventListener("load", function(event) {
+      if (JSON.parse(event.target.responseText).r == 's') {
+        alert('이미지를 보냈습니다!')
+      } else {
+        alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
+        document.getElementById('button2').className = 'button2 shown';
+      }
+    });
+    XHR.addEventListener("error", function(event) {
+      alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
+      document.getElementById('button2').className = 'button2 shown';
+    });
+    XHR.open("POST", "/pf-upload")
+    XHR.send(FD);
+  }
+</script>
+  <form id='imageForm' hidden>
+    <input id='fileinput' type='file' name='user_image' hidden onchange="loadImage(event);">
+  </form>
+  <button class='button' onclick="document.getElementById('fileinput').click()">
+    여기를 눌러 이미지를 선택해 주세요!
+  </button>
+  <img id='image' style="max-width: 100%; max-height: 100%">
+  <button id='button2' class='button2 hidden' onclick="send()">
+    여기를 눌러 이미지를 보내주세요!
+  </button>
+</body>
+</html>

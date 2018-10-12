@@ -4,9 +4,51 @@
   <title></title>
 </head>
 <body>
+  <script type="text/javascript" src="{{option.jquery}}"></script>
   <script type="text/javascript">
+  function send(val) {
+    $.ajax({
+      url: '/pf-message/'+val,
+      success: function(data) {
+        console.log(data);
+      },
+    });
+  }
 
+  function updateImages() {
+    $.ajax({
+      url: '/pf-update-image',
+      success: function(data) {
+        if (data.r == 's') {
+          var d = document.getElementById('imagesDiv');
+          while(d.children.length > 0) {
+            d.removeChild(d.children[0]);
+          }
+          for (var i = 0; i < data.f.length; i++) {
+            var htmlImage = new Image();
+            htmlImage.style.maxWidth = '100px';
+            htmlImage.style.maxHeight = '100px';
+            htmlImage.src = '/static/userimage/' + data.f[i];
+            d.appendChild(htmlImage);
+          }
+        }
+      }
+    })
+  }
   </script>
 
+  <input id='inputText' type="text">
+  <button onclick="send(document.getElementById('inputText').value)"> Send</button><br>
+  <button onclick="send('stage:0')"> Stage 0 (mute) </button><br>
+  <button onclick="send('stage:1')"> Stage 1 (slide) </button><br>
+  <button onclick="send('stage:2')"> Stage 2 (all) </button><br>
+  <input id='stage3number' type="number" value="0" step="1">
+  <button onclick="send('stage:3:' + document.getElementById('stage3number').value)"> Stage 3 (one) </button><br>
+  <button onclick="send('stage:4')"> Stage 4 (spectrum) </button><br>
+  <button onclick="send('stage:5')"> Stage 5 (words) </button><br>
+  <input id='wordsText' type='text'>
+  <button onclick="send('words:' + document.getElementById('wordsText').value)"> Set words </button> <br>
+  <button onclick="updateImages()">Update Images</button><br>
+  <div id='imagesDiv'></div>
 </body>
 </html>
