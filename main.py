@@ -85,7 +85,7 @@ def upload_image():
         'r': 's'
         })
 
-@app.route('pf-reset')
+@app.route('/pf-reset')
 def pf_resuet():
   app.config['pf-images'] = [];
 
