@@ -10,6 +10,7 @@
     var row = {{option.row}};
     var margin = {{option.margin}};
     var shouldFlick = false;
+    var flickers = [];
 
     window.onload = function() {
       initImageViews();
@@ -27,6 +28,7 @@
       this.maxTime = 2;
       this.opacity = 1;
       this.N = imageN;
+      this.shouldFlick = true;
 
       this.init = function() {
         this.opacity = 1;
@@ -43,9 +45,7 @@
         }
         document.getElementById('image'+this.N).style.opacity = this.opacity;
         if (this.time >= this.maxTime) {
-
-        } else {
-          window.requestAnimationFrame(this.flick);
+          this.shouldFlick = false;
         }
       }
     }
@@ -65,17 +65,13 @@
     }
 
     function flick() {
-      if (shouldFlick) {
-        currentOpacity +=  currentFlickDirection * flickingSpeed;
-        if (currentOpacity < 0 || currentOpacity >1) {
-          currentFlickDirection *= -1;
-          currentOpacity += currentFlickDirection * flickingSpeed;
-          currentFlickingTime += 1;
-        }
-        document.getElementById('image'+flickingImageN).style.opacity =  currentOpacity;
-        if (currentFlickingTime >= maxFlickingTime) {
-          currentFlickingTime = 0;
-          flickingImageN = Math.floor(Math.random() * col * row);
+      for(var i = 0; i<flickers.length; i++) {
+        var f = flickers[i];
+        f.flick();
+      }
+      for(var i = flickers.length-1; i>=0; i--) {
+        if (!f.shouldFlick) {
+          flickers = flickers.splice(i, 1);
         }
       }
       window.requestAnimationFrame(flick);
