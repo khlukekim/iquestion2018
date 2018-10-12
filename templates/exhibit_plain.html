@@ -25,7 +25,7 @@
     function triggerFlick() {
       var done = false;
       var counter = 0;
-      while (!done && counter < 100) {
+      while (!done && counter < 600) {
         var n = Math.floor(Math.random() * row * col);
         var ex = false;
         for (var i = 0; i<flickers.length; i++) {
@@ -39,12 +39,12 @@
         }
         counter ++;
       }
-      setTimeout(triggerFlick, Math.floor(Math.random() * 300))
+      setTimeout(triggerFlick, Math.floor(Math.random() * 100))
     }
 
     function Flick(imageN) {
       this.direction = -1;
-      this.speed = 0.004;
+      this.speed = 0.0025;
       this.time = 0;
       this.maxTime = 2;
       this.opacity = 1;
