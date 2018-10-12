@@ -18,7 +18,14 @@
         nextStage();
       }
       flickingImageN = Math.floor(Math.random() * row * col);
+      trigerFlick();
       flick();
+    }
+
+    function triggerFlick() {
+      var n = Math.floor(Math.random() * row * col);
+      flickers.push(new Flick(n));
+      setTimeout(Math.floor(Math.random() * 500), triggerFlick)
     }
 
     function Flick(imageN) {
@@ -70,7 +77,7 @@
         f.flick();
       }
       for(var i = flickers.length-1; i>=0; i--) {
-        if (!f.shouldFlick) {
+        if (!flickers[i].shouldFlick) {
           flickers = flickers.splice(i, 1);
         }
       }
