@@ -6,6 +6,7 @@
 <body>
   <script type="text/javascript" src="{{option.jquery}}"></script>
   <script type="text/javascript">
+  var userImages = [];
   function send(val) {
     $.ajax({
       url: '/pf-message/'+val,
@@ -24,12 +25,14 @@
           while(d.children.length > 0) {
             d.removeChild(d.children[0]);
           }
+          userImages = [];
           for (var i = 0; i < data.f.length; i++) {
             var htmlImage = new Image();
             htmlImage.style.maxWidth = '100px';
             htmlImage.style.maxHeight = '100px';
             htmlImage.src = '{{option.userimage}}' + data.f[i];
             d.appendChild(htmlImage);
+            userImages.push(data.f[i]);
           }
         }
       }
@@ -49,6 +52,7 @@
   <input id='wordsText' type='text'>
   <button onclick="send('words:' + document.getElementById('wordsText').value)"> Set words </button> <br>
   <button onclick="updateImages()">Update Images</button><br>
-  <div id='imagesDiv'></div>
+  <div id='imagesDiv'></div><br>
+  <button onclick="send()">사용자 이미지 반영</button>
 </body>
 </html>
