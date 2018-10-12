@@ -28,7 +28,7 @@
             var htmlImage = new Image();
             htmlImage.style.maxWidth = '100px';
             htmlImage.style.maxHeight = '100px';
-            htmlImage.src = '/static/userimage/' + data.f[i];
+            htmlImage.src = {{option.userimage}} + data.f[i];
             d.appendChild(htmlImage);
           }
         }

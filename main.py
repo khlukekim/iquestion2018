@@ -15,7 +15,7 @@ with open('database') as f:
 
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
-app.config['pf-images'] = []
+app.config['pf-images'] = []z
 
 def get_option(d={}):
   o = {
@@ -25,7 +25,8 @@ def get_option(d={}):
     'image13': url_for('static', filename='images/'),
     'image100': url_for('static', filename='images/'),
     'image56': url_for('static', filename='images/size_56/'),
-    'jquery': url_for('static', filename='jquery-3.3.1.min.js')
+    'jquery': url_for('static', filename='jquery-3.3.1.min.js'),
+    'userimage': url_for('static', filename='images/userimage/'),
     }
   if d:
     for k in d:
