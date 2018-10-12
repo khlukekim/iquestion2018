@@ -1,7 +1,7 @@
 
-from flask import Flask, render_template, url_for, request, jsonify
+from flask import Flask, render_template, url_for, request, jsonify, Response
 from pymongo import MongoClient
-from werkzeug.utils import secure_filename 
+from werkzeug.utils import secure_filename
 import datetime, os, time, random
 
 app = Flask(__name__)
@@ -69,17 +69,17 @@ def upload_image():
       })
   if file:
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      coll = mongo.connection.iquestion.userImages 
+      coll = mongo.connection.iquestion.userImages
       data = {
         'created_at': datetime.datetime.now(),
         'prediction_point': 0,
         'original_filename': file.filename,
-      } 
+      }
       db_result = coll.insert_one(data)
 
       filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
       file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
-      
+
       return jsonify({
         'r': 's'
         })
@@ -130,7 +130,7 @@ def pfMessage(message):
 @app.route('/pf-upload-image')
 def pf_upload_image_get():
   return render_template('pf_upload_image.html')
-  
+
 @app.route('/pf-upload', methods=['POST'])
 def pf_upload_image():
   if 'user_image' not in request.files:
@@ -150,18 +150,18 @@ def pf_upload_image():
       })
   if file:
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      coll = mongo.connection.iquestion.userImages 
+      coll = mongo.connection.iquestion.userImages
       data = {
         'created_at': datetime.datetime.now(),
         'prediction_point': 0,
         'original_filename': file.filename,
-      } 
+      }
       db_result = coll.insert_one(data)
 
       filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
       file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
       app.config['pf-images'].append(filename)
-      
+
       return jsonify({
         'r': 's'
         })
@@ -172,6 +172,10 @@ def pf_update_image():
       'r': 's',
       'f': app.config['pf-images']
       })
+
+@app.route('/check-print-status')
+def check_print_status():
+  return Response('na', mimetype='text/plain')
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
