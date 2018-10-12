@@ -53,6 +53,6 @@
   <button onclick="send('words:' + document.getElementById('wordsText').value)"> Set words </button> <br>
   <button onclick="updateImages()">Update Images</button><br>
   <div id='imagesDiv'></div><br>
-  <button onclick="send(userImages.join(','))">사용자 이미지 반영</button>
+  <button onclick="send('images:'+userImages.join(','))">사용자 이미지 반영</button>
 </body>
 </html>
