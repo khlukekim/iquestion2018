@@ -78,7 +78,7 @@
       }
       for(var i = flickers.length-1; i>=0; i--) {
         if (!flickers[i].shouldFlick) {
-          flickers = flickers.splice(i, 1);
+          flickers.splice(i, 1);
         }
       }
       window.requestAnimationFrame(flick);
