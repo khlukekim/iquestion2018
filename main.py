@@ -15,7 +15,7 @@ with open('database') as f:
 
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
-app.config['pf-images'] = []z
+app.config['pf-images'] = []
 
 def get_option(d={}):
   o = {
