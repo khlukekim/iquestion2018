@@ -24,6 +24,7 @@ def get_option(d={}):
     'imageoriginal': url_for('static', filename='images/'),
     'image13': url_for('static', filename='images/'),
     'image100': url_for('static', filename='images/'),
+    'image56': url_for('static', filename='images/size_56/'),
     'jquery': url_for('static', filename='jquery-3.3.1.min.js')
     }
   if d:
