@@ -85,11 +85,14 @@ def upload_image():
         'r': 's'
         })
 
+@app.route('pf-reset')
+def pf_resuet():
+  app.config['pf-images'] = [];
 
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
   app.config['pf-control-updated'] = [];
-  app.config['pf-images'] = [];
+  #app.config['pf-images'] = [];
   return render_template('perform.html', option=get_option({
     'width': width,
     'height': height,
