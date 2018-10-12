@@ -25,7 +25,7 @@
     function triggerFlick() {
       var n = Math.floor(Math.random() * row * col);
       flickers.push(new Flick(n));
-      setTimeout(Math.floor(Math.random() * 500), triggerFlick)
+      setTimeout(triggerFlick, Math.floor(Math.random() * 500))
     }
 
     function Flick(imageN) {
