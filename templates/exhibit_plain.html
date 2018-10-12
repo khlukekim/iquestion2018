@@ -24,7 +24,8 @@
 
     function triggerFlick() {
       var done = false;
-      while (!done) {
+      var counter = 0;
+      while (!done && counter < 20) {
         var n = Math.floor(Math.random() * row * col);
         var ex = false;
         for (var i = 0; i<flickers.length; i++) {
@@ -36,6 +37,7 @@
           flickers.push(new Flick(n));
           done = true;
         }
+        counter ++;
       }
       setTimeout(triggerFlick, Math.floor(Math.random() * 500))
     }
