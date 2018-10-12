@@ -42,16 +42,13 @@ def test():
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
-  return render_template('exhibit_plain.html', option={
-    'sketchjs':url_for('static', filename='sketch.js'),
-    'nanumfont':url_for('static', filename='NanumBarunGothicBold.otf'),
+  return render_template('exhibit_plain.html', option=get_option({
     'stylecss': url_for('static', filename='style.css'),
-    'sampleimage': url_for('static', filename='image/test1.png'),
     'size':size,
     'col': col,
     'row': row,
     'margin': margin,
-    })
+    }))
 
 @app.route('/image', methods=['POST'])
 def upload_image():
