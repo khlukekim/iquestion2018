@@ -44,7 +44,7 @@
 
     function Flick(imageN) {
       this.direction = -1;
-      this.speed = 0.0025;
+      this.speed = 0.0015 * (0.5 + Math.random());
       this.time = 0;
       this.maxTime = 2;
       this.opacity = 1;
