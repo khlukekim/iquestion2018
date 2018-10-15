@@ -52,7 +52,7 @@
             stage3(Number(message[2]));
           }
         } else if (message[0] == 'words') {
-          document.getElementById('stage5').innerHTML = message[1];
+          document.getElementById('stage5').innerHTML = decodeURI(message[1]);
         } else if (message[0] == 'images') {
           images = message[1].split(',');
           for(var i = 0; i<Math.min(images.length, 10);  i++) {
