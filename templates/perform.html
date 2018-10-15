@@ -7,7 +7,7 @@
 </head>
 <body>
   <script type="text/javascript">
-    var sessionHash = Math.random.toString(10);
+    var sessionHash = Math.random().toString(10);
     var option = {
       width: {{option.width}},
       height: {{option.height}},
@@ -26,6 +26,7 @@
     var images = [];
 
     function getUpdated() {
+      console.log(Date.now());
       if (!updating) {
         updating = true;
         $.ajax({
