@@ -2,7 +2,9 @@
 *.pyc
 *.otf
 *.ttf
+*.TTF
 static/images/
+static/printtest.jpg
 __pychache__/
 *.log
 images/user_image
