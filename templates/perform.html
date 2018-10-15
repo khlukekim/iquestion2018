@@ -52,7 +52,7 @@
             stage3(Number(message[2]));
           }
         } else if (message[0] == 'words') {
-          document.getElementById('stage5').innerHTML = decodeURI(message[1]);
+          document.getElementById('stage5').innerHTML = '<p>' + decodeURI(message[1]) + '</p>';
         } else if (message[0] == 'images') {
           images = message[1].split(',');
           for(var i = 0; i<Math.min(images.length, 10);  i++) {
@@ -192,7 +192,9 @@ var N_STAGE = stageNames.length;
     </div>
     </div>
     <div id='stage5' style='display: none; width: {{option.width}}px; height: {{(option.height-option.fontsize)/2+option.fontsize}}px; color: white; font-size: {{option.fontsize}}px; padding-top: {{(option.height-option.fontsize)/2}}px; line-height: 1; text-align: center;'>
+      <p>
       TEST WORD LIST 단어 하나 둘 셋
+      </p>
     </div>
   </div>
 </body>
