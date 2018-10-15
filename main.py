@@ -105,8 +105,8 @@ def control():
   return render_template('control.html', option=get_option())
 
 @app.route('/pf-update/<hash>')
-def pfUpdate(sessionHash):
-  app.config['pf-hash'] = sessionHash
+def pfUpdate(hash):
+  app.config['pf-hash'] = hash
   counter = 0
   while len(app.config['pf-control-updated']) == 0 and counter < 10:
     counter += 1
