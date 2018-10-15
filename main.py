@@ -104,9 +104,9 @@ def perform(width, height):
 def control():
   return render_template('control.html', option=get_option())
 
-@app.route('/pf-update/<hash>')
-def pfUpdate(hash):
-  app.config['pf-hash'] = hash
+@app.route('/pf-update/<sessionHash>')
+def pfUpdate(sessionHash):
+  app.config['pf-hash'] = sessionHash
   counter = 0
   while len(app.config['pf-control-updated']) == 0 and counter < 10:
     counter += 1
