@@ -112,7 +112,7 @@ def pfUpdate(sessionHash):
     counter += 1
     time.sleep(0.5)
   if len(app.config['pf-control-updated']) > 0:
-    if (hash_value == app.config['pf-hash']):
+    if (sessionHash == app.config['pf-hash']):
       message = app.config['pf-control-updated'][0]
       app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
       print('sending: ', message)
