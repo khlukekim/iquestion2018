@@ -58,6 +58,8 @@
           for(var i = 0; i<Math.min(images.length, 10);  i++) {
             document.getElementById('perf-image-'+i).src = '{{option.userimage}}' + images[i];
           }
+        } else if (message[0] == 'fontsize') {
+          document.getElementById('stage5').style.fontSize = message[1] + 'px';
         }
       } catch (e) {
         console.log(e);
