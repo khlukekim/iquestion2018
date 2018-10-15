@@ -7,6 +7,7 @@
 </head>
 <body>
   <script type="text/javascript">
+    var sessionHash = Math.random.toString(10);
     var option = {
       width: {{option.width}},
       height: {{option.height}},
@@ -28,7 +29,7 @@
       if (!updating) {
         updating = true;
         $.ajax({
-          url: '/pf-update',
+          url: '/pf-update/'+sessionHash,
           success: updated,
           complete: function() {
             updating = false;
@@ -42,6 +43,9 @@
     function updated(data) {
       try {
         console.log(data);
+        if (data.m == '') {
+          console.log(data);
+        }
         var message = data.m.split(':');
         if (message[0] == 'stage') {
           stage(Number(message[1]));

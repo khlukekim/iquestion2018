@@ -104,23 +104,30 @@ def perform(width, height):
 def control():
   return render_template('control.html', option=get_option())
 
-@app.route('/pf-update')
-def pfUpdate():
-  hash_value = random.getrandbits(100)
-  app.config['pf-hash'] = hash_value
-  while len(app.config['pf-control-updated']) == 0:
+@app.route('/pf-update/<hash>')
+def pfUpdate(sessionHash):
+  app.config['pf-hash'] = sessionHash
+  counter = 0
+  while len(app.config['pf-control-updated']) == 0 and counter < 10:
+    counter += 1
     time.sleep(0.5)
-  if (hash_value == app.config['pf-hash']):
-    message = app.config['pf-control-updated'][0]
-    app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
-    print('sending: ', message)
-    return jsonify({
-      'm': message
-      })
-  else :
+  if len(app.config['pf-control-upadted']) > 0:
+    if (hash_value == app.config['pf-hash']):
+      message = app.config['pf-control-updated'][0]
+      app.config['pf-control-updated'] = app.config['pf-control-updated'][1:]
+      print('sending: ', message)
+      return jsonify({
+        'm': message
+        })
+    else :
+      return jsonify({
+        'm': '',
+        's': 'hash changed'
+        })
+  else:
     return jsonify({
       'm': '',
-      's': 'hash changed'
+      's': 'timeout'
       })
 
 @app.route('/pf-message/<message>')
