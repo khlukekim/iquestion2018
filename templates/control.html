@@ -4,20 +4,27 @@
   <title></title>
 </head>
 <body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   <script type="text/javascript" src="{{option.jquery}}"></script>
   <script type="text/javascript">
+  var socket = io.connect('http://'+document.domain + ':' + location.port);
+  socket.on('connect', function() {
+    console.log('socket connected');
+  })
+
   var userImages = [];
   function send(val) {
-    $.ajax({
+    socket.emit('control message', val);
+    /*$.ajax({
       url: '/pf-message/'+val,
       success: function(data) {
         console.log(data);
       },
-    });
+    });*/
   }
 
   function updateImages() {
-    $.ajax({
+    $.ajax({    
       url: '/pf-update-image',
       success: function(data) {
         if (data.r == 's') {

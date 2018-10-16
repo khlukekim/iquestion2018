@@ -6,6 +6,7 @@
   <script type="text/javascript" src="{{option.jquery}}"></script>
 </head>
 <body>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
   <script type="text/javascript">
     var sessionHash = Math.random().toString(10);
     var option = {
@@ -14,10 +15,41 @@
       fontsize: {{option.fontsize}},
       cellsize: {{option.cellsize}}
     };
+    var socket = io.connect('http://'+document.domain + ':' + location.port);
+    socket.on('connect', function() {
+      console.log('socket connected');
+      socket.emit('perform join', sessionHash);
+    })
+    socket.on('control message', function(data) {
+      try {
+        console.log(data);
+        var message = data.split(':');
+        if (message[0] == 'stage') {
+          stage(Number(message[1]));
+          if (message[1] == '1') {
+            slideLeft = 0;
+          }
+          if (message[1] == '3' && message.length > 2) {
+            stage3(Number(message[2]));
+          }
+        } else if (message[0] == 'words') {
+          document.getElementById('stage5').innerHTML = decodeURI(message[1]).replace('/\n/g', '<br>');
+        } else if (message[0] == 'images') {
+          images = message[1].split(',');
+          for(var i = 0; i<Math.min(images.length, 10);  i++) {
+            document.getElementById('perf-image-'+i).src = '{{option.userimage}}' + images[i];
+          }
+        } else if (message[0] == 'fontsize') {
+          document.getElementById('stage5').style.fontSize = message[1] + 'px';
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    });
 
     window.onload = function () {
       window.requestAnimationFrame(slideImage);
-      getUpdated();
+      //getUpdated();
       stage(0);
       initImageViews();
     };

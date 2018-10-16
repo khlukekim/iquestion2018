@@ -3,8 +3,11 @@ from flask import Flask, render_template, url_for, request, jsonify, Response
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 import datetime, os, time, random
+from flask_socketio import SocketIO, join_room, leave_room
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
+socketio = SocketIO(app)
 
 USER_IMAGE_FOLDER = os.path.join('static', 'images', 'userimage')
 app.config['USER_IMAGE_FOLDER'] = USER_IMAGE_FOLDER
@@ -188,6 +191,24 @@ def pf_update_image():
 def check_print_status():
   return Response('na', mimetype='text/plain')
 
+@app.route('/sockettest')
+def sockettest():
+  return render_template('sockettest.html')
+
+@socketio.on('message')
+def handle_message(message):
+  print('received message: ' + str(message))
+  socketio.send('server received: ' + str(message))
+
+@socketio.on('perform join')
+def handle_perform_join(sessionHash):
+  room = 'perform'
+  join_room(room)
+
+@socketio.on('control message')
+def handle_control_message(message):
+  socketio.emit('control message', message, room='perform')
+
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
  # Check https://medium.com/@ramojol/python-context-managers-and-the-with-statement-8f53d4d9f87
@@ -210,4 +231,4 @@ class MongoDBConnection(object):
     self.connection.close()
 
 if __name__ == '__main__':
-    app.run(threaded=True)
+    socketio.run(app)
