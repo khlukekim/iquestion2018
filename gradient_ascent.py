@@ -234,7 +234,7 @@ def run(inputFile, outputFolder):
     'temp': 'off',
     'roll': 'off',
     'shift': 'off',
-    'iter': 10,
+    'iter': 2,
     'step': 1.2,
     'height': 400,
     'width': 400,

@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, join_room, leave_room
 import gradient_ascent
 from threading import Lock
 from PIL import Image
-
+from shutil import copyfile
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
@@ -105,10 +105,10 @@ def upload_image():
       with lock:
         gradient_ascent.run(filepath, dirpath)
 
-      image = Image.open(os.path.join(dirpath, '9.jpg'))
-      imr = image.resize((13, 13))
-      image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
-
+      #image = Image.open(os.path.join(dirpath, '9.jpg'))
+      #imr = image.resize((13, 13))
+      #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+      copyfile(os.path.join(dirpath, '9.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))     
 
       return jsonify({
         'r': 's',
