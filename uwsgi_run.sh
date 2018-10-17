@@ -1,1 +1,1 @@
-sudo uwsgi --http :80 --wsgi-file main.py --callable app --processes 8 --threads 16 --daemonize uwsgi.log --virtualenv $VIRTUAL_ENV
+sudo uwsgi --http :80 --wsgi-file main.py --callable app --daemonize uwsgi.log --virtualenv $VIRTUAL_ENV --gevent 1000 --http-websockets --master 
