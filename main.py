@@ -17,7 +17,7 @@ lock = Lock()
 USER_IMAGE_FOLDER = os.path.join('static', 'images', 'userimage')
 app.config['USER_IMAGE_FOLDER'] = USER_IMAGE_FOLDER
 
-database_information = ['127.0.0.1', '27017']v 
+database_information = ['127.0.0.1', '27017'] 
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
