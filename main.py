@@ -108,7 +108,7 @@ def upload_image():
       with lock:
         gradient_ascent.run(filepath, dirpath)
 
-      image = Image.open(os.path.join(dirpath, '0.jpg'))
+      image = Image.open(os.path.join(dirpath, '9.jpeg'))
       imr = image.resize((13, 13))
       imr.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
 
