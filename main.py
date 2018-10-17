@@ -107,7 +107,7 @@ def upload_image():
 
       image = Image.open(os.path.join(dirpath, '9.jpg'))
       imr = image.resize((13, 13))
-      imr.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+      image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
 
 
       return jsonify({

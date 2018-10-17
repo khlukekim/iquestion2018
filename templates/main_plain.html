@@ -56,7 +56,7 @@
       var magnifier = document.getElementById('stage4-magnifier');
       magnifier.style.display = 'block';
       var im = document.getElementById('stage4-image-' + i);
-      magnifier.src = '{{option.image100}}' + zeropadding(im.imageid) + '.jpg';
+      magnifier.src = im.src;
       if (i < 300) { 
         magnifier.style.left = (Math.floor(i / 10)+1) * 16 + 'px';
       } else {
