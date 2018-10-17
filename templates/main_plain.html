@@ -21,7 +21,7 @@
         oxCount +=1 ;
         if (oxCount < 4) {
           var newImageId = zeropadding(Math.floor(Math.random() * 1000) + 1) + '.jpg';
-          document.getElementById('stage2-image').src = {{option.imageoriginal}} + newImageId;
+          document.getElementById('stage2-image').src = '{{option.imageoriginal}}' + newImageId;
           stage(200);
         } else {
           stage(300);
