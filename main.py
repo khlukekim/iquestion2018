@@ -4,10 +4,15 @@ from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 import datetime, os, time, random
 from flask_socketio import SocketIO, join_room, leave_room
+import gradient_ascent
+from threading import Lock
+from PIL import Image
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
 socketio = SocketIO(app)
+lock = Lock()
 
 USER_IMAGE_FOLDER = os.path.join('static', 'images', 'userimage')
 app.config['USER_IMAGE_FOLDER'] = USER_IMAGE_FOLDER
@@ -19,13 +24,14 @@ with open('database') as f:
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
+app.config['using-model1'] = False
 
 def get_option(d={}):
   o = {
     'sketchjs':url_for('static', filename='sketch.js'),
     'stylecss': url_for('static', filename='style.css'),
     'imageoriginal': url_for('static', filename='images/size_original/'),
-    'image13': url_for('static', filename='images/'),
+    'image13': url_for('static', filename='images/size_13'),
     'image100': url_for('static', filename='images/'),
     'image56': url_for('static', filename='images/size_56/'),
     'jquery': url_for('static', filename='jquery-3.3.1.min.js'),
@@ -37,12 +43,24 @@ def get_option(d={}):
   return o
 
 @app.route('/')
-def root():
+def root(): 
   return render_template('park.html')
 
 @app.route('/test')
 def test():
-  return render_template('main_plain.html', option=get_option())
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.userImages
+    last_images = list(coll.find(sort=[('created_at', -1)], limit=599))
+    image_ids = [str(x['_id']) for x in last_images]
+    image_scores = [x['score'] if 'score' in x else 0 for x in last_images]
+    if len(image_ids) < 599:
+      image_ids = ['%04d'%x for x in range(1000-(599-len(image_ids)+1), 1001)] + image_ids
+      image_scores = [0 for x in range(1000 - (599-len(image_ids)+1), 1001)] + image_scores
+
+  return render_template('main_plain.html', option=get_option({
+    'image_ids': image_ids,
+    'image_scores': image_scores
+    }))
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
@@ -81,8 +99,19 @@ def upload_image():
       }
       db_result = coll.insert_one(data)
 
-      filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
-      file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
+      filename = str(db_result.inserted_id)
+      fileext = file.filename.split('.')[-1]
+      filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
+      dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
+      file.save(filepath)
+
+      with lock:
+        gradient_ascent.run(filepath, dirpath)
+
+      image = Image.open(os.path.join(dirpath, '0.jpg'))
+      imr = image.resize((13, 13))
+      imr.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+
 
       return jsonify({
         'r': 's'

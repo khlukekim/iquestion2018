@@ -20,3 +20,4 @@ pymongo/
 pyvenv.cfg
 share/
 static/printtest2.jpg
+400weights_light.h5

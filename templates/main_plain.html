@@ -5,6 +5,8 @@
   <title>I Question</title>
   <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
   <script type="text/javascript">
+    var image_ids = {{option.image_ids | safe}};
+    var image_scores = {{option.image_scores}};
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
       buttonToStage('stage2-next', 210);
@@ -66,10 +68,10 @@
     }
 
     function startDownloadingImages() {
-      for (var i = 0; i< 600; i++) {
+      for (var i = 0; i< 599; i++) {
         var im = document.getElementById('stage4-image-'+i);
         im.imageid = Math.floor( 1000 * Math.random()) + 1;
-        document.getElementById('stage4-image-'+i).src = '{{option.image13}}' + zeropadding(im.imageid) + '.jpg';
+        document.getElementById('stage4-image-'+i).src = '{{option.imageoriginal}}' + image_ids[i]  + '.jpg';
       }
     }
 
@@ -79,6 +81,7 @@
       XHR.addEventListener("load", function(event) {
         if (JSON.parse(event.target.responseText).r == 's') {
           stage(310);
+          console.log('image uploaded');
           setTimeout(function() {document.getElementById('stage3-sendbutton').hidden = false;}, 3000);
         } else {
           alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
@@ -220,7 +223,7 @@
       reader.onload = (function() {
         return function(e) {
           document.getElementById('stage3-image').src = e.target.result;
-          stage(310);
+          //stage(310);
         };
       })();
       reader.readAsDataURL(selectedFile);
