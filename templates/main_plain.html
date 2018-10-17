@@ -9,12 +9,24 @@
     var image_scores = {{option.image_scores}};
 
     var user_image = '';
+    var oxCount = 0;
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
       buttonToStage('stage2-next', 210);
       buttonToStage('stage2-answer-yes', 220);
       buttonToStage('stage2-answer-no', 221);
-      buttonToStage('stage220-next', 300);
+      //buttonToStage('stage220-next', 300);
+
+      document.getElementById('stage220-next').addEventListener('click', function() {
+        oxCount +=1 ;
+        if (oxCount < 4) {
+          var newImageId = zeropadding(Math.floor(Math.random() * 1000) + 1) + '.jpg';
+          document.getElementById('stage2-image').src = {{option.imageoriginal}} + newImageId;
+          stage(200);
+        } else {
+          stage(300);
+        }
+      });
 
       document.getElementById('stage3-sendbutton').addEventListener('click', function() {
         uploadImage();
@@ -188,7 +200,7 @@
       if (stageId == 100) {
         fadeinDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
       } else if (stageId == 200) {
-        fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo'], 0);
+        fadeoutDiv(['stage1-title', 'stage1-subtitle', 'stage1-image', 'stage1-startbutton', 'stage1-about', 'stage1-personalinfo', 'stage220-message', 'stage220-next'], 0);
         hideDiv('stage1', 3000);
         showDiv('stage2', 0);
         fadeinDiv(['stage2-image', 'stage2-image-progressbar', 'stage2-image-div', 'stage2-next'], 3000);
