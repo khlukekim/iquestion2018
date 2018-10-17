@@ -7,6 +7,8 @@
   <script type="text/javascript">
     var image_ids = {{option.image_ids | safe}};
     var image_scores = {{option.image_scores}};
+
+    var user_image = '';
     window.onload = function() {
       buttonToStage('stage1-startbutton', 200);
       buttonToStage('stage2-next', 210);
@@ -80,9 +82,10 @@
       var FD = new FormData(document.getElementById('imageForm'));
       XHR.addEventListener("load", function(event) {
         if (JSON.parse(event.target.responseText).r == 's') {
-          stage(310);
           console.log('image uploaded');
-          setTimeout(function() {document.getElementById('stage3-sendbutton').hidden = false;}, 3000);
+          user_image = JSON.parse(event.target.responseText).i;
+          document.getElementById('stage4-image-599').src = '{{option.imageoriginal}}' + user_image + '.jpg';
+          setTimeout(function() {document.getElementById('stage3-sendbutton').hidden = false; stage(400);}, 0);
         } else {
           alert('이미지 전송에 실패했습니다. 다시 시도해 주세요.');
           document.getElementById('stage3-sendbutton').hidden = false;
@@ -94,6 +97,7 @@
       });
       XHR.open("POST", "/image")
       XHR.send(FD);
+      stage(310);
     }
 
     function zeropadding(n) {
@@ -204,7 +208,6 @@
       } else if (stageId == 310) {
         fadeoutDiv(['stage3-message', 'stage3-sendbutton'], 0);
         fadeinDiv(['stage310-message'], 0);
-        setTimeout(function(){stage(400);}, 5000);
       } else if (stageId == 400) {
         fadeoutDiv(['stage3-wrapper'], 0);
         hideDiv('stage3', 3000);

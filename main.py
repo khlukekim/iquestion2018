@@ -17,10 +17,7 @@ lock = Lock()
 USER_IMAGE_FOLDER = os.path.join('static', 'images', 'userimage')
 app.config['USER_IMAGE_FOLDER'] = USER_IMAGE_FOLDER
 
-database_information = ['127.0.0.1', '27017']
-with open('database') as f:
-  database_information = [x.strip() for x in f.readlines()]
-
+database_information = ['127.0.0.1', '27017']v 
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
@@ -114,7 +111,8 @@ def upload_image():
 
 
       return jsonify({
-        'r': 's'
+        'r': 's',
+        'i': filename
         })
 
 @app.route('/pf-reset')

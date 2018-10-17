@@ -208,7 +208,7 @@ def train(args):
       img = deprocess_image(img)
 
 
-    save_name = '%s/%d.jpeg' % (dst_folder,i)
+    save_name = '%s/%d.jpg' % (dst_folder,i)
 
     if not os.path.exists(dst_folder):
       os.makedirs(dst_folder)
