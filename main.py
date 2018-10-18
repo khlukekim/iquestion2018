@@ -8,6 +8,7 @@ import gradient_ascent
 from threading import Lock
 from PIL import Image
 from shutil import copyfile
+import test_model
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
@@ -116,7 +117,7 @@ def upload_image():
         })
 
 @app.route('/pf-reset')
-def pf_resuet():
+def pf_reset():
   app.config['pf-images'] = [];
 
 @app.route('/perf/<int:width>/<int:height>')
@@ -133,6 +134,11 @@ def perform(width, height):
 @app.route('/control')
 def control():
   return render_template('control.html', option=get_option())
+
+@app.route('/pf-get-tags/<file>')
+def pfGetTags(file):
+  tags = test_model.main(os.path.join(USER_IMAGE_FOLDER,file))
+  return jsonify({'r':'s','t':tags})
 
 @app.route('/pf-update/<sessionHash>')
 def pfUpdate(sessionHash):
