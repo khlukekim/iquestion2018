@@ -57,6 +57,15 @@
       }
     })
   }
+
+  function reset() {
+    $.ajax({
+      url: '/pf-reset',
+      success: function(data){
+
+      }
+    });
+  }
   </script>
 
   <input id='inputText' type="text">
@@ -70,18 +79,19 @@
   <button onclick="send('stage:5')"> Stage 5 (words) </button><br>
   <textarea id='wordsText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURI(document.getElementById('wordsText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지 변경 </button> <br>
+  <button onclick="send('words:' + encodeURI(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <button onclick="updateImages()">사용자가 올린 이미지 가져오기</button><br>
   <div id='imagesDiv'></div><br>
-  <button onclick="send('images:'+userImages.join(','))">사용자 올린 이미지 반영</button><br>
+  <button onclick="send('images:'+userImages.join(','))">사용자 올린 이미지를 퍼포먼스 페이지에 반영</button><br>
+  <button onclick="reset()">이미지 리셋</button>
   <h3>Image Tagging</h3><br>
   <input id='tagNumber' type="number" value="0" step="1">
-  <button onclick="getTags()"> Get tags </button><br>
+  <button onclick="getTags()"> 태그 가져오기 </button><br>
   <textarea id='tagsText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지 변경 </button> <br>
+  <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <textarea id='captionText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지 변경 </button> <br>
+  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
 </body>
 </html>

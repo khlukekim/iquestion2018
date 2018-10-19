@@ -119,6 +119,9 @@ def upload_image():
 @app.route('/pf-reset')
 def pf_reset():
   app.config['pf-images'] = [];
+  return jsonify({
+    'r': 's'
+    })
 
 @app.route('/perf/<int:width>/<int:height>')
 def perform(width, height):
