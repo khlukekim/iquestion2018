@@ -29,6 +29,7 @@
       success: function(data) {
         if (data.r == 's') {
           $('#tagsText').val(data.t.join(' '));
+          $('#captionText').val(data.c);
         }
       }
     });
@@ -79,5 +80,8 @@
   <textarea id='tagsText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지 변경 </button> <br>
+  <textarea id='captionText' type='text' ></textarea>
+  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value))"> Stage5에 적용 </button>
+  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지 변경 </button> <br>
 </body>
 </html>

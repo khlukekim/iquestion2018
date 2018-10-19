@@ -138,8 +138,8 @@ def control():
 @app.route('/pf-get-tags/<file>')
 def pfGetTags(file):
   with lock:
-    tags = test_model.main(os.path.join(USER_IMAGE_FOLDER,file))
-  return jsonify({'r':'s','t':tags})
+    tags, caption = test_model.run(os.path.join(USER_IMAGE_FOLDER,file))
+  return jsonify({'r':'s','t':tags, 'c':caption})
 
 @app.route('/pf-update/<sessionHash>')
 def pfUpdate(sessionHash):

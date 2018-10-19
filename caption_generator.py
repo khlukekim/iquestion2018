@@ -21,16 +21,16 @@ class CaptionGenerator():
         self.word_index = None
         self.total_samples = None
         #self.encoded_images = pickle.load( open( "encoded_images.p", "rb" ),encoding='iso-8859-1' )
-        self.encoded_images = {}#pickle.load( open( "encoded_images.p", "rb" ) )
+        #self.encoded_images = pickle.load( open( "encoded_images.p", "rb" ) )
         self.variable_initializer()
 
     def variable_initializer(self):
-        df = pd.read_csv('Flickr8k_text/flickr_8k_train_dataset.txt', delimiter='\t')
+        df = pd.read_csv('./flickr_8k_train_dataset.txt', delimiter='\t')
         nb_samples = df.shape[0]
         iter = df.iterrows()
         caps = []
         for i in range(nb_samples):
-            x = iter.next()
+            x = next(iter)
             caps.append(x[1][1])
 
         self.total_samples=0
@@ -67,7 +67,7 @@ class CaptionGenerator():
         images = []
         print("Generating data...")
         gen_count = 0
-        df = pd.read_csv('Flickr8k_text/flickr_8k_train_dataset.txt', delimiter='\t')
+        df = pd.read_csv('./flickr_8k_train_dataset.txt', delimiter='\t')
         nb_samples = df.shape[0]
         iter = df.iterrows()
         caps = []
