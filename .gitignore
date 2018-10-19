@@ -22,3 +22,5 @@ share/
 static/printtest2.jpg
 400weights_light.h5
 weights50-improvement-02.hdf5
+nohup.out
+include/

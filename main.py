@@ -236,12 +236,22 @@ def handle_message(message):
 
 @socketio.on('perform join')
 def handle_perform_join(sessionHash):
+  print(sessionHash)
   room = 'perform'
   join_room(room)
 
 @socketio.on('control message')
 def handle_control_message(message):
+  print(message)
   socketio.emit('control message', message, room='perform')
+
+@socketio.on('connect')
+def onsockcon():
+  print('socket connected')
+
+@socketio.on_error()
+def socketerror(e):
+  print(e)
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
@@ -265,4 +275,4 @@ class MongoDBConnection(object):
     self.connection.close()
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0', port=80)
