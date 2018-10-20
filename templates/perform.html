@@ -45,7 +45,7 @@
         } else if (message[0] == 'images') {
           images = message[1].split(',');
           for(var i = 0; i<Math.min(images.length, 10);  i++) {
-            document.getElementById('perf-image-'+i).src = '{{option.imageoriginal}}' + images[i];
+            document.getElementById('perf-image-inner-'+i).src = '{{option.imageoriginal}}' + images[i];
           }
         } else if (message[0] == 'fontsize') {
           document.getElementById('stage5').style.fontSize = message[1] + 'px';
@@ -55,6 +55,26 @@
           } else if (message[1] == 'close') {
             exWindow.close();
           }
+        } else if (message[0] == 'scores') {
+          scores = message[1].split(',');
+          positions = [];
+          for (var i = 0; i< 10; i++) {
+            positions.push(i+1);
+          }
+          positions.sort(function(a,b){return scores[a]>scores[b];});
+          for (var i = 0; i<10; i++) {
+            document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
+          }
+        } else if (message[0] == 'rank') {
+          if (message[1] == 'show') {
+            for (var i = 0; i<10; i++) {
+              document.getElementById('perf-image-rank-'+i).style.display = 'block';
+            }
+          } else if (message[1] == 'hide') {
+            for (var i = 0; i<10; i++) {
+              document.getElementById('perf-image-rank-'+i).style.display = 'none';
+            }
+          }
         }
       } catch (e) {
         console.log(e);
@@ -63,13 +83,13 @@
 
     window.onload = function () {
       window.requestAnimationFrame(slideImage);
-      //getUpdated();
       stage(0);
       initImageViews();
     };
 
     var updating = false;
     var images = [];
+    var scores = [];
 
     function getUpdated() {
       console.log(Date.now());
@@ -111,6 +131,8 @@
           }
         } else if (message[0] == 'fontsize') {
           document.getElementById('stage5').style.fontSize = message[1] + 'px';
+        } else if (message[0] == 'scores') {
+          scores = message[1].split(',');
         }
       } catch (e) {
         console.log(e);
@@ -146,6 +168,8 @@ var N_STAGE = stageNames.length;
       e.width = e.width * option.height / e.height;
       imageWidthList[number] = e.width;
       imageHeightList[number] = option.height;
+      document.getElementById('perf-image-'+number).style.width = e.width + 'px';
+      document.getElementById('perf-image-'+number).style.height= e.height + 'px';
 
       slideWidth = imageWidthList.reduce(function(a, b){return a+b+6}, 0);
       document.getElementById('stage1').style.width = slideWidth + 'px';
@@ -229,7 +253,10 @@ var N_STAGE = stageNames.length;
     <div id='stage0' style='display: none;'></div>
     <div id='stage1' class='perf-image-wrapper' style='display:none; height:{{option.height}}px; width: 10000px'>
       {% for i in range(10) %}
-      <img id='perf-image-{{i}}' class='perf-image' src="{{option.imageoriginal}}{{'%04d' % (range(1, 1001) | random) }}.jpg" onload='imageloaded(event.target, {{i}})'>
+      <div id='perf-image-{{i}}' class='perf-image' style="display:inline-block; position:relative;">
+        <img id='perf-image-inner-{{i}}' style="max-width:100%;max-height:100%"; src="{{option.imageoriginal}}{{'%04d' % (range(1, 1001) | random) }}.jpg" onload='imageloaded(event.target, {{i}})'>
+        <div id='perf-image-rank-{{i}}' style="width:100%; height:{{option.height/2}}px; line-height: 1; position: absolute; top:0; padding-top:{{option.height/4}}px; padding-bottom:{{option.height/4}}px; text-align: center; font-size:{{option.height/2}}px; color: white; background-color:rgba(0,0,0,0.5); display:none;">0</div>
+      </div>
       {% endfor %}
     </div>
     <div id='stage2' style='display:none;  width: {{option.width}}px; height: {{option.height}}px; vertical-align: center;'>

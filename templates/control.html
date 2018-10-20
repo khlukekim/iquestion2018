@@ -13,6 +13,7 @@
   })
 
   var userImages = [];
+  var userScores = [];
   function send(val) {
     socket.emit('control message', val);
     /*$.ajax({
@@ -45,6 +46,7 @@
             d.removeChild(d.children[0]);
           }
           userImages = [];
+          userScores = [];
           for (var i = 0; i < data.f.length; i++) {
             var htmlImage = new Image();
             htmlImage.style.maxWidth = '100px';
@@ -52,6 +54,7 @@
             htmlImage.src = '{{option.imageoriginal}}' + data.f[i];
             d.appendChild(htmlImage);
             userImages.push(data.f[i]);
+            userScores.push(data.s[i]);
           }
         }
       }
@@ -92,7 +95,9 @@
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <button onclick="updateImages()">사용자가 올린 이미지 가져오기</button><br>
   <div id='imagesDiv'></div><br>
-  <button onclick="send('images:'+userImages.join(','))">사용자 올린 이미지를 퍼포먼스 페이지에 반영</button><br>
+  <button onclick="send('images:'+userImages.join(',')); send('scores:'+userScores.join(','));">사용자 올린 이미지를 퍼포먼스 페이지에 반영</button><br>
+  <button onclick="send('rank:show');">랭킹 보이기</button>
+  <button onclick="send('rank:hide');">랭킹 숨기기</button>
   <button onclick="reset()">이미지 리셋</button>
   <h3>Image Tagging</h3><br>
   <input id='tagNumber' type="number" value="0" step="1">
@@ -105,7 +110,7 @@
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <textarea id='w2winput' type='text' ></textarea>
   <button onclick="w2w()"> 비슷한 단어 찾기</button>
-  <textarea id='w2woutput' type='text' ></textarea><br>
+  <textarea id='w2woutput' type='text' ></textarea>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <button onclick="send('ex:open');"> 새 창에서 전시 페이지 열기 </button><br>

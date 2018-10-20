@@ -22,7 +22,7 @@ database_information = ['127.0.0.1', '27017']
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
-app.config['using-model1'] = False
+app.config['pf-scores'] = []
 
 app.config['last-opened-ex-page'] = ''
 
@@ -121,6 +121,7 @@ def upload_image():
 @app.route('/pf-reset')
 def pf_reset():
   app.config['pf-images'] = [];
+  app.config['pf-scores'] = []; 
   return jsonify({
     'r': 's'
     })
@@ -226,7 +227,7 @@ def process_image(filename, fileext):
   dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
 
   with lock:
-    gradient_ascent.run(filepath, dirpath)
+    score, feature = gradient_ascent.run(filepath, dirpath)
 
   #image = Image.open(os.path.join(dirpath, '9.jpg'))
   #imr = image.resize((13, 13))
@@ -234,6 +235,8 @@ def process_image(filename, fileext):
   target = os.path.join('static', 'images', 'size_original', filename+'.jpg')
   copyfile(os.path.join(dirpath, '1.jpg'), target)  
   app.config['pf-images'].append(filename + '.jpg')   
+  print(score[0])
+  app.config['pf-scores'].append(int(10000 * score[0]))
   print('processing_done: '+filename)
 
 @app.route('/pf-w2w/<word>')
@@ -249,7 +252,8 @@ def pf_w2w(word):
 def pf_update_image():
   return jsonify({
       'r': 's',
-      'f': app.config['pf-images']
+      'f': app.config['pf-images'],
+      's': app.config['pf-scores']
       })
 
 @app.route('/check-print-status')
