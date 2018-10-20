@@ -133,7 +133,7 @@ def perform(width, height):
     'width': width,
     'height': height,
     'fontsize': 64,
-    'cellsize': 60
+    'cellsize': 56
     }))
 
 @app.route('/control')
