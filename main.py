@@ -24,6 +24,8 @@ app.config['pf-hash'] = 0
 app.config['pf-images'] = []
 app.config['using-model1'] = False
 
+app.config['last-opened-ex-page'] = ''
+
 def get_option(d={}):
   o = {
     'sketchjs':url_for('static', filename='sketch.js'),
