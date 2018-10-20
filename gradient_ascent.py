@@ -235,7 +235,7 @@ def run(inputFile, outputFolder):
     'roll': 'off',
     'shift': 'off',
     'iter': 2,
-    'step': 1.2,
+    'step': 10.0,
     'height': 400,
     'width': 400,
     'weights': '400weights_light.h5',

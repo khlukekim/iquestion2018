@@ -43,7 +43,7 @@
         } else if (message[0] == 'images') {
           images = message[1].split(',');
           for(var i = 0; i<Math.min(images.length, 10);  i++) {
-            document.getElementById('perf-image-'+i).src = '{{option.userimage}}' + images[i];
+            document.getElementById('perf-image-'+i).src = '{{option.imageoriginal}}' + images[i];
           }
         } else if (message[0] == 'fontsize') {
           document.getElementById('stage5').style.fontSize = message[1] + 'px';
@@ -135,9 +135,11 @@ var N_STAGE = stageNames.length;
     var slideWidth = 10000;
 
     function imageloaded(e, number) {
+      e.width = e.width * option.height / e.height;
       imageWidthList[number] = e.width;
-      imageHeightList[number] = e.height;
-      slideWidth = imageWidthList.reduce(function(a, b){return a+b}, 0);
+      imageHeightList[number] = option.height;
+
+      slideWidth = imageWidthList.reduce(function(a, b){return a+b+6}, 0);
       document.getElementById('stage1').style.width = slideWidth + 'px';
       document.getElementById('perf2-image-'+number).src = e.src;
       var left = 0;

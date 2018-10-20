@@ -2,7 +2,7 @@
 from flask import Flask, render_template, url_for, request, jsonify, Response
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
-import datetime, os, time, random
+import datetime, os, time, random, threading
 from flask_socketio import SocketIO, join_room, leave_room
 import gradient_ascent
 from threading import Lock
@@ -211,11 +211,29 @@ def pf_upload_image():
 
       filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
       file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
-      app.config['pf-images'].append(filename)
+      t = threading.Thread(target=process_image, args=(str(db_result.inserted_id),file.filename.split('.')[-1]))
+      t.start()
 
       return jsonify({
         'r': 's'
         })
+
+
+def process_image(filename, fileext):
+  filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
+  dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
+
+  with lock:
+    gradient_ascent.run(filepath, dirpath)
+
+  #image = Image.open(os.path.join(dirpath, '9.jpg'))
+  #imr = image.resize((13, 13))
+  #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+  target = os.path.join('static', 'images', 'size_original', filename+'.jpg')
+  copyfile(os.path.join(dirpath, '1.jpg'), target)  
+  app.config['pf-images'].append(filename + '.jpg')   
+  print('processing_done: '+filename)
+
 
 @app.route('/pf-update-image')
 def pf_update_image():
