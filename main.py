@@ -8,7 +8,7 @@ import gradient_ascent
 from threading import Lock
 from PIL import Image
 from shutil import copyfile
-import test_model
+import test_model, word2word
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
@@ -234,6 +234,14 @@ def process_image(filename, fileext):
   app.config['pf-images'].append(filename + '.jpg')   
   print('processing_done: '+filename)
 
+@app.route('/pf-w2w/<word>')
+def pf_w2w(word):
+  words = word2word.main(word)
+  print(word, words)
+  return jsonify({
+    'r': 's',
+    'w': words
+    })
 
 @app.route('/pf-update-image')
 def pf_update_image():

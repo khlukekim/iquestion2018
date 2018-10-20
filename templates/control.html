@@ -58,11 +58,21 @@
     })
   }
 
+  function w2w() {
+    $.ajax({
+      url: '/pf-w2w/'+encodeURIComponent($('#w2winput').val()),
+      success: function(data) {
+        if (data.r == 's') {
+          $('#w2woutput').val(data.w);
+        }
+      }
+    });
+  }
+
   function reset() {
     $.ajax({
       url: '/pf-reset',
       success: function(data){
-
       }
     });
   }
@@ -78,8 +88,8 @@
   <button onclick="send('stage:4')"> Stage 4 (spectrum) </button><br>
   <button onclick="send('stage:5')"> Stage 5 (words) </button><br>
   <textarea id='wordsText' type='text' ></textarea>
-  <button onclick="send('words:' + encodeURI(document.getElementById('wordsText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('wordsText').value))"> Stage5에 적용 </button>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <button onclick="updateImages()">사용자가 올린 이미지 가져오기</button><br>
   <div id='imagesDiv'></div><br>
   <button onclick="send('images:'+userImages.join(','))">사용자 올린 이미지를 퍼포먼스 페이지에 반영</button><br>
@@ -88,10 +98,15 @@
   <input id='tagNumber' type="number" value="0" step="1">
   <button onclick="getTags()"> 태그 가져오기 </button><br>
   <textarea id='tagsText' type='text' ></textarea>
-  <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('tagsText').value))"> Stage5에 적용 </button>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <textarea id='captionText' type='text' ></textarea>
-  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value))"> Stage5에 적용 </button>
-  <button onclick="send('words:' + encodeURI(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('captionText').value))"> Stage5에 적용 </button>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
+  <textarea id='w2winput' type='text' ></textarea>
+  <button onclick="w2w()"> 비슷한 단어 찾기</button>
+  <textarea id='w2woutput' type='text' ></textarea><br>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value))"> Stage5에 적용 </button>
+  <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
 </body>
 </html>
