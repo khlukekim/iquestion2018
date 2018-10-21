@@ -20,5 +20,5 @@ def main(query):
 		return searched
 	except Exception:
 		print('해당 단어를 이해할 수 없습니다.')
-		return [unicode('해당 단어를 이해할 수 없습니다.')]
+		return ''
 
