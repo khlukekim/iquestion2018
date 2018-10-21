@@ -1,29 +1,41 @@
 import win32print
 import win32ui
-from PIL import Image, ImageWin
-import requests
+from PIL import Image, ImageWin, ImageFile
+import requests, time
 
 last_file_name = ''
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 def main():
+  global last_file_name
   while True:
-    url = 'http://www.ai-question.com/check_print_status'
-    response = requests.get(url=url)
-    if (last_file_name == '') :
-      last_file_name = response.text
-    elif (last_file_name != response.text) :
-      last_file_name = response.text
-      with open('last_file_name', 'wb') as handle:
-        response = requests.get('http://www.ai-question.com/static/print_image/' + last_file_name, stream=True)
+    try:
+      url = 'http://localhost/check-print-status'
+      response = requests.get(url=url)
+      if (last_file_name == '') :
+        last_file_name = response.text
+      if (last_file_name == 'na'):
+        pass
+      elif (last_file_name != response.text) :
+        last_file_name = response.text
+        print('file changed')
+        with open('printimage.jpg', 'wb') as handle:
+          response = requests.get('http://localhost/static/print_image/' + last_file_name, stream=True)
 
-        if not response.ok:
-            print response
+          if not response.ok:
+              print(response)
 
-        for block in response.iter_content(1024):
-            if not block:
-                break
+          else:
+            for block in response.iter_content(1024):
+                if not block:
+                    break
 
-            handle.write(block)
-      print_new_image(last_file_name)
+                handle.write(block)
+            print_new_image('printimage.jpg')
+      print(response.text)
+    except Exception as e:
+      print(e)
+    
+    time.sleep(5);
 
 
 
@@ -52,7 +64,11 @@ def print_new_image(file_name):
   PHYSICALOFFSETX = 112
   PHYSICALOFFSETY = 113
 
+  print('printing...')
+
   printer_name = win32print.GetDefaultPrinter ()
+
+  print('printer name: ' + printer_name)
 
   #
   # You can only write a Device-independent bitmap
@@ -76,11 +92,12 @@ def print_new_image(file_name):
   #  the page without distorting.
   #
   bmp = Image.open (file_name)
-  if bmp.size[0] > bmp.size[1]:
-    bmp = bmp.rotate (90)
+  #if bmp.size[0] > bmp.size[1]:
+  #  bmp = bmp.rotate (90)
 
   ratios = [1.0 * printable_area[0] / bmp.size[0], 1.0 * printable_area[1] / bmp.size[1]]
-  scale = min (ratios)
+  scale = ratios[0]#min (ratios)
+  print(printable_area, printer_size, printer_margins, bmp.size, ratios)
 
   #
   # Start the print job, and draw the bitmap to
@@ -91,12 +108,16 @@ def print_new_image(file_name):
 
   dib = ImageWin.Dib (bmp)
   scaled_width, scaled_height = [int (scale * i) for i in bmp.size]
-  x1 = int ((printer_size[0] - scaled_width) / 2)
-  y1 = int ((printer_size[1] - scaled_height) / 2)
+  x1 = 0#int ((printer_size[0] - scaled_width) / 2)
+  y1 = 0#int ((printer_size[1] - scaled_height) / 2)
   x2 = x1 + scaled_width
   y2 = y1 + scaled_height
+  print(x1, y1, x2, y2)
   dib.draw (hDC.GetHandleOutput (), (x1, y1, x2, y2))
 
   hDC.EndPage ()
   hDC.EndDoc ()
   hDC.DeleteDC ()
+
+if __name__ == '__main__':
+  main()

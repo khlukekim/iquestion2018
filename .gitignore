@@ -25,3 +25,5 @@ weights50-improvement-02.hdf5
 nohup.out
 include/
 ko.bin
+printimage.*
+static/print_image/

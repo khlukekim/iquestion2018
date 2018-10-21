@@ -9,6 +9,7 @@ from threading import Lock
 from PIL import Image
 from shutil import copyfile
 import test_model, word2word
+import make_print_image
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
@@ -23,6 +24,7 @@ app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
 app.config['pf-scores'] = []
+app.config['print-image'] = 'na'
 
 app.config['last-opened-ex-page'] = ''
 
@@ -258,7 +260,12 @@ def pf_update_image():
 
 @app.route('/check-print-status')
 def check_print_status():
-  return Response('na', mimetype='text/plain')
+  return Response(app.config['print-image'], mimetype='text/plain')
+
+@app.route('/make-printable-image')
+def make_printable_image():
+  app.config['print-image'] = make_print_image.main()
+  return jsonify({'r':'s'})
 
 @app.route('/sockettest')
 def sockettest():
