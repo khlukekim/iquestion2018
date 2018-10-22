@@ -81,6 +81,10 @@
           document.getElementById('stage5').innerHTML = decodeURIComponent(message[1]).replace('/\n/g', '<br>');
         } else if (message[0] == 'images') {
           images = message[1].split(',');
+          var d = document.getElementById('stage1');
+          while(d.children.length > images.length) {
+            d.removeChild(d.children[d.children.length - 1]);
+          }
           for(var i = 0; i<images.length;  i++) {
             var div = get_image_div(i);
             document.getElementById('perf-image-inner-'+i).src = '{{option.imageoriginal}}' + images[i];
@@ -101,6 +105,7 @@
           }
           positions.sort(function(a,b){return scores[a]>scores[b];});
           for (var i = 0; i<10; i++) {
+            var div = get_image_div(i);
             document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
           }
         } else if (message[0] == 'rank') {
