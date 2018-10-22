@@ -245,12 +245,13 @@
 
 
 var stageNames = ['stage0', 'stage1', 'stage2', 'stage3', 'stage4', 'stage5'];
+var stageVisiblity = ['block', 'block', 'block', 'block', 'block', 'table-cell'];
 
 var N_STAGE = stageNames.length;
 
     function stage(stageID) {
       for(var i = 0; i < N_STAGE; i++) {
-        document.getElementById(stageNames[i]).style.display = (i==stageID)?'block':'none';
+        document.getElementById(stageNames[i]).style.display = (i==stageID)?stageVisiblity[i]:'none';
       }
     }
 
@@ -363,7 +364,7 @@ var N_STAGE = stageNames.length;
     <div id='image_container' class='exhibit-container'>
     </div>
     </div>
-    <div id='stage5' style='display: none; width: {{option.width}}px; height: {{(option.height-option.fontsize)/2+option.fontsize}}px; color: white; font-size: {{option.fontsize}}px; padding-top: {{(option.height-option.fontsize)/2}}px; line-height: 1; text-align: center;'>
+    <div id='stage5' style='display: none; vertical-align: middle; width: {{option.width}}px; height: {{option.height}}px; color: white; font-size: {{option.fontsize}}px; line-height: 1; text-align: center;'>
       <p>
       TEST WORD LIST 단어 하나 둘 셋
       </p>
