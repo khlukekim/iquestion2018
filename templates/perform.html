@@ -81,6 +81,7 @@
         } else if (message[0] == 'images') {
           images = message[1].split(',');
           for(var i = 0; i<images.length;  i++) {
+            var div = get_image_div(i);
             document.getElementById('perf-image-inner-'+i).src = '{{option.imageoriginal}}' + images[i];
           }
         } else if (message[0] == 'fontsize') {
@@ -176,7 +177,6 @@
     }
 
     function stage3(i) {
-      var div = get_image_div(i);
       var im = document.getElementById('perf3-image');
       im.src = document.getElementById('perf-image-inner-' + i).src;
       im.style.marginLeft = (option.width - imageWidthList[i] * option.height / imageHeightList[i] - 0) / 2 + 'px';
