@@ -210,7 +210,7 @@ var N_STAGE = stageNames.length;
     var slideWidth = 0;
 
     function imageloaded(e, number) {
-      e.width = e.width * option.height / e.height;
+      e.width = option.height;
       imageWidthList[number] = e.width;
       imageHeightList[number] = option.height;
       document.getElementById('perf-image-'+number).style.width = e.width + 'px';
