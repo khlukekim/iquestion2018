@@ -143,11 +143,13 @@
               document.getElementById('perf-image-rank-'+i).style.display = 'block';
               document.getElementById('perf2-image-rank-'+i).style.display = 'block';
             }
+            document.getElementById('perf3-rank').style.display = 'block';
           } else if (message[1] == 'hide') {
             for (var i = 0; i<10; i++) {
               document.getElementById('perf-image-rank-'+i).style.display = 'none';
               document.getElementById('perf2-image-rank-'+i).style.display = 'none';
             }
+            document.getElementById('perf3-rank').style.display = 'none';
           }
         }
       } catch (e) {
@@ -218,7 +220,8 @@
       var im = document.getElementById('perf3-image');
       im.src = document.getElementById('perf-image-inner-' + i).src;
       im.style.marginLeft = (option.width - imageWidthList[i] * option.height / imageHeightList[i] - 0) / 2 + 'px';
-      document.getElementById('perf3-rank').innerHTML = positions[i];
+      var d = document.getElementById('perf3-rank').innerHTML = positions[i];
+      d.style.marginLeft = im.style.marginLeft;
     }
 
 
