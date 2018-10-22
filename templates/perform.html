@@ -276,7 +276,7 @@ var N_STAGE = stageNames.length;
         im.style.left = left + 'px';
         var w = imageWidthList[i] * Math.min(1, option.width / slideWidth);
         left += w;
-        im.style.width = w + 'px';
+        im.style.width = w-1 + 'px';
         var h = imageHeightList[i] / imageWidthList[i] * w;
         im.style.top = (option.height - h) / 2 + 'px';
       }
