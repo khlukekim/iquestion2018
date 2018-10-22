@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, url_for, request, jsonify, Response
+from flask import Flask, render_template, url_for, request, jsonify, Response, Session
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 import datetime, os, time, random, threading
@@ -15,11 +15,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
 socketio = SocketIO(app)
 lock = Lock()
+app.config['tf-in-use'] = False
 
 USER_IMAGE_FOLDER = os.path.join('static', 'images', 'userimage')
 app.config['USER_IMAGE_FOLDER'] = USER_IMAGE_FOLDER
 
-database_information = ['127.0.0.1', '27017'] 
+database_information = ['127.0.0.1', '27017']
 app.config['pf-control-updated'] = []
 app.config['pf-hash'] = 0
 app.config['pf-images'] = []
@@ -31,7 +32,7 @@ app.config['last-opened-ex-page'] = ''
 def get_option(d={}):
   o = {
     'sketchjs':url_for('static', filename='sketch.js'),
-    'stylecss': url_for('static', filename='style.css'),
+    'stylecss': url_for('static', filename='_style.css'),
     'imageoriginal': url_for('static', filename='images/size_original/'),
     'image13': url_for('static', filename='images/size_13'),
     'image100': url_for('static', filename='images/'),
@@ -45,7 +46,7 @@ def get_option(d={}):
   return o
 
 @app.route('/')
-def root(): 
+def root():
   return render_template('park.html')
 
 @app.route('/test')
@@ -63,6 +64,21 @@ def test():
     'image_ids': image_ids,
     'image_scores': image_scores
     }))
+
+@app.route('/test0')
+def index_0():
+  return render_template('step00.html', option=get_option())
+
+@app.route('/step01')
+def index_1():
+  if 'image_1' not in Session:
+    image = floor(random.random() * 1000) + 1
+    Session['image_1'] = image
+  return render_template('step01.html', option=get_option(), question_image=image, step=1)
+
+@app.route('/ans01/<ans>')
+def index_1_1(ans):
+  return render_template('step02-0.html', option=get_option())
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
@@ -107,13 +123,17 @@ def upload_image():
       dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
       file.save(filepath)
 
+      while app.config['tf-in-use']:
+        time.sleep(1)
       with lock:
+        app.config['tf-in-use'] = True
         gradient_ascent.run(filepath, dirpath)
+        app.config['tf-in-use'] = False
 
       #image = Image.open(os.path.join(dirpath, '9.jpg'))
       #imr = image.resize((13, 13))
       #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
-      copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))     
+      copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
 
       return jsonify({
         'r': 's',
@@ -123,7 +143,7 @@ def upload_image():
 @app.route('/pf-reset')
 def pf_reset():
   app.config['pf-images'] = [];
-  app.config['pf-scores'] = []; 
+  app.config['pf-scores'] = [];
   return jsonify({
     'r': 's'
     })
@@ -228,22 +248,32 @@ def process_image(filename, fileext):
   filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
   dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
 
+  while app.config['tf-in-use']:
+    time.sleep(1)
   with lock:
+    app.config['tf-in-use'] = True
     score, feature = gradient_ascent.run(filepath, dirpath)
+    app.config['tf-in-use'] = False
 
   #image = Image.open(os.path.join(dirpath, '9.jpg'))
   #imr = image.resize((13, 13))
   #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
   target = os.path.join('static', 'images', 'size_original', filename+'.jpg')
-  copyfile(os.path.join(dirpath, '1.jpg'), target)  
-  app.config['pf-images'].append(filename + '.jpg')   
+  copyfile(os.path.join(dirpath, '1.jpg'), target)
+  app.config['pf-images'].append(filename + '.jpg')
   print(score[0])
   app.config['pf-scores'].append(int(10000 * score[0]))
   print('processing_done: '+filename)
 
 @app.route('/pf-w2w/<word>')
 def pf_w2w(word):
-  words = word2word.main(word)
+
+  while app.config['tf-in-use']:
+    time.sleep(1)
+  with lock:
+    app.config['tf-in-use'] = True
+    words = word2word.main(word)
+    app.config['tf-in-use'] = False
   print(word, words)
   return jsonify({
     'r': 's',
