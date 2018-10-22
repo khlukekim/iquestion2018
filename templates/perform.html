@@ -42,6 +42,11 @@
         d1.appendChild(d2);
         perf_image_divs.push(d1);
         document.getElementById('stage1').appendChild(d1);
+
+        var im2 = document.createElement('img');
+        im2.id = 'perf2-image-'+i;
+        im2.className = 'perf-image perf2-image';
+        document.getElementById('stage2').appendChild(im2);
         return d1;
       }
     }
@@ -294,9 +299,6 @@ var N_STAGE = stageNames.length;
     <div id='stage1' class='perf-image-wrapper' style='display:none; height:{{option.height}}px; width: 10000px'>
     </div>
     <div id='stage2' style='display:none;  width: {{option.width}}px; height: {{option.height}}px; vertical-align: center;'>
-      {% for i in range(10) %}
-      <img id='perf2-image-{{i}}' class='perf-image perf2-image'>
-      {% endfor %}
     </div>
     <div id='stage3' style='display:none; width: {{option.width}}px; height: {{option.height}}px; padding:0'>
       <img id='perf3-image' style='height: 100%;'>
