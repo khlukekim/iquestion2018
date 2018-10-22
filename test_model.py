@@ -140,7 +140,6 @@ def main(weight,test_image):
 		tmp = translator.translate(predx[0][iter][1].replace('_',' '),src='en',dest='ko').text
 		print(tmp)
 		words.append(tmp)
-  K.clear_session()
 
 	# captionning
 	generated_text = test_model(weight, test_image, encoded_images)
