@@ -120,18 +120,7 @@ def test_model_on_images(weight, img_dir, beam_size = 3):
 def main(weight,test_image):
 
 	translator = Translator()
-
-	# feed forward encoding
-	encoding_model = load_encoding_model()
 	img = load_image(test_image)
-	encoding_model.summary()
-	encoded = encoding_model.predict(img)
-	print(encoded.shape)
-	encoded = np.reshape(encoded,encoded.shape[1])
-	encoded_images = {}
-	encoded_images[test_image] = encoded
-
-	# get vgg16 prediction
 	vgg = VGG16(get_ridding=False)
 	predx = decode_predictions(vgg.predict(img))
 	print(predx)
