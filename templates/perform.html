@@ -138,7 +138,16 @@
           for (var i = 0; i< scores.length; i++) {
             positions.push(i+1);
           }
-          positions.sort(function(a,b){return parseInt(scores[a])-parseInt(scores[b]);});
+          positions.sort(function(a,b){
+            var k = parseInt(scores[a])-parseInt(scores[b]);
+            if (k < 0 ) {
+              return -1;
+            } else if (k > 0) {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
           for (var i = 0; i<10; i++) {
             var div = get_image_div(i);
             document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
