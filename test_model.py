@@ -61,14 +61,14 @@ def generate_captions(model, image, beam_size):
 def test_model(weight, img_name, encoded_images, beam_size = 3):
 	#encoded_images = pickle.load( open( "encoded_images.p", "rb" ),encoding='iso-8859-1' )
 	#encoded_images = pickle.load( open( "encoded_images.p", "rb" ) )
-	
+
 	model = cg.create_model(ret_model = True)
 	model.load_weights(weight)
 
 	image = encoded_images[img_name]
 	captions = generate_captions(model, image, beam_size)
 	return process_caption(get_best_caption(captions))
-	#return [process_caption(caption[0]) for caption in get_all_captions(captions)] 
+	#return [process_caption(caption[0]) for caption in get_all_captions(captions)]
 
 def bleu_score(hypotheses, references):
 	return nltk.translate.bleu_score.corpus_bleu(references, hypotheses)
@@ -106,7 +106,7 @@ def test_model_on_images(weight, img_dir, beam_size = 3):
 		except:
 			image_captions_pair[row[0]] = [row[1]]
 	f_captions.close()
-	
+
 	hypotheses=[]
 	references = []
 	for img_name in imgs:
@@ -120,7 +120,7 @@ def test_model_on_images(weight, img_dir, beam_size = 3):
 def main(weight,test_image):
 
 	translator = Translator()
-	
+
 	# feed forward encoding
 	encoding_model = load_encoding_model()
 	img = load_image(test_image)
@@ -140,6 +140,7 @@ def main(weight,test_image):
 		tmp = translator.translate(predx[0][iter][1].replace('_',' '),src='en',dest='ko').text
 		print(tmp)
 		words.append(tmp)
+  K.clear_session()
 
 	# captionning
 	generated_text = test_model(weight, test_image, encoded_images)
@@ -149,7 +150,7 @@ def main(weight,test_image):
 
 	K.clear_session()
 	return words, generated_ko
-	
+
 def run(file):
 	return main('weights50-improvement-02.hdf5', file)
 
@@ -162,5 +163,5 @@ if __name__ == '__main__':
 	parser.add_argument('filename', type=str, metavar='FILE', help='image file name')
 	args = parser.parse_args()
 
-	gen_words, gen_text = main(args.weight,args.filename)	
+	gen_words, gen_text = main(args.weight,args.filename)
 
