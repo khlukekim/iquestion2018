@@ -108,7 +108,10 @@
         } else if (message[0] == 'words') {
           document.getElementById('stage5').innerHTML = decodeURIComponent(message[1]).replace('/\n/g', '<br>');
         } else if (message[0] == 'images') {
-          images = message[1].strip().split(',');
+          images = message[1].split(',');
+          if (images[0] == '') {
+            images.splice(0, 1);
+          }
           var d = document.getElementById('stage1');
           var d2 = document.getElementById('stage2');
           while(d.children.length > images.length) {
