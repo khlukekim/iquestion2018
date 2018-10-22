@@ -108,10 +108,14 @@
         } else if (message[0] == 'words') {
           document.getElementById('stage5').innerHTML = decodeURIComponent(message[1]).replace('/\n/g', '<br>');
         } else if (message[0] == 'images') {
-          images = message[1].split(',');
+          images = message[1].strip().split(',');
           var d = document.getElementById('stage1');
+          var d2 = document.getElementById('stage2');
           while(d.children.length > images.length) {
             d.removeChild(d.children[d.children.length - 1]);
+          }
+          while(d2.children.length > images.length) {
+            d2.removeChild(d2.children[d2.children.length - 1]);
           }
           for(var i = 0; i<images.length;  i++) {
             var div = get_image_div(i);
@@ -131,7 +135,7 @@
           for (var i = 0; i< 10; i++) {
             positions.push(i+1);
           }
-          positions.sort(function(a,b){return scores[a]>scores[b];});
+          positions.sort(function(a,b){return scores[a]-scores[b];});
           for (var i = 0; i<10; i++) {
             var div = get_image_div(i);
             document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
