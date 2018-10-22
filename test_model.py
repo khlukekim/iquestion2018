@@ -141,14 +141,15 @@ def main(weight,test_image):
 		print(tmp)
 		words.append(tmp)
 
+
 	# captionning
-	generated_text = test_model(weight, test_image, encoded_images)
-	print(generated_text)
-	generated_ko = translator.translate(generated_text, src='en', dest='ko').text
-	print(generated_ko)
+	#generated_text = test_model(weight, test_image, encoded_images)
+	#print(generated_text)
+	#generated_ko = translator.translate(generated_text, src='en', dest='ko').text
+	#print(generated_ko)
 
 	K.clear_session()
-	return words, generated_ko
+	return words, ''
 
 def run(file):
 	return main('weights50-improvement-02.hdf5', file)
