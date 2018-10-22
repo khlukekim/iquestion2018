@@ -135,10 +135,10 @@
         } else if (message[0] == 'scores') {
           scores = message[1].split(',');
           positions = [];
-          for (var i = 0; i< 10; i++) {
+          for (var i = 0; i< scores.length; i++) {
             positions.push(i+1);
           }
-          positions.sort(function(a,b){return scores[a]-scores[b];});
+          positions.sort(function(a,b){return parseInt(scores[a])-parseInt(scores[b]);});
           for (var i = 0; i<10; i++) {
             var div = get_image_div(i);
             document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
