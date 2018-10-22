@@ -164,6 +164,7 @@
     var updating = false;
     var images = [];
     var scores = [];
+    var positions = [];
 
     function getUpdated() {
       console.log(Date.now());
@@ -217,6 +218,7 @@
       var im = document.getElementById('perf3-image');
       im.src = document.getElementById('perf-image-inner-' + i).src;
       im.style.marginLeft = (option.width - imageWidthList[i] * option.height / imageHeightList[i] - 0) / 2 + 'px';
+      document.getElementById('perf3-rank').innerHTML = positions[i];
     }
 
 
@@ -328,7 +330,11 @@ var N_STAGE = stageNames.length;
     <div id='stage2' style='display:none;  width: {{option.width}}px; height: {{option.height}}px; vertical-align: center;'>
     </div>
     <div id='stage3' style='display:none; width: {{option.width}}px; height: {{option.height}}px; padding:0'>
-      <img id='perf3-image' style='height: 100%;'>
+      <div id='perf3-image-div' style='display:inline-block;height: 100%; position:relative;'>
+        <img id='perf3-image' style='max-width: 100%; height:100%;'>
+        <div id='perf3-rank' style="width: 100%; height: {{option.height/2}}px; lineHeight: 1; position: absolute; top: 0; padding-top: {{option.height/2}}px; text-align: center; font-size: {{option.height/2}}px; color: white; background-color: rgba(0,0,0,0.5); display: none;"></div>
+
+      </div>
     </div>
     <div id='stage4' style='display: none; width {{option.width}}px; height: {{option.height}}px;'>
     <div id='image_container' class='exhibit-container'>
