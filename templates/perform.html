@@ -53,6 +53,21 @@
         im2.style.maxWidth = '100%';
         im2.style.maxHeight = '100%';
         d3.appendChild(im2);
+        var d4 = document.createElement('div');
+        d4.id = 'perf2-image-rank-'+i;
+        d4.style.width = '100%';
+        d4.style.height = '{{option.height/2}}px';
+        d4.style.lineHeight = 1;
+        d4.style.position = 'absolute';
+        d4.style.top = 0;
+        d4.style.paddingTop = '{{option.height/2}}px';
+        d4.style.paddingBottom = '{{option.height/4}}px';
+        d4.style.textAlign = 'center';
+        d4.style.fontSize = '{{option.height/2}}px';
+        d4.style.color = 'white';
+        d4.style.backgroundColor = 'rgba(0,0,0,0.5)';
+        d4.style.display = 'none';
+        d3.appendChild(d4);
 
         document.getElementById('stage2').appendChild(d3);
         return d1;
@@ -120,15 +135,18 @@
           for (var i = 0; i<10; i++) {
             var div = get_image_div(i);
             document.getElementById('perf-image-rank-'+i).innerHTML = positions[i];
+            document.getElementById('perf2-image-rank-'+i).innerHTML = positions[i];
           }
         } else if (message[0] == 'rank') {
           if (message[1] == 'show') {
             for (var i = 0; i<10; i++) {
               document.getElementById('perf-image-rank-'+i).style.display = 'block';
+              document.getElementById('perf2-image-rank-'+i).style.display = 'block';
             }
           } else if (message[1] == 'hide') {
             for (var i = 0; i<10; i++) {
               document.getElementById('perf-image-rank-'+i).style.display = 'none';
+              document.getElementById('perf2-image-rank-'+i).style.display = 'none';
             }
           }
         }
