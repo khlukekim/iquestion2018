@@ -43,10 +43,18 @@
         perf_image_divs.push(d1);
         document.getElementById('stage1').appendChild(d1);
 
+        var d3 = document.createElement('div');
+        d3.id = 'perf2-image-div-' + i;
+        d3.className = 'perf-image perf2-image';
+        d3.style.display = 'inline-block';
+        d3.style.position = 'relative';
         var im2 = document.createElement('img');
         im2.id = 'perf2-image-'+i;
-        im2.className = 'perf-image perf2-image';
-        document.getElementById('stage2').appendChild(im2);
+        im2.style.maxWidth = '100%';
+        im2.style.maxHeight = '100%';
+        d3.appendchild(im2);
+
+        document.getElementById('stage2').appendChild(d3);
         return d1;
       }
     }
