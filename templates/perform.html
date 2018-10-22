@@ -237,6 +237,7 @@ var N_STAGE = stageNames.length;
 
     function imageloaded(e, number) {
       e.width = option.height;
+      e.height = option.height;
       imageWidthList[number] = e.width;
       imageHeightList[number] = option.height;
       document.getElementById('perf-image-'+number).style.width = e.width + 'px';
