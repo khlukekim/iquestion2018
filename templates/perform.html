@@ -134,6 +134,9 @@
           }
         } else if (message[0] == 'scores') {
           scores = message[1].split(',');
+          if (scores[0] == '') {
+            scores.splice(0, 1);
+          }
           positions = [];
           for (var i = 0; i< scores.length; i++) {
             positions.push(i+1);
