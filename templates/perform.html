@@ -278,6 +278,7 @@ var N_STAGE = stageNames.length;
         left += w;
         im.style.width = w-1 + 'px';
         var h = imageHeightList[i] / imageWidthList[i] * w;
+        im.style.height = h + 'px';
         im.style.top = (option.height - h) / 2 + 'px';
       }
     }
