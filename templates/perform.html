@@ -7,7 +7,43 @@
 </head>
 <body>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
   <script type="text/javascript">
+    var perf_image_divs = [];
+    function get_image_div(i){
+      if (perf_image_divs.length > i) {
+        return perf_image_divs[i];
+      } else {
+        var d1 = document.createElement('div');
+        d1.id = 'perf-image-' + i;
+        d1.className = 'perf-image';
+        d1.style.display = 'inline-block';
+        d1.style.position = 'relative';
+        var im = document.createElement('img');
+        im.id = 'perf-image-inner-' + i;
+        im.style.maxWidth='100%';
+        im.style.maxHeight='100%';
+        im.onload = (function(n) {return function(event){imageloaded(event.target, n);};})(i);
+        d1.appendChild(im);
+        var d2 = document.createElement('div');
+        d2.id = 'perf-image-rank-'+i;
+        d2.style.width = '100%';
+        d2.style.height = '{{option.height/2}}px';
+        d2.style.lineHeight = 1;
+        d2.style.position = 'absolute';
+        d2.style.top = 0;
+        d2.style.paddingTop = '{{option.height/2}}px';
+        d2.style.paddingBottom = '{{option.height/4}}px';
+        d2.style.textAlign = 'center';
+        d2.style.fontSize = '{{option.height/2}}px';
+        d2.style.color = 'white';
+        d2.style.backgroundColor = 'rgba(0,0,0,0.5)';
+        d2.style.display = 'none';
+        d1.appendChild(d2);
+        perf_image_divs.push(d1);
+        return d1;
+      }
+    }
     var sessionHash = Math.random().toString(10);
     var option = {
       width: {{option.width}},
@@ -44,7 +80,7 @@
           document.getElementById('stage5').innerHTML = decodeURIComponent(message[1]).replace('/\n/g', '<br>');
         } else if (message[0] == 'images') {
           images = message[1].split(',');
-          for(var i = 0; i<Math.min(images.length, 10);  i++) {
+          for(var i = 0; i<images.length;  i++) {
             document.getElementById('perf-image-inner-'+i).src = '{{option.imageoriginal}}' + images[i];
           }
         } else if (message[0] == 'fontsize') {
@@ -140,6 +176,7 @@
     }
 
     function stage3(i) {
+      var div = get_image_div(i);
       var im = document.getElementById('perf3-image');
       im.src = document.getElementById('perf-image-inner-' + i).src;
       im.style.marginLeft = (option.width - imageWidthList[i] * option.height / imageHeightList[i] - 0) / 2 + 'px';
@@ -252,12 +289,6 @@ var N_STAGE = stageNames.length;
   <div id='stage' class='perf-stage' style='width:{{option.width}}px; height:{{option.height}}px'>
     <div id='stage0' style='display: none;'></div>
     <div id='stage1' class='perf-image-wrapper' style='display:none; height:{{option.height}}px; width: 10000px'>
-      {% for i in range(10) %}
-      <div id='perf-image-{{i}}' class='perf-image' style="display:inline-block; position:relative;">
-        <img id='perf-image-inner-{{i}}' style="max-width:100%;max-height:100%"; src="{{option.imageoriginal}}{{'%04d' % (range(1, 1001) | random) }}.jpg" onload='imageloaded(event.target, {{i}})'>
-        <div id='perf-image-rank-{{i}}' style="width:100%; height:{{option.height/2}}px; line-height: 1; position: absolute; top:0; padding-top:{{option.height/4}}px; padding-bottom:{{option.height/4}}px; text-align: center; font-size:{{option.height/2}}px; color: white; background-color:rgba(0,0,0,0.5); display:none;">0</div>
-      </div>
-      {% endfor %}
     </div>
     <div id='stage2' style='display:none;  width: {{option.width}}px; height: {{option.height}}px; vertical-align: center;'>
       {% for i in range(10) %}
