@@ -158,13 +158,13 @@
           }
         } else if (message[0] == 'rank') {
           if (message[1] == 'show') {
-            for (var i = 0; i<10; i++) {
+            for (var i = 0; i<images.length; i++) {
               document.getElementById('perf-image-rank-'+i).style.display = 'block';
               document.getElementById('perf2-image-rank-'+i).style.display = 'block';
             }
             document.getElementById('perf3-rank').style.display = 'block';
           } else if (message[1] == 'hide') {
-            for (var i = 0; i<10; i++) {
+            for (var i = 0; i<images.length; i++) {
               document.getElementById('perf-image-rank-'+i).style.display = 'none';
               document.getElementById('perf2-image-rank-'+i).style.display = 'none';
             }
@@ -222,7 +222,7 @@
           document.getElementById('stage5').innerHTML = decodeURIComponent(message[1]).replace('/\n/g', '<br>');
         } else if (message[0] == 'images') {
           images = message[1].split(',');
-          for(var i = 0; i<Math.min(images.length, 10);  i++) {
+          for(var i = 0; i<images.length;  i++) {
             document.getElementById('perf-image-'+i).src = '{{option.userimage}}' + images[i];
           }
         } else if (message[0] == 'fontsize') {
