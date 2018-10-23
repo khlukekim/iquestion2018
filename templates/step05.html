@@ -21,19 +21,30 @@
 
   <div class="iq_close_cont" style="display: none;">
     <div class="iq_close_cont_inner">
+      {% if option.en %}
+      <p>Are you sure you want to quit?</p>
+      {% else %}
       <p>그만하시겠어요?</p>
+      {% endif %}
 
       <div class="btn_wrap">
         <div class="btn_select eng cancel progress">
+          {% if option.en %}
+          <a>CANCEL</a>
+          {% else %}
           <a>취소</a>
+          {% endif %}
         </div>
         <div class="btn_select eng exit progress">
+          {% if option.en %}
+          <a>QUIT</a>
+          {% else %}
           <a>나가기</a>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
-
   <div class="iq_close">
     <div class="list_inner">
       <span class="bar bar1 motion"></span>
@@ -45,7 +56,11 @@
   <div class="main">
     <div class="m_inner">
       <div class="txt_wrap step result">
+        {% if option.en %}
+        <h2 class="iq_txt_ani">Now, I will show you my senses in the arts.</h2>
+        {% else %}
         <h2 class="iq_txt_ani">이제 저의 예술적 감각을 발휘해보겠습니다.</h2>
+        {% endif %}
       </div>
       <div class="iq_wrap step icon">
         <video src="/static/video/iq3_bold.mp4" autoplay="" loop="" muted=""></video>

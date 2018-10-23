@@ -42,11 +42,16 @@
 				<li><a href="/step00/#about">About</a></li>
 			</ul>
 			<ul class="sns clearfix">
-				<li class="lang ko langon">kor</li>
-				<li class="lang en">eng</li>
+				<li class="lang ko{{' langon' if not option.en}}" onclick="window.location='/ko'">kor</li>
+				<li class="lang en{{' langon' if option.en}}" onclick="window.location='/en'">eng</li>
 			</ul>
 			<ul class="term clearfix">
+				{% if option.en %}
+				<li><a href="/step00/#use">PRIVACY POLICY</a></li>
+				{% else %}
 				<li><a href="/step00/#use">개인정보보호정책</a></li>
+				{% endif %}
+				
 			</ul>
 		</div>
 	</div>
@@ -63,7 +68,11 @@
 					<h1>I Question</h1>
 
 					<div class="txt_wrap">
-						<p>안녕하세요. 아이퀘스천입니다.<br>함께 생각해볼까요?</p>
+						{% if option.en %}
+							<p>Hello! I am I Question.<br>Shall we begin?</p>
+						{% else %}
+						  <p>안녕하세요. 아이퀘스천입니다.<br>함께 생각해볼까요?</p>
+						{% endif %}
 						<div class="btn_wrap">
 							<div class="btn eng progress page1">
 								<a>start</a>
@@ -79,7 +88,93 @@
 		</div>
 	</div>
 
+{% if option.en %}
+  <div class="layer_pop">
+		<div class="layer_pop_inner">
+			<div class="close"></div>
+			<div class="content" id="about">
+				<h2>Introduction of I Question</h2>
 
+				<p>We began our journey wondering whether it would be possible to have a discussion with artificial intelligence on a simple, yet difficult question: “What is art?” By constructing an open ended question with no set answers, we emphasize the mutually progressive nature of the relationship between man and machine. </p>
+				
+				<ul class="clearfix">
+					<li>
+						<h3>The First Question</h3>
+						<p>I Question will present a picture to the user and ask whether the user appreciates its artistic value.  After receiving the user’s answer, I Question will give its own feedback based on the user’s answer. Through this process, I Question learns different artistic values, and is able to create its own perspective on the picture.</p>
+					</li>
+					<li>
+						<h3>The Second Question</h3>
+						<p>The user presents I Question with a picture which he thinks is artistic. I Question will rank the picture’s artistic value out of 600 pictures of its own. Also, it will rank the picture out of all the pictures that it has seen so far.<br> I Question will visually alter the 600 pictures according to its artistic perspective, then produce a visual representation on the different opinions of man and machine in the form of a spectrum.</p>
+					</li>
+					<li>
+						<h3>The Final Question </h3>
+						<p>Can mankind share its artistic inspirations with artificial intelligence? Attempts to approach this question will be organized offline through exhibitions and performances. Collaborations of various artists and artificial intelligence will be arranged through the audience’s participation through the website.</p>
+					</li>
+				</ul>
+				
+				<!-- <div class="footer clearfix">
+					<h3>제작자</h3>
+					<p>작가 김제민 / 인공지능 알고리즘 개발자 이종필 / 코디네이터 차예진 / 웹개발자 김근형 / 웹디자이너 진희주<br>
+				
+					프로젝트 개발지원 우란문화재단</p>
+				</div> -->
+			</div>
+
+			<div class="content" id="use">
+				<h2>Privacy Policy</h2>
+
+				<p>
+1. Purpose of personal information processing <br>
+‘I Question,’ or www.ai-question.com, will not use personal information for a purpose other than what is stated in the following, and where there is a change in the purpose, it will take necessary steps including separately obtaining consent for the use of subjects’ data under the Personal Information Protection Act, Article 18. <br>
+- ‘I Question’ strives to search for ways of future revolution, following the Copernican way with a focus on the co-evolution of humans and machines and post-human media philosophical discourses. For its projects, we collect photos with the voluntary consent of data subjects with the aim of designing and developing artificial intelligence, viewing the process of development of artificial intelligence as if it were an object subject to evolution of living things. ‘I Question’ will use the said photos only for exhibitions associated its projects.<br><br> 
+ 
+2. Period of retaining and using personal information  <br>
+‘I Question’ retains and uses personal information until it attains the purpose of its project under the law and in accordance with consent granted to it by data subjects at the time of collecting their personal information, and ‘I Question’ destroys personal information immediately upon completion of its project. <br><br>
+ 
+3. Data subjects or their legal agents’ exercise of rights 
+Data subjects may exercise their rights as follows. <br>
+① Request of deletion of images provided by data subjects  <br>
+② In cases where (it is feared that) data subjects’ image rights are infringed upon under the Copyright Act <br><br>
+ 
+4. Processed personal information items  <br>
+Data subjects’ personal information items stated in the following may be automatically created and collected by ‘I Question’ in the process of using websites. <br>
+- Connection logs, IP addresses, cookies, records of using webpages, etc. <br><br>
+ 
+5. Destruction of personal information <br>
+Upon attaining the purpose of its project or closing the site following the completion of the project, ‘I Question’ destroys the relevant personal information within five days without due delay under the supervision of the person in charge of personal information protection. Where the period of retaining personal information as consented by the data subject expires or where ‘I Question’ needs to retain it for the purpose of the project, ‘I Question’ will keep the computerized personal information. <br><br>
+
+ 
+6. Matters concerning the operation of devices for automatic collection of personal information and data subjects’ rejection of it <br>
+① ‘I Question’ may use cookies that saves and frequently imports user information in order to optimize and 
+provide customized service for customers.  <br>
+② Cookies are a small amount of information that the server (http) used to operate the website to users’ computer 
+browser and may be saved in the hard disk of users’ computer.  <br>
+a. The purpose of using cookies: ‘I Question’ uses the information to figure out the visited websites, form of use, status of secure log in, etc., in order to optimize information provision for customers. <br>
+b. Cookie installation/management/refusal: In “Tools > Internet option > Personal information” section at the top of the web browser, customers may opt to refuse saving cookies.  <br>
+c. Customers may reject the installation of cookies, but such rejection may lead to difficulty in using ‘I Question’ services. <br><br>
+ 
+7. Information regarding the employee in charge of personal information  <br>
+The following person is the ‘I Question’ employee in charge of management and protection of customers’  
+Personal information: Han Ju-yeon, Wooran Foundations (jyhan1212@wooranfdn.org). <br><br>
+ 
+In addition, you may report a case of personal information infringement to or receive relevant consulting from the following institutions: <br>
+① Personal Information Dispute Mediation Committee: (no area code) ☎118 <br>
+② Korea Online Privacy Association: ☎02-550-9531 <br>
+③ Cybercrime Investigation Center of the Supreme Prosecutors' Office: ☎02-3480-3571 <br>
+④ National Police Agency Cyber Bureau: ☎1566-0112 <br><br>
+ 
+8. A change in Personal Information Handling Policy <br>
+Where there is addition, deletion, or revision of these Guidelines in accordance with the enactment or revision of the law, and change in government guidelines, we will post a notice about the content of changes at least seven days in advance of the relevant enforcement. <br><br> 
+
+ 
+9. Measures taken to secure the safety of personal information <br>
+‘I Question’ provides the authority to access the personal information processing system to a minimum number of employees for its protection and safe management under the Personal Information Protection Act, Article 29. ‘I Question’ applies an adequate security system so that records regarding gaining access to the personal information processing system may not be forged, manipulated, stolen, or lost. ‘I Question’ also takes necessary technical, administrative, and physical measures to secure the safety of personal information that it retains. <br><br>
+				</p>
+
+			</div>
+		</div>
+	</div>
+{% else %}
 	<div class="layer_pop">
 		<div class="layer_pop_inner">
 			<div class="close"></div>
@@ -124,6 +219,8 @@
 				<h2>개인정보 보호정책</h2>
 
 				<p>
+}
+}
 1. 개인정보의 처리 목적<br>
 (‘www.ai-question.com’이하 ‘I Question’) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용하지 않으며, 이용목적이 변경되는 경우에는 개인정보보호법 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.<br>
 - ‘I Question’ 은(는) 인간과 기계의 상생적 공진화. 포스트 휴먼의 매체철학적 담론에 집중하며 인본주의적 사고의 인본주의적 사고의 코페르니쿠스적 전회 속에서 미래의 진화를 모색하고 있습니다. 이번 프로젝트는 인공지능을 직접 구상하고 개발함으로써 인공지능의 개발 과정을 마치 식물을 키우는 것처럼 살아있는 진화의 대상으로 바라보고 지속적으로 학습시키기 위해 정보주체의 자발적 동의 하에 사진을 수집하고 있으며 수집된 사진은 오직 ‘I Question’ 프로젝트의 전시를 위해 활용되는 것을 목적으로 하고 있습니다.<br><br>
@@ -172,7 +269,7 @@
 		</div>
 	</div>
 
-
+{% endif %}
 
 
 

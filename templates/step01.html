@@ -20,14 +20,26 @@
 
   <div class="iq_close_cont" style="display: none;">
     <div class="iq_close_cont_inner">
+      {% if option.en %}
+      <p>Are you sure you want to quit?</p>
+      {% else %}
       <p>그만하시겠어요?</p>
+      {% endif %}
 
       <div class="btn_wrap">
         <div class="btn_select eng cancel progress">
+          {% if option.en %}
+          <a>CANCEL</a>
+          {% else %}
           <a>취소</a>
+          {% endif %}
         </div>
         <div class="btn_select eng exit progress">
+          {% if option.en %}
+          <a>QUIT</a>
+          {% else %}
           <a>나가기</a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -47,7 +59,11 @@
   <div class="main">
     <div class="m_inner">
       <div class="txt_wrap step">
+        {% if option.en %}
+        <h2>Does this picture look artistic?</h2>
+        {% else %}
         <h2>이 사진이 예술적으로 보이나요?</h2>
+        {% endif %}
       </div>
       <div class="iq_wrap step">
         <div class="iq_wrap_inner progress_pic"><img class="iq" src="{{option.imageoriginal}}{{option.question_image}}.jpg" alt=""></div>

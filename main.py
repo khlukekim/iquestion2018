@@ -40,6 +40,7 @@ def get_option(d={}):
     'image56': url_for('static', filename='images/size_56/'),
     'jquery': url_for('static', filename='jquery-3.3.1.min.js'),
     'userimage': url_for('static', filename='images/userimage/'),
+    'en': session['en'] if 'en' in session else 0
     }
   if d:
     for k in d:
@@ -72,6 +73,16 @@ def index_0():
   session['answer'] = {}
   return render_template('step00.html', option=get_option())
 
+@app.route('/<lang>')
+def index_lang(lang):
+  session['question_image'] = {}
+  session['answer'] = {}
+  if lang == 'en':
+    session['en'] = 1
+  else :
+    session['en'] = 0
+  return render_template('step00.html', option=get_option())
+
 @app.route('/step01')
 def index_1():
   if 'question_image' not in session:
@@ -92,21 +103,31 @@ t1 = ['오, 제 생각과 비슷하군요.', '나랑 감각이 통하는군요.'
 t2 = ['네, 저도 별로에요.', '나도 비슷한 생각이에요.', '저도 별로라고 생각했어요.', '생각하는게 저와 비슷하네요.', '사진 보는 눈이 저와 비슷하네요.', '휴, 당신도 저처럼 생각했군요', '별로에요, 그렇죠?', '당신이 봐도 별로군요!', '저만 별로라고 생각한 게 아니군요', '역시 저만 별로인게 아니었어요']
 t3 = ['오, 당신의 감각이 좀 독특하군요', '저와 감각이 좀 다르군요', '제 생각과 다르군요', '저는 별로인데 생각이 다르군요', '저는 별로에요', '당신은 특별함을 찾아냈군요', '예술을 바라보는 눈이 개성있네요', '당신 덕에 예술을 새롭게 바라보게 돼요', '역시 보는 눈은 다 다른가봐요', '당신의 색다른 감각을 접수했어요']
 t4 = ['저는 좋은데 생각이 다르군요.', '저와 보는 눈이 다르네요.', '보는 눈이 저랑 다르군요.', '저는 좋은데 보는 눈이 다르군요.', '보는 눈이 독특하네요.', '저는 무언가 특별해 보이더라구요', '역시 보는 눈은 모두 다르죠!', '저는 마음에 들어요 ', '당신 마음에는 안 드나보네요 ', '생각은 다 다를 수 있죠!']
+te1 = ['Oh, so do I!', 'You share the same views as I do.', 'Yes, I agree.', 'Yes, I think so too.', 'Oh, I think so too.', 'You look outstanding like me!', 'I think you and I will get along very well.', 'I\'m glad to meet you with a similar sense.', 'We probably have similar tastes.', 'I guess everyone has similar tastes.']
+te2 = ['Oh, so do I!', 'You share the same views as I do.', 'Yes, I agree.', 'Yes, I think so too.', 'Oh, I think so too.', 'You look outstanding like me!', 'I think you and I will get along very well.', 'I\'m glad to meet you with a similar sense.', 'We probably have similar tastes.', 'I guess everyone has similar tastes.']
+te3 = ['Oh, you have quite a unique taste.', 'You and I have quite different tastes.', 'Your thoughts are different from mine.', 'I thought it wasn’t that good, but we clearly have different views.', 'I think it wasn’t that good.', 'I see you have found something special here.', 'You have a unique way of appreciating art.', 'Thanks to you, I now see art in a different way.', 'I guess everyone has different views.', 'I have understand your unique set of views.']
+te4 = ['I also like it, but in a different way.', 'We both have different perspectives.', 'Your way of appreciating art is different from mine.', 'I like it, but I guess we have different views', 'You have quite a unique taste.', 'I thought it was somewhat special.', 'Of course, everyone has different perspectives!', 'I like it.', 'I guess you don’t like it that much.', 'Everyone can have different ideas!']
+messagesko = [t1,t2,t3,t4]
+messagesen = [te1, te2, te3, te4]
 
 def get_answer_message(p1, p2):
+  if 'en' in session and session['en'] == 1:
+    messages = messagesen
+  else:
+    messages = messagesko
   r = math.floor(random.random()*10)
   p1 = int(p1)
   p2 = int(p2)
   if p1 > 0.5:
     if p2 > 0.5:  
-      return t1[r]
+      return messages[0][r]
     else:
-      return t4[r]
+      return messages[3][r]
   else:
     if p2 > 0.5:
-      return t3[r]
+      return messages[2][r]
     else:
-      return t2[r]
+      return messages[1][r]
 
 @app.route('/step01a/<ans>')
 def index_1a(ans):
