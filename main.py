@@ -67,6 +67,8 @@ def test():
 
 @app.route('/')
 def index_0():
+  session['question_image'] = {}
+  session['answer'] = {}
   return render_template('step00.html', option=get_option())
 
 @app.route('/step01')
@@ -76,10 +78,33 @@ def index_1():
   if 'image1' not in session['question_image']:
     image = math.floor(random.random() * 1000) + 1
     session['question_image']['image_1'] = image
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      session['question_image']['score_1'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
+
   return render_template('step01.html', option=get_option({
     'question_image': '%04d'%session['question_image']['image_1'],
     'step': 1
     }))
+
+t1 = ['오, 제 생각과 비슷하군요.', '나랑 감각이 통하는군요.', '네, 저도 같은 생각이에요.', '오, 저와 생각이 같군요.', '저도 같은 생각입니다.', '저처럼 보는 눈이 탁월하시군요', '저랑 잘 맞으실 거 같아요', '비슷한 감각을 가진 당신을 만나서 기뻐요', '우리는 비슷한 감각을 가졌나봐요', '보는 눈은 다 비슷하네요']
+t2 = ['네, 저도 별로에요.', '나도 비슷한 생각이에요.', '저도 별로라고 생각했어요.', '생각하는게 저와 비슷하네요.', '사진 보는 눈이 저와 비슷하네요.', '휴, 당신도 저처럼 생각했군요', '별로에요, 그렇죠?', '당신이 봐도 별로군요!', '저만 별로라고 생각한 게 아니군요', '역시 저만 별로인게 아니었어요']
+t3 = ['오, 당신의 감각이 좀 독특하군요', '저와 감각이 좀 다르군요', '제 생각과 다르군요', '저는 별로인데 생각이 다르군요', '저는 별로에요', '당신은 특별함을 찾아냈군요', '예술을 바라보는 눈이 개성있네요', '당신 덕에 예술을 새롭게 바라보게 돼요', '역시 보는 눈은 다 다른가봐요', '당신의 색다른 감각을 접수했어요']
+t4 = ['저는 좋은데 생각이 다르군요.', '저와 보는 눈이 다르네요.', '보는 눈이 저랑 다르군요.', '저는 좋은데 보는 눈이 다르군요.', '보는 눈이 독특하네요.', '저는 무언가 특별해 보이더라구요', '역시 보는 눈은 모두 다르죠!', '저는 마음에 들어요 ', '당신 마음에는 안 드나보네요 ', '생각은 다 다를 수 있죠!']
+
+def get_answer_message(p1, p2):
+  r = math.floor(random.random()*10)
+  p1 = int(p1)
+  p2 = int(p2)
+  if p1 > 0.5:
+    if p2 > 0.5:  
+      return t1[r]
+    else:
+      return t4[r]
+  else:
+    if p2 > 0.5:
+      return t3[r]
+    else:
+      return t2[r]
 
 @app.route('/step01a/<ans>')
 def index_1a(ans):
@@ -89,7 +114,7 @@ def index_1a(ans):
 
   return render_template('step01a.html', option=get_option({
     'step': 1,
-    'message': '오, 제 생각과'
+    'message': get_answer_message(session['question_image']['score_1'], ans)
     }))
 
 @app.route('/step02')
@@ -101,6 +126,9 @@ def index_2():
     while image in list(session['question_image'].values()):
       image = math.floor(random.random() * 1000) + 1
     session['question_image']['image_2'] = image
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      session['question_image']['score_2'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
+
   return render_template('step01.html', option=get_option({
     'question_image': '%04d'%session['question_image']['image_2'],
     'step': 2
@@ -114,7 +142,7 @@ def index_2a(ans):
 
   return render_template('step01a.html', option=get_option({
     'step': 2,
-    'message': '오, 제 생각과'
+    'message': get_answer_message(session['question_image']['score_2'], ans)
     }))
 
 @app.route('/step03')
@@ -126,6 +154,9 @@ def index_3():
     while image in list(session['question_image'].values()):
       image = math.floor(random.random() * 1000) + 1
     session['question_image']['image_3'] = image
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      session['question_image']['score_3'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
+
   return render_template('step01.html', option=get_option({
     'question_image': '%04d'%session['question_image']['image_3'],
     'step': 3
@@ -139,7 +170,7 @@ def index_3a(ans):
 
   return render_template('step01a.html', option=get_option({
     'step': 3,
-    'message': '오, 제 생각과'
+    'message': get_answer_message(session['question_image']['score_3'], ans)
     }))
 
 @app.route('/step04')
@@ -151,6 +182,9 @@ def index_4():
     while image in list(session['question_image'].values()):
       image = math.floor(random.random() * 1000) + 1
     session['question_image']['image_4'] = image
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      session['question_image']['score_4'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
+
   return render_template('step01.html', option=get_option({
     'question_image': '%04d'%session['question_image']['image_4'],
     'step': 4
@@ -162,9 +196,19 @@ def index_4a(ans):
     session['answer'] = {}
   session['answer']['ans_4'] = ans
 
+  if 'question_image' in session and 'answer' in session:
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      coll = mongo.connection.iquestion.authAnswer
+      data = {
+          'created_at': datetime.datetime.now(),
+          'image': session['question_image'],
+          'answer': session['answer'],
+        }
+      db_result = coll.insert_one(data)
+
   return render_template('step01a.html', option=get_option({
     'step': 4,
-    'message': '오, 제 생각과'
+    'message': get_answer_message(session['question_image']['score_4'], ans)
     }))
 
 @app.route('/step05')
