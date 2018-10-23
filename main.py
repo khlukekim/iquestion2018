@@ -255,6 +255,7 @@ def index_8():
 
   return render_template('step08.html', option=get_option({
       'image_ids': image_ids,
+      'user_image': session['user_image'],
       'rank': sorted_positions.index(len(positions)-1)+1
     }))
 

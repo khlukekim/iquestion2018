@@ -57,7 +57,7 @@
           <div class="img_wrap">
             {% for j in range(10) %}
             <div class="img_wrap_img">
-              <img src="{{option.imageoriginal}}{{option.image_ids[i*10+j]}}.jpg" alt="">
+              <img class="{{active if option.image_ids[i*10+j] == option.user_image}}" src="{{option.imageoriginal}}{{option.image_ids[i*10+j]}}.jpg" alt="">
             </div>
             {% endfor %}
           </div>
