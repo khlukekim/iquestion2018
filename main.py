@@ -336,10 +336,12 @@ def upload_image():
           'r': 's',
           'i': filename
           })
-      else:
+      except Exception as e:
         return jsonify({
           'r': 'f',
           })
+
+
 
 @app.route('/pf-reset')
 def pf_reset():
