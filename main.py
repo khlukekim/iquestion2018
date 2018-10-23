@@ -318,23 +318,28 @@ def upload_image():
 
       while app.config['tf-in-use']:
         time.sleep(1)
-      with lock:
-        app.config['tf-in-use'] = True
-        result = gradient_ascent.run(filepath, dirpath)
-        app.config['tf-in-use'] = False
+      try:
+        with lock:
+          app.config['tf-in-use'] = True
+          result = gradient_ascent.run(filepath, dirpath)
+          app.config['tf-in-use'] = False
 
-      coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
-      #image = Image.open(os.path.join(dirpath, '9.jpg'))
-      #imr = image.resize((13, 13))
-      #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
-      copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
+        coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
+        #image = Image.open(os.path.join(dirpath, '9.jpg'))
+        #imr = image.resize((13, 13))
+        #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+        copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
 
-      session['user_image'] = filename
-      session['user_score'] = int(result[0][0]*100)
-      return jsonify({
-        'r': 's',
-        'i': filename
-        })
+        session['user_image'] = filename
+        session['user_score'] = int(result[0][0]*100)
+        return jsonify({
+          'r': 's',
+          'i': filename
+          })
+      else:
+        return jsonify({
+          'r': 'f',
+          })
 
 @app.route('/pf-reset')
 def pf_reset():
