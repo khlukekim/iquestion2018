@@ -25,7 +25,7 @@ h1,h2,h3,h4,h5,h6{ font-family: 'Roboto', sans-serif; }
 
 
 
-.btn_wrap .btn.progress{ width:150px; background-image:url(../images/progress_bg.jpg); background-position:center top; background-size:200px; }
+.btn_wrap .btn.progress{ width:150px; background-image:url(/static/progress_bg.jpg); background-position:center top; background-size:200px; }
 .btn_wrap .btn.progress::before{ content:''; display:block; position:absolute; top:0; right:0; width:100%; height:100%; background-color:#000000; }
 .btn_wrap .btn.progress a{ position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; }
 
@@ -68,7 +68,7 @@ h1,h2,h3,h4,h5,h6{ font-family: 'Roboto', sans-serif; }
 
 }
 
-.btn_wrap .btn_select::before{ content:''; display:block; position:absolute; bottom:0; left:0; width:0; height:100%; background-image:url(../images/progress_bg.jpg); background-repeat:no-repeat; background-size:100px; z-index:10; transition:all 1s; }
+.btn_wrap .btn_select::before{ content:''; display:block; position:absolute; bottom:0; left:0; width:0; height:100%; background-image:url(/static/progress_bg.jpg); background-repeat:no-repeat; background-size:100px; z-index:10; transition:all 1s; }
 
 .btn_wrap .btn_select:hover{
   
@@ -103,7 +103,7 @@ h1,h2,h3,h4,h5,h6{ font-family: 'Roboto', sans-serif; }
 .header{ padding-top:50px; position:absolute; top:0; left:0; width:100%;}
 .header .h_inner{ }
 .header .h_inner .sns{ position:fixed; top:50px; left:6%; z-index:9999; font-size:20px; }
-.header .h_inner .sns li{ display:inline-block; background-image:url(../images/sns.png); width:38px; height:38px; margin-right:5px; background-position:0 -38px; }
+.header .h_inner .sns li{ display:inline-block; background-image:url(/static/sns.png); width:38px; height:38px; margin-right:5px; background-position:0 -38px; }
 .header .h_inner .sns li:nth-child(2){ background-position:-38px -38px; }
 .header .h_inner .sns li:nth-child(3){ background-position:-76px -38px; }
 
@@ -170,7 +170,7 @@ body{ height:100vh; padding-bottom:100px; background-color:#000000; }
 .main .m_inner .iq_wrap.icon.start{ animation:showpic 3s 1s both; }
 .main .m_inner .iq_wrap .iq_wrap_inner{ width:70%; margin:0 auto; max-width:500px; }
 .main .m_inner .iq_wrap .iq_wrap_inner.progress_pic{ position:relative;}
-.main .m_inner .iq_wrap .iq_wrap_inner.progress_pic::after{ content:''; display:none; width:0; height:2px; position:absolute; bottom:0; left:0; background-image:url(../images/progress_bg.jpg); background-size:700px; background-position:center top; }
+.main .m_inner .iq_wrap .iq_wrap_inner.progress_pic::after{ content:''; display:none; width:0; height:2px; position:absolute; bottom:0; left:0; background-image:url(/static/progress_bg.jpg); background-size:700px; background-position:center top; }
 .main .m_inner .iq_wrap .iq_wrap_inner.progress_pic.start::after{ animation:progress_pic 3s both; }
 @keyframes progress_pic{ from{ width:0; } to{ width:100%; } }
 
@@ -218,7 +218,7 @@ input[type="file"]{ display:none; }
 .spec_wrap .spec_inner .img_wrap img{ width:20px; display:block; transition:all 0.5s; animation:showimg 3s 4s both; }
 .spec_wrap .spec_inner .img_wrap img.active{ animation:showimg 2s both;  }
 .spec_wrap .spec_inner .img_wrap .img_wrap_img{ width:20px; height:20px; overflow:hidden; }
-
+.img_wrap_img_img { object-fit: cover }
 
 
 @keyframes showimg{ from{ opacity:0; } to{ opacity:1; } }
@@ -305,7 +305,7 @@ input[type="file"]{ display:none; }
 /* 레이어 팝업 */
 .layer_pop{ position:fixed; top:0; left:0; z-index:999999; width:100%; height:100%; background-color:rgba(0,0,0,0.8); display:none; }
 .layer_pop .layer_pop_inner{ width:80%; margin:5% auto 0; max-width:960px; max-height:80%; overflow-y:scroll; background-color:#ffffff; position:relative; }
-.layer_pop .layer_pop_inner .close{ position:absolute; top:0; right:0; width:50px; height:50px; background-color:#eeeeee; cursor:pointer; background-image:url(../images/close.svg); background-repeat:no-repeat; background-size:25px; background-position:center; }
+.layer_pop .layer_pop_inner .close{ position:absolute; top:0; right:0; width:50px; height:50px; background-color:#eeeeee; cursor:pointer; background-image:url(/static/close.svg); background-repeat:no-repeat; background-size:25px; background-position:center; }
 .layer_pop .layer_pop_inner .content{ padding:50px; font-size:14px; display:none; }
 
 .layer_pop .layer_pop_inner .content > h2{ margin-bottom:10px; font-size:25px; font-weight:500; }

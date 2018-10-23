@@ -18,7 +18,7 @@ $(function(){
 		 $('.preload').delay(1000).fadeIn(2000);
 		 $(this).addClass('on');
          setTimeout(function() {
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }, 3000);
 	});
 
