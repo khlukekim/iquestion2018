@@ -170,9 +170,13 @@ def index_2a(ans):
   session['answer']['ans_2'] = ans
 
   session.modified = True
+  if 'question_image' in session and 'score_2' in session['question_image']:
+    msg = get_answer_message(session['question_image']['score_2'], ans)
+  else :
+    msg = '이런, 문제가 생겼어요!'
   return render_template('step01a.html', option=get_option({
     'step': 2,
-    'message': get_answer_message(session['question_image']['score_2'], ans)
+    'message':msg
     }))
 
 @app.route('/step03')
@@ -188,6 +192,7 @@ def index_3():
       session['question_image']['score_3'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
 
   session.modified = True
+
   return render_template('step01.html', option=get_option({
     'question_image': '%04d'%session['question_image']['image_3'],
     'step': 3
@@ -200,9 +205,13 @@ def index_3a(ans):
   session['answer']['ans_3'] = ans
 
   session.modified = True
+  if 'question_image' in session and 'score_3' in session['question_image']:
+    msg = get_answer_message(session['question_image']['score_3'], ans)
+  else :
+    msg = '이런, 문제가 생겼어요!'
   return render_template('step01a.html', option=get_option({
     'step': 3,
-    'message': get_answer_message(session['question_image']['score_3'], ans)
+    'message': msg
     }))
 
 @app.route('/step04')
@@ -239,10 +248,14 @@ def index_4a(ans):
           'answer': session['answer'],
         }
       db_result = coll.insert_one(data)
+  if 'question_image' in session and 'score_4' in session['question_image']:
+    msg = get_answer_message(session['question_image']['score_4'], ans)
+  else :
+    msg = '이런, 문제가 생겼어요!'
 
   return render_template('step01a.html', option=get_option({
     'step': 4,
-    'message': get_answer_message(session['question_image']['score_4'], ans)
+    'message': msg
     }))
 
 @app.route('/step05')
