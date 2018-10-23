@@ -27,3 +27,4 @@ include/
 ko.bin
 printimage.*
 static/print_image/
+static/video/

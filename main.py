@@ -1,8 +1,8 @@
 
-from flask import Flask, render_template, url_for, request, jsonify, Response, Session
+from flask import Flask, render_template, url_for, request, jsonify, Response, session
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
-import datetime, os, time, random, threading
+import datetime, os, time, random, threading, math
 from flask_socketio import SocketIO, join_room, leave_room
 import gradient_ascent
 from threading import Lock
@@ -45,7 +45,7 @@ def get_option(d={}):
       o[k] = d[k]
   return o
 
-@app.route('/')
+@app.route('/park')
 def root():
   return render_template('park.html')
 
@@ -65,20 +65,156 @@ def test():
     'image_scores': image_scores
     }))
 
-@app.route('/test0')
+@app.route('/')
 def index_0():
   return render_template('step00.html', option=get_option())
 
 @app.route('/step01')
 def index_1():
-  if 'image_1' not in Session:
-    image = floor(random.random() * 1000) + 1
-    Session['image_1'] = image
-  return render_template('step01.html', option=get_option(), question_image=image, step=1)
+  if 'question_image' not in session:
+    session['question_image'] = {}
+  if 'image1' not in session['question_image']:
+    image = math.floor(random.random() * 1000) + 1
+    session['question_image']['image_1'] = image
+  return render_template('step01.html', option=get_option({
+    'question_image': '%04d'%session['question_image']['image_1'],
+    'step': 1
+    }))
 
-@app.route('/ans01/<ans>')
-def index_1_1(ans):
-  return render_template('step02-0.html', option=get_option())
+@app.route('/step01a/<ans>')
+def index_1a(ans):
+  if 'answer' not in session:
+    session['answer'] = {}
+  session['answer']['ans_1'] = ans
+
+  return render_template('step01a.html', option=get_option({
+    'step': 1,
+    'message': '오, 제 생각과'
+    }))
+
+@app.route('/step02')
+def index_2():
+  if 'question_image' not in session:
+    session['question_image'] = {}
+  if 'image2' not in session['question_image']:
+    image = math.floor(random.random() * 1000) + 1
+    while image in list(session['question_image'].values()):
+      image = math.floor(random.random() * 1000) + 1
+    session['question_image']['image_2'] = image
+  return render_template('step01.html', option=get_option({
+    'question_image': '%04d'%session['question_image']['image_2'],
+    'step': 2
+    }))
+
+@app.route('/step02a/<ans>')
+def index_2a(ans):
+  if 'answer' not in session:
+    session['answer'] = {}
+  session['answer']['ans_2'] = ans
+
+  return render_template('step01a.html', option=get_option({
+    'step': 2,
+    'message': '오, 제 생각과'
+    }))
+
+@app.route('/step03')
+def index_3():
+  if 'question_image' not in session:
+    session['question_image'] = {}
+  if 'image3' not in session['question_image']:
+    image = math.floor(random.random() * 1000) + 1
+    while image in list(session['question_image'].values()):
+      image = math.floor(random.random() * 1000) + 1
+    session['question_image']['image_3'] = image
+  return render_template('step01.html', option=get_option({
+    'question_image': '%04d'%session['question_image']['image_3'],
+    'step': 3
+    }))
+
+@app.route('/step03a/<ans>')
+def index_3a(ans):
+  if 'answer' not in session:
+    session['answer'] = {}
+  session['answer']['ans_3'] = ans
+
+  return render_template('step01a.html', option=get_option({
+    'step': 3,
+    'message': '오, 제 생각과'
+    }))
+
+@app.route('/step04')
+def index_4():
+  if 'question_image' not in session:
+    session['question_image'] = {}
+  if 'image4' not in session['question_image']:
+    image = math.floor(random.random() * 1000) + 1
+    while image in list(session['question_image'].values()):
+      image = math.floor(random.random() * 1000) + 1
+    session['question_image']['image_4'] = image
+  return render_template('step01.html', option=get_option({
+    'question_image': '%04d'%session['question_image']['image_4'],
+    'step': 4
+    }))
+
+@app.route('/step04a/<ans>')
+def index_4a(ans):
+  if 'answer' not in session:
+    session['answer'] = {}
+  session['answer']['ans_4'] = ans
+
+  return render_template('step01a.html', option=get_option({
+    'step': 4,
+    'message': '오, 제 생각과'
+    }))
+
+@app.route('/step05')
+def index_5():
+  return render_template('step05.html', option=get_option())
+
+@app.route('/step06')
+def index_6():
+  return render_template('step06.html', option=get_option())
+
+@app.route('/step08')
+def index_8():
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.userImages
+    last_images = list(coll.find().hint([('$natural',-1)]).limit(599))
+    image_ids = [str(x['_id']) for x in last_images]
+    image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
+    if len(image_ids) < 599:
+      n = 599-len(image_ids)
+      image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+      auth_scores = list(mongo.connection.iquestion.authImages.find().hint([('$natural',-1)]).limit(n))
+      auth_scores = [x['prediction_point'] for x in auth_scores]
+      auth_scores.reverse()
+      image_scores = auth_scores + image_scores
+    
+    scores = image_scores + [session['user_score']]
+    positions = list(range(len(scores)))
+    sorted_positions = sorted(positions, key=lambda x:scores[x], reverse=True)
+    image_ids = image_ids + [session['user_image']]
+    image_ids = [image_ids[x] for x in sorted_positions]
+
+  return render_template('step08.html', option=get_option({
+      'image_ids': image_ids,
+      'rank': sorted_positions.index(len(positions)-1)+1
+    }))
+
+@app.route('/step09')
+def index_9():
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.userImages
+    last_images = list(coll.find({},{'prediction_point':1}))
+    image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
+    scores = image_scores + [session['user_score']]
+    positions = list(range(len(scores)))
+    sorted_positions = sorted(positions, key=lambda x:scores[x], reverse=True)
+
+  return render_template('step09.html', option=get_option({
+      'n_images': len(positions),
+      'rank': sorted_positions.index(len(positions)-1)+1
+    }))
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
@@ -127,14 +263,17 @@ def upload_image():
         time.sleep(1)
       with lock:
         app.config['tf-in-use'] = True
-        gradient_ascent.run(filepath, dirpath)
+        result = gradient_ascent.run(filepath, dirpath)
         app.config['tf-in-use'] = False
 
+      coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
       #image = Image.open(os.path.join(dirpath, '9.jpg'))
       #imr = image.resize((13, 13))
       #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
       copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
 
+      session['user_image'] = filename
+      session['user_score'] = int(result[0][0]*100)
       return jsonify({
         'r': 's',
         'i': filename

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://cosmiclab.co.kr/wooran/start2/step08.html -->
+<html ml-update="aware" style="--ml-zoom:1 !important;" class="gr__cosmiclab_co_kr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title></title>
+  <link href="/static/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/notosanskr.css">
+  <link rel="stylesheet" href="/static/common.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/jquery-1.11.3.min.js"></script>
+  <script src="/static/jquery-ui.min.js"></script>
+  <script src="/static/script.js"></script>
+
+  
+</head>
+<body data-gr-c-s-loaded="true">
+
+  <div class="preload" style="display: none;"></div>
+
+  <div class="iq_close_cont" style="display: none;">
+    <div class="iq_close_cont_inner">
+      <p>그만하시겠어요?</p>
+
+      <div class="btn_wrap">
+        <div class="btn_select eng cancel progress">
+          <a>취소</a>
+        </div>
+        <div class="btn_select eng exit progress">
+          <a>나가기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="iq_close">
+    <div class="list_inner">
+      <span class="bar bar1 motion"></span>
+      <span class="bar bar2 motion"></span>
+    </div>
+  </div>
+  
+
+  <div class="main">
+    <div class="m_inner">
+
+      <div class="txt_wrap step result">
+        <h2 class="iq_txt_ani showopacity3">나는 최근에 감상한 600장의 사진 중에서</h2>
+        <h2 class="iq_txt_ani showopacity4">당신의 사진이 {{option.rank}}번째로 마음에 듭니다.</h2>
+        
+      </div>
+      <div class="spec_wrap">
+        <div class="spec_inner clearfix">
+          {% for i in range(60) %}
+          <div class="img_wrap">
+            {% for j in range(10) %}
+            <div class="img_wrap_img">
+              <img src="{{option.imageoriginal}}{{option.image_ids[i*10+j]}}.jpg" alt="">
+            </div>
+            {% endfor %}
+          </div>
+          {% endfor %}
+          
+        </div>
+        
+      </div>
+
+
+      <div class="btn_wrap iq_wrap step delay2">
+        <div class="btn eng progress page9">
+          <a>next</a>
+        </div>
+      </div>
+      
+
+      
+      
+    </div>
+  </div>
+
+
+
+
+</body></html>
