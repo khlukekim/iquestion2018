@@ -319,28 +319,30 @@ def upload_image():
 
       while app.config['tf-in-use']:
         time.sleep(1)
-      try:
-        with lock:
+      with lock:
+        try:
           app.config['tf-in-use'] = True
           result = gradient_ascent.run(filepath, dirpath)
           app.config['tf-in-use'] = False
+        except Exception as e:
+          app.config['tf-in-use'] = False
+          return jsonify({
+            'r': 'f',
+            })
 
-        coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
-        #image = Image.open(os.path.join(dirpath, '9.jpg'))
-        #imr = image.resize((13, 13))
-        #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
-        copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
+      coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
+      #image = Image.open(os.path.join(dirpath, '9.jpg'))
+      #imr = image.resize((13, 13))
+      #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
+      copyfile(os.path.join(dirpath, '1.jpg'), os.path.join('static', 'images', 'size_original', filename+'.jpg'))
 
-        session['user_image'] = filename
-        session['user_score'] = int(result[0][0]*100)
-        return jsonify({
-          'r': 's',
-          'i': filename
-          })
-      except Exception as e:
-        return jsonify({
-          'r': 'f',
-          })
+      session['user_image'] = filename
+      session['user_score'] = int(result[0][0]*100)
+      return jsonify({
+        'r': 's',
+        'i': filename
+        })
+      
 
 
 
@@ -370,7 +372,13 @@ def control():
 @app.route('/pf-get-tags/<file>')
 def pfGetTags(file):
   with lock:
-    tags, caption = test_model.run(os.path.join(USER_IMAGE_FOLDER,file))
+    try:
+      app.config['tf-in-use'] = True
+      tags, caption = test_model.run(os.path.join(USER_IMAGE_FOLDER,file))
+      app.config['tf-in-use'] = False
+    except Eception:
+      app.config['tf-in-use'] = False
+      return jsonify({'r':'f', 't':'실패', 'c': ''})
   return jsonify({'r':'s','t':tags, 'c':caption})
 
 @app.route('/pf-update/<sessionHash>')
@@ -455,9 +463,14 @@ def process_image(filename, fileext):
   while app.config['tf-in-use']:
     time.sleep(1)
   with lock:
-    app.config['tf-in-use'] = True
-    score, feature = gradient_ascent.run(filepath, dirpath)
-    app.config['tf-in-use'] = False
+    try:
+      app.config['tf-in-use'] = True
+      score, feature = gradient_ascent.run(filepath, dirpath)
+      app.config['tf-in-use'] = False
+    except Eception:
+      app.config['tf-in-use'] = False
+      print('processing_failed')
+      return False
 
   #image = Image.open(os.path.join(dirpath, '9.jpg'))
   #imr = image.resize((13, 13))
@@ -468,16 +481,21 @@ def process_image(filename, fileext):
   print(score[0])
   app.config['pf-scores'].append(int(10000 * score[0]))
   print('processing_done: '+filename)
+  return True
 
 @app.route('/pf-w2w/<word>')
 def pf_w2w(word):
 
   while app.config['tf-in-use']:
     time.sleep(1)
-  with lock:
-    app.config['tf-in-use'] = True
-    words = word2word.main(word)
-    app.config['tf-in-use'] = False
+  with lock
+    try:
+      app.config['tf-in-use'] = True
+      words = word2word.main(word)
+      app.config['tf-in-use'] = False
+    except Eception:
+      app.config['tf-in-use'] = False
+      return jsonify({'r':'f', 'w':'실패'})
   print(word, words)
   return jsonify({
     'r': 's',
