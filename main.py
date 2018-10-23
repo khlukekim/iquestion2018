@@ -488,7 +488,7 @@ def pf_w2w(word):
 
   while app.config['tf-in-use']:
     time.sleep(1)
-  with lock
+  with lock:
     try:
       app.config['tf-in-use'] = True
       words = word2word.main(word)
