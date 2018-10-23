@@ -9,7 +9,7 @@
   <link href="/static/css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/static/notosanskr.css">
   <link rel="stylesheet" href="/static/common.css">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/style.css?v=1">
   <script src="/static/jquery-1.11.3.min.js"></script>
   <script src="/static/jquery-ui.min.js"></script>
   <script src="/static/script.js"></script>
@@ -57,7 +57,7 @@
           <div class="img_wrap">
             {% for j in range(10) %}
             <div class="img_wrap_img">
-              <img class="{{active if option.image_ids[i*10+j] == option.user_image}}" src="{{option.imageoriginal}}{{option.image_ids[i*10+j]}}.jpg" alt="">
+              <img class="{{'active' if option.image_ids[i*10+j] == option.user_image}}" src="{{option.imageoriginal}}{{option.image_ids[i*10+j]}}.jpg" alt="">
             </div>
             {% endfor %}
           </div>
