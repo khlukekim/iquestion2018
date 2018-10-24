@@ -11,6 +11,7 @@ from PIL import Image
 from shutil import copyfile
 import test_model, word2word
 import make_print_image
+from img_rotate import fix_orientation
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'mongodb'
@@ -500,7 +501,9 @@ def pf_upload_image():
       db_result = coll.insert_one(data)
 
       filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
-      file.save(os.path.join(app.config['USER_IMAGE_FOLDER'], filename))
+      filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
+      file.save(filepath)
+      fix_orientation(filepath, True)
       t = threading.Thread(target=process_image, args=(str(db_result.inserted_id),file.filename.split('.')[-1]))
       t.start()
 

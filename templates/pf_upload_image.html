@@ -36,8 +36,24 @@
   </style>
 </head>
 <body>
+<script src="/static/load-image.all.min.js"></script>
 <script type="text/javascript">
-  function loadImage(e) {
+  function imageChanged(e) {
+    loadImage(
+      e.target.files[0],
+      function (img) {
+        var imd = document.getElementById('imgdiv');
+        while(imd.children.length > 0) {
+          imd.removeChild(imd.children[0]);
+        }
+        imd.appendChild(img);
+        img.id = 'image';
+        document.getElementById('button2').className = 'button2 shown';
+      }, 
+      {maxWidth: '100%', maxHeight: '100%', orientation:true}
+    );
+    return false;
+
     var selectedFile = e.target.files[0];
     var reader = new FileReader();
     reader.onload = (function() {
@@ -69,12 +85,17 @@
   }
 </script>
   <form id='imageForm' hidden>
-    <input id='fileinput' type='file' name='user_image' hidden onchange="loadImage(event);">
+    <input id='fileinput' type='file' name='user_image' hidden onchange="imageChanged(event);">
   </form>
   <button class='button' onclick="document.getElementById('fileinput').click()">
     여기를 눌러 이미지를 선택해 주세요!
   </button>
-  <img id='image' style="max-width: 100%; max-height: 100%">
+  <div id='buttondiv'>
+
+  </div>
+  <div id='imgdiv'>
+  </div>
+  <!--img id='image' style="max-width: 100%; max-height: 100%"-->
   <button id='button2' class='button2 hidden' onclick="send()">
     여기를 눌러 이미지를 보내주세요!
   </button>

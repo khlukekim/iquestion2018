@@ -21,8 +21,8 @@
         d1.style.position = 'relative';
         var im = document.createElement('img');
         im.id = 'perf-image-inner-' + i;
-        im.style.maxWidth='100%';
-        im.style.maxHeight='100%';
+        im.style.width='100%';
+        im.style.height='100%';
         im.onload = (function(n) {return function(event){imageloaded(event.target, n);};})(i);
         d1.appendChild(im);
         var d2 = document.createElement('div');
@@ -32,9 +32,10 @@
         d2.style.lineHeight = 1;
         d2.style.position = 'absolute';
         d2.style.top = 0;
-        d2.style.paddingTop = '{{option.height/2}}px';
+        d2.style.paddingTop = '{{option.height/4}}px';
         d2.style.paddingBottom = '{{option.height/4}}px';
         d2.style.textAlign = 'center';
+        d2.style.vwSrticalAlign = 'middle';
         d2.style.fontSize = '{{option.height/2}}px';
         d2.style.color = 'white';
         d2.style.backgroundColor = 'rgba(0,0,0,0.5)';
@@ -50,18 +51,17 @@
         d3.style.position = 'absolute';
         var im2 = document.createElement('img');
         im2.id = 'perf2-image-'+i;
-        im2.style.maxWidth = '100%';
-        im2.style.maxHeight = '100%';
+        im2.style.width = '100%';
+        im2.style.height = '100%';
         d3.appendChild(im2);
         var d4 = document.createElement('div');
         d4.id = 'perf2-image-rank-'+i;
         d4.style.width = '100%';
-        d4.style.height = '{{option.height/2}}px';
+        d4.style.height = '100%';
         d4.style.lineHeight = 1;
         d4.style.position = 'absolute';
         d4.style.top = 0;
-        d4.style.paddingTop = '{{option.height/2}}px';
-        d4.style.paddingBottom = '{{option.height/4}}px';
+        d4.style.virticalAlign = 'middle';
         d4.style.textAlign = 'center';
         d4.style.fontSize = '{{option.height/2}}px';
         d4.style.color = 'white';
@@ -177,7 +177,7 @@
     });
 
     window.onload = function () {
-      window.requestAnimationFrame(slideImage);
+      //window.requestAnimationFrame(slideImage);
       stage(0);
       initImageViews();
     };
@@ -239,7 +239,8 @@
       var im = document.getElementById('perf3-image');
       im.src = document.getElementById('perf-image-inner-' + i).src;
       im.style.marginLeft = (option.width - imageWidthList[i] * option.height / imageHeightList[i] - 0) / 2 + 'px';
-      var d = document.getElementById('perf3-rank').innerHTML = positions[i];
+      var d = document.getElementById('perf3-rank');
+      d.innerHTML = positions[i];
       d.style.marginLeft = im.style.marginLeft;
     }
 
@@ -281,6 +282,11 @@ var N_STAGE = stageNames.length;
         var h = imageHeightList[i] / imageWidthList[i] * w;
         im.style.height = h + 'px';
         im.style.top = (option.height - h) / 2 + 'px';
+        var imr = document.getElementById('perf2-image-rank-'+i);
+        imr.style.height = h / 2 + 'px';
+        imr.style.fontSize = h / 2 + 'px';
+        imr.style.paddingTop = h / 4 + 'px';
+        imr.style.paddingBottom = h / 4 + 'px';
       }
     }
     var direction = -1;
@@ -356,7 +362,7 @@ var N_STAGE = stageNames.length;
     <div id='stage3' style='display:none; width: {{option.width}}px; height: {{option.height}}px; padding:0'>
       <div id='perf3-image-div' style='display:inline-block;height: 100%; position:relative;'>
         <img id='perf3-image' style='max-width: 100%; height:100%;'>
-        <div id='perf3-rank' style="width: 100%; height: {{option.height/2}}px; lineHeight: 1; position: absolute; top: 0; padding-top: {{option.height/2}}px; text-align: center; font-size: {{option.height/2}}px; color: white; background-color: rgba(0,0,0,0.5); display: none;"></div>
+        <div id='perf3-rank' style="width: {{option.height}}px; height: {{option.height/2}}px; line-height: 1; position: absolute; top: 0; padding-top: {{option.height/4}}px; padding-bottom: {{option.height/4}}px; text-align: center; font-size: {{option.height/2}}px; color: white; background-color: rgba(0,0,0,0.5); display: none;"></div>
 
       </div>
     </div>
