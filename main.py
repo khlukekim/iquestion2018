@@ -69,6 +69,9 @@ def test():
 
 @app.route('/')
 def index_0():
+  agent = request.user_agent.browser
+  if agent is not 'chrome':
+    return render_template('chrome.html', option=get_option())
   session['question_image'] = {}
   session['answer'] = {}
   return render_template('step00.html', option=get_option())

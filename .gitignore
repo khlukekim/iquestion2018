@@ -28,3 +28,4 @@ ko.bin
 printimage.*
 static/print_image/
 static/video/
+nohup.out*

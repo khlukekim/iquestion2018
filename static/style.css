@@ -7,7 +7,7 @@ a{ text-decoration:none; color:#222222; cursor:pointer; }
 img, video{ vertical-align:bottom; }
 video{ width:100%; }
 
-.gif_ani{ display:none; }
+.I_Question{ position:absolute; top:-9999px; left:-9999px; z-index:0; width:0; height:0; }
 
 html,body{ height:100%; font-family:'Noto Sans KR', sans-serif; font-size:24px; }
 h1,h2,h3,h4,h5,h6{ font-family: 'Roboto', sans-serif; }
@@ -95,9 +95,25 @@ h1,h2,h3,h4,h5,h6{ font-family: 'Roboto', sans-serif; }
 
 .preload{ position:fixed; top:0; left:0; width:100%; height:100%; background-color:#000000; z-index:99999; }
 
+.check_browser{ position:fixed; top:0; left:0; width:100%; height:100%; background-color:#000000; z-index:99998; display:table; }
+.check_browser .check_browser_inner{ text-align:center; color:#ffffff; display:table-cell; vertical-align:middle; }
+.check_browser .check_browser_inner h3{ font-weight:100; }
+
+.check_browser .check_browser_inner h3 b{ font-size:30px; text-transform:uppercase; font-weight:inherit; }
+.check_browser .check_browser_inner p{ font-size:24px; font-weight:100; }
+.check_browser .check_browser_inner .btn_select.chrome{ width:200px; }
+.check_browser .check_browser_inner .btn_select.chrome_close{ width:200px; }
+
+@media all and (max-width:700px){
+  .check_browser .check_browser_inner h3{ font-size:22px; margin-bottom:10px; }
+  .check_browser .check_browser_inner h3 span{ display:block; }
+  .check_browser .check_browser_inner p{ font-size:16px; }
+}
+
+
 .iq_close_cont{ position:fixed; top:0; left:0; width:100%; height:100%; background-color:#000000; z-index:99998; display:table; }
 .iq_close_cont .iq_close_cont_inner{ text-align:center; color:#ffffff; display:table-cell; vertical-align:middle; }
-.iq_close_cont .iq_close_cont_inner p{ font-size:34px; }
+.iq_close_cont .iq_close_cont_inner p{ font-size:24px; }
 
 
 .header{ padding-top:50px; position:absolute; top:0; left:0; width:100%;}
@@ -173,6 +189,8 @@ body{ height:100vh; padding-bottom:100px; background-color:#000000; }
 .main .m_inner .iq_wrap .iq_wrap_inner.progress_pic::after{ content:''; display:none; width:0; height:2px; position:absolute; bottom:0; left:0; background-image:url(/static/progress_bg.jpg); background-size:700px; background-position:center top; }
 .main .m_inner .iq_wrap .iq_wrap_inner.progress_pic.start::after{ animation:progress_pic 3s both; }
 @keyframes progress_pic{ from{ width:0; } to{ width:100%; } }
+.main .m_inner .iq_wrap .progress_pic2{ position:relative;}
+.main .m_inner .iq_wrap .progress_pic2::after{ content:''; width:0; height:2px; position:absolute; bottom:0; left:0; background-image:url(/static/progress_bg.jpg); background-size:700px; background-position:center top; animation:progress_pic 5s 3s both; }
 
 .main .m_inner .iq_wrap .iq_wrap_inner img{ width:100%; }
 .main .m_inner .iq_wrap .title{ position:absolute; top:45%; left:0; width:100%; }
