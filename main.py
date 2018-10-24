@@ -70,7 +70,8 @@ def test():
 @app.route('/')
 def index_0():
   agent = request.user_agent.browser
-  if agent is not 'chrome':
+  print(request.user_agent)
+  if agent not in ['chrome', 'safari']
     return render_template('chrome.html', option=get_option())
   session['question_image'] = {}
   session['answer'] = {}
