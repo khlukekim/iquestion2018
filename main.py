@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, url_for, request, jsonify, Response, session
+from flask_session import Session
 from pymongo import MongoClient
 from werkzeug.utils import secure_filename
 import datetime, os, time, random, threading, math
@@ -12,8 +13,10 @@ import test_model, word2word
 import make_print_image
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'mongodb'
 app.config['SECRET_KEY'] = 'naldskjfioqwjlksj'
 app.secret_key = 'naldskjfioqwjlksj'
+SECRET_KEY = 'naldskjfioqwjlksj'
 socketio = SocketIO(app)
 lock = Lock()
 app.config['tf-in-use'] = False
@@ -29,6 +32,8 @@ app.config['pf-scores'] = []
 app.config['print-image'] = 'na'
 
 app.config['last-opened-ex-page'] = ''
+
+Session(app)
 
 def get_option(d={}):
   o = {
@@ -69,8 +74,10 @@ def test():
 
 @app.route('/')
 def index_0():
+  for i in range(1, 5):
+    if 'image_'+str(i) in session:
+      del session['image_'+str(i)]
   agent = request.user_agent.browser
-  print(request.user_agent)
   if agent not in ['chrome', 'safari']:
     return render_template('chrome.html', option=get_option())
   session['question_image'] = {}
@@ -79,8 +86,6 @@ def index_0():
 
 @app.route('/<lang>')
 def index_lang(lang):
-  session['question_image'] = {}
-  session['answer'] = {}
   if lang == 'en':
     session['en'] = 1
   else :
@@ -89,17 +94,16 @@ def index_lang(lang):
 
 @app.route('/step01')
 def index_1():
-  if 'question_image' not in session:
-    session['question_image'] = {}
-  if 'image_1' not in session['question_image']:
+  if 'image_1' not in session:
     image = math.floor(random.random() * 1000) + 1
-    session['question_image']['image_1'] = image
+    while check_duplicated_image(image, 1):
+      image = math.floor(random.random() * 1000) + 1
+    session['image_1'] = image
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
       row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
-      session['question_image']['score_1'] = row['prediction_point']
-  session.modified = True
+      session['score_1'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': '%04d'%session['question_image']['image_1'],
+    'question_image': session['image_1'],
     'step': 1
     }))
 
@@ -133,14 +137,19 @@ def get_answer_message(p1, p2):
     else:
       return messages[1][r]
 
+def check_duplicated_image(image, step):
+  ids = [1,2,3,4]
+  for x in ids:
+    if x is not step:
+      if 'image_'+str(x) in session and session['image_'+str(x)] == image:
+        return True
+  return False
+
 @app.route('/step01a/<ans>')
 def index_1a(ans):
-  if 'answer' not in session:
-    session['answer'] = {}
-  session['answer']['ans_1'] = ans
-  session.modified = True
-  if 'question_image' in session and 'score_1' in session['question_image']:
-    msg = get_answer_message(session['question_image']['score_1'], ans)
+  session['answer_1'] = ans
+  if 'image_1' in session and 'score_1' in session:
+    msg = get_answer_message(session['score_1'], ans)
   else :
     msg = '이런, 문제가 생겼어요!'
 
@@ -151,68 +160,56 @@ def index_1a(ans):
 
 @app.route('/step02')
 def index_2():
-  if 'question_image' not in session:
-    session['question_image'] = {}
-  if 'image_2' not in session['question_image']:
+  if 'image_2' not in session:
     image = math.floor(random.random() * 1000) + 1
-    while image in list(session['question_image'].values()):
+    while check_duplicated_image(image, 2):
       image = math.floor(random.random() * 1000) + 1
-    session['question_image']['image_2'] = image
+    session['image_2'] = image
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      session['question_image']['score_2'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
-
-  session.modified = True
+      row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
+      session['score_2'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': '%04d'%session['question_image']['image_2'],
+    'question_image': session['image_2'],
     'step': 2
     }))
 
 @app.route('/step02a/<ans>')
 def index_2a(ans):
-  if 'answer' not in session:
-    session['answer'] = {}
-  session['answer']['ans_2'] = ans
-
-  session.modified = True
-  if 'question_image' in session and 'score_2' in session['question_image']:
-    msg = get_answer_message(session['question_image']['score_2'], ans)
+  session['answer_2'] = ans
+  if 'image_2' in session and 'score_2' in session:
+    msg = get_answer_message(session['score_2'], ans)
   else :
     msg = '이런, 문제가 생겼어요!'
+
   return render_template('step01a.html', option=get_option({
     'step': 2,
-    'message':msg
+    'message': msg
     }))
 
 @app.route('/step03')
 def index_3():
-  if 'question_image' not in session:
-    session['question_image'] = {}
-  if 'image_3' not in session['question_image']:
+  if 'image_3' not in session:
     image = math.floor(random.random() * 1000) + 1
-    while image in list(session['question_image'].values()):
+    while check_duplicated_image(image, 3):
       image = math.floor(random.random() * 1000) + 1
-    session['question_image']['image_3'] = image
+    session['image_3'] = image
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      session['question_image']['score_3'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
-
-  session.modified = True
-
+      row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
+      session['score_3'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': '%04d'%session['question_image']['image_3'],
+    'question_image': session['image_3'],
     'step': 3
     }))
 
 @app.route('/step03a/<ans>')
 def index_3a(ans):
-  if 'answer' not in session:
-    session['answer'] = {}
-  session['answer']['ans_3'] = ans
-
+  session['answer_3'] = ans
   session.modified = True
-  if 'question_image' in session and 'score_3' in session['question_image']:
-    msg = get_answer_message(session['question_image']['score_3'], ans)
+  if 'image_3' in session and 'score_3' in session:
+    msg = get_answer_message(session['score_3'], ans)
   else :
     msg = '이런, 문제가 생겼어요!'
+
   return render_template('step01a.html', option=get_option({
     'step': 3,
     'message': msg
@@ -220,43 +217,50 @@ def index_3a(ans):
 
 @app.route('/step04')
 def index_4():
-  if 'question_image' not in session:
-    session['question_image'] = {}
-  if 'image_4' not in session['question_image']:
+  if 'image_4' not in session:
     image = math.floor(random.random() * 1000) + 1
-    while image in list(session['question_image'].values()):
+    while check_duplicated_image(image, 4):
       image = math.floor(random.random() * 1000) + 1
-    session['question_image']['image_4'] = image
+    session['image_4'] = image
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      session['question_image']['score_4'] = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image})[0]['prediction_point']
-
-  session.modified = True
+      row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
+      session['score_4'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': '%04d'%session['question_image']['image_4'],
+    'question_image': session['image_4'],
     'step': 4
     }))
 
+def get_question_images():
+  r = []
+  for i in range(1, 5):
+    if 'image_'+str(i) in session:
+      r.append(session['image_'+str(i)])
+  return r
+
+def get_question_answers():
+  r = []
+  for i in range(1, 5):
+    if 'answer_'+str(i) in session:
+      r.append(session['answer_' + str(i)])
+  return r
+
 @app.route('/step04a/<ans>')
 def index_4a(ans):
-  if 'answer' not in session:
-    session['answer'] = {}
-  session['answer']['ans_4'] = ans
-
+  session['answer_4'] = ans
   session.modified = True
-  if 'question_image' in session and 'answer' in session:
-    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      coll = mongo.connection.iquestion.authAnswer
-      data = {
-          'created_at': datetime.datetime.now(),
-          'image': session['question_image'],
-          'answer': session['answer'],
-        }
-      db_result = coll.insert_one(data)
-  if 'question_image' in session and 'score_4' in session['question_image']:
-    msg = get_answer_message(session['question_image']['score_4'], ans)
+  if 'image_4' in session and 'score_4' in session:
+    msg = get_answer_message(session['score_4'], ans)
   else :
     msg = '이런, 문제가 생겼어요!'
 
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.authAnswer
+    data = {
+        'created_at': datetime.datetime.now(),
+        'image': get_question_images(),
+        'answer': get_question_answers(),
+      }
+    db_result = coll.insert_one(data)
   return render_template('step01a.html', option=get_option({
     'step': 4,
     'message': msg
