@@ -103,7 +103,7 @@ def index_1():
       row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
       session['score_1'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': session['image_1'],
+    'question_image': '%04d'%session['image_1'],
     'step': 1
     }))
 
@@ -169,7 +169,7 @@ def index_2():
       row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
       session['score_2'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': session['image_2'],
+    'question_image': '%04d'%session['image_2'],
     'step': 2
     }))
 
@@ -197,7 +197,7 @@ def index_3():
       row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
       session['score_3'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': session['image_3'],
+    'question_image': '%04d'%session['image_3'],
     'step': 3
     }))
 
@@ -226,7 +226,7 @@ def index_4():
       row = mongo.connection.iquestion.authImages.find({'original_filename':'%04d.jpg'%image}).limit(1)[0]     
       session['score_4'] = row['prediction_point']
   return render_template('step01.html', option=get_option({
-    'question_image': session['image_4'],
+    'question_image': '%04d'%session['image_4'],
     'step': 4
     }))
 
