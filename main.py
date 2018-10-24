@@ -270,6 +270,17 @@ def index_5():
 def index_6():
   return render_template('step06.html', option=get_option())
 
+@app.route('/step07')
+def index_7():
+  if 'user_image' in session:
+    user_image = session['user_image']
+  else:
+    user_image = ''
+
+  return render_template('step07.html', option=get_option({
+      'user_image': user_image
+    }))
+
 @app.route('/step08')
 def index_8():
   with MongoDBConnection(database_information[0], database_information[1]) as mongo:

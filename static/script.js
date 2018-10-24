@@ -247,7 +247,7 @@ function uploadImage() {
   XHR.addEventListener("load", function(event) {
     if (JSON.parse(event.target.responseText).r == 's') {
       console.log('image uploaded');
-      window.location.href = '/step08';
+      window.location.href = '/step07';
       //user_image = JSON.parse(event.target.responseText).i;
       ////document.getElementById('stage4-image-599').src = '{{option.imageoriginal}}' + user_image + '.jpg';
       //setTimeout(function() {document.getElementById('stage3-sendbutton').hidden = false; stage(400);}, 0);
