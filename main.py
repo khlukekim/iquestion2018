@@ -366,7 +366,7 @@ def index_9():
         image_ids[i] = '%04d'%math.floor(random.random()*1000)
     
 
-    t = threading.Thread(target=update_print_image, args=(image_ids))
+    t = threading.Thread(target=update_print_image, args=(image_ids,))
     t.start()
 
   return render_template('step09.html', option=get_option({
