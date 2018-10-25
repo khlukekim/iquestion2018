@@ -25,7 +25,7 @@
     function reassignImages() {
       for(var i = 0; i<col * row; i++) {
         var img = document.getElementById('image'+i);
-        img.src = getImageAddress(colI * row + rowI);
+        img.src = getImageAddress(i);
       }
     }
 
