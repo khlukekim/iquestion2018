@@ -7,6 +7,7 @@ def main(images):
   for i in range(0, 60):
       for j in range(0, 10):
           p = Image.open('static/images/size_original/%s.jpg'%images[j * 60 + i])
+          p = p.resize((56, 56))
           im.paste(p,(270 + i * 60, j * 60)) 
 
   f1 = ImageFont.truetype('jackinput.TTF', 90)
