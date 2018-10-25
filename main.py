@@ -354,7 +354,7 @@ def index_9():
     t.start()
     
     if 'user_image' in session:
-      socketio.emit('ex message', session['user_image']+':'+str(session['user_score'])+':'+sorted_scores.index(session['user_score']), room='ex')
+      socketio.emit('ex message', session['user_image']+':'+str(session['user_score'])+':'+str(sorted_scores.index(session['user_score'])), room='ex')
 
   return render_template('step09.html', option=get_option({
       'n_images': len(scores),
