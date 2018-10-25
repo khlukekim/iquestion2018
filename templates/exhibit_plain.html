@@ -50,18 +50,19 @@
 
     socket.on('ex message', function(data) {
       stage(0);
+      var m = data.split(':');
+      rearrangeImages(m[0], parseInt(m[1]))
+      var i;
+      for(i = 0; i<col*row; i++) {
+        if (sortedIds[i] == col*row-1) {
+          break;
+        }
+      }
+      rank600 = i;
+      document.getElementById('image'+i).src = getImageAddress(rank600);
       console.log(data)
       setTimeout(function(){
-        var m = data.split(':');
-        rearrangeImages(m[0], parseInt(m[1]))
         reassignImages()
-        var i;
-        for(i = 0; i<col*row; i++) {
-          if (sortedIds[i] == col*row-1) {
-            break;
-          }
-        }
-        rank600 = i;
         rankAll = parseInt(m[2]);
         document.getElementById('tagline').innerHTML = '아이퀘스천은 ' + (col * row) + '장의 사진 중에서 당신의 사진을 ' + (rank600+1) + '번째로 좋아합니다.';
         document.getElementById('tagline2').innerHTML = '아이퀘스천은 지금까지 감상한 ' + m[3]  + '장의 사진 중에서 당신의 사진을 ' + (rankAll + 1) + '번째로 좋아합니다.';
