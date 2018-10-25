@@ -392,6 +392,7 @@ def upload_image():
       filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
       dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
       file.save(filepath)
+      fix_orientation(filepath, True)
 
       while app.config['tf-in-use']:
         time.sleep(1)
