@@ -393,7 +393,7 @@ def upload_image():
             'r': 'f',
             })
 
-      coll.update({'_id':db_result.inserted_id},{'prediction_point':int(result[0][0]*100)})
+      coll.update({'_id':db_result.inserted_id},{'$set':{'prediction_point':int(result[0][0]*100)}})
       #image = Image.open(os.path.join(dirpath, '9.jpg'))
       #imr = image.resize((13, 13))
       #image.save(os.path.join('static', 'images', 'size_original', filename + '.jpg'))
@@ -501,7 +501,7 @@ def pf_upload_image():
       })
   if file:
     with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      coll = mongo.connection.iquestion.userImages
+      coll = mongo.connection.iquestion.pfImages
       data = {
         'created_at': datetime.datetime.now(),
         'prediction_point': 0,
