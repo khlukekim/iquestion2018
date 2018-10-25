@@ -75,6 +75,7 @@ def test():
 
 @app.route('/')
 def index_0():
+  session['local'] = 0
   for i in range(1, 5):
     if 'image_'+str(i) in session:
       del session['image_'+str(i)]
@@ -94,6 +95,21 @@ def index_lang(lang):
     session['en'] = 0
   print('step0lang', session, (lang))
   return render_template('step00.html', option=get_option())
+
+@app.route('/local')
+def index_local():
+  session['local'] = 1
+  for i in range(1, 5):
+    if 'image_'+str(i) in session:
+      del session['image_'+str(i)]
+  agent = request.user_agent.browser
+  if agent not in ['chrome', 'safari']:
+    return render_template('chrome.html', option=get_option())
+  session['question_image'] = {}
+  session['answer'] = {}
+  print('step0', session)
+  return render_template('step00.html', option=get_option())
+
 
 @app.route('/step01')
 def index_1():
@@ -331,6 +347,25 @@ def index_9():
     positions = list(range(len(scores)))
     sorted_positions = sorted(positions, key=lambda x:scores[x], reverse=True)
     sorted_scores = sorted(scores, reverse=True)
+
+  if 'local' in session and session['local'] ==1 :
+    session['local'] = 0
+    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+      col = 60
+      row = 10
+      coll = mongo.connection.iquestion.userImages
+      N = col * row
+      last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
+      image_ids = [str(x['_id']) for x in last_images]
+      if len(image_ids) < N:
+        n = N-len(image_ids)
+        image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+
+    for i in range(len(image_ids)):
+      if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
+        image_ids[i] = '%04d'%math.floor(random.random()*1000)
+    
+    app.config['print-image'] = make_print_image.main(image_ids)
 
   return render_template('step09.html', option=get_option({
       'n_images': len(scores),
