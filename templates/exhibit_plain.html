@@ -38,7 +38,7 @@
       for(var i = 0; i<image_ids.length; i++) {
         sortedIds.push(i);
       }
-      sortedIds.sort(function(x,y){return image_scores[x] < image_scores[y]});
+      sortedIds.sort(function(x,y){return image_scores[x] < image_scores[y] ? 1 : -1});
     }
 
     var sessionHash = Math.random().toString(10);
@@ -50,6 +50,7 @@
 
     socket.on('ex message', function(data) {
       stage(0);
+      console.log(data)
       setTimeout(function(){
         var m = data.split(':');
         rearrangeImages(m[0], parseInt(m[1]))
@@ -62,15 +63,15 @@
         }
         rank600 = i;
         rankAll = parseInt(m[2]);
-        document.getElementById('tagline').innerHTML = '아이퀘스천은 600장의 사진 중에서 당신의 사진을 ' + (rank600+1) + '번째로 좋아합니다.';
-        document.getElementById('tagline2').innerHTML = '아이퀘스천은 지금까지 감상한 모든 사진 중에서 당신의 사진을 ' + (rankAll + 1) + '번째로 좋아합니다.';
+        document.getElementById('tagline').innerHTML = '아이퀘스천은 ' + (col * row) + '장의 사진 중에서 당신의 사진을 ' + (rank600+1) + '번째로 좋아합니다.';
+        document.getElementById('tagline2').innerHTML = '아이퀘스천은 지금까지 감상한 ' + m[3]  + '장의 사진 중에서 당신의 사진을 ' + (rankAll + 1) + '번째로 좋아합니다.';
         showStage(3);
-        setTimeout(function(){stage(0)}, 6000);
-        setTimeout(function(){stage(2)}, 11000);
-        setTimeout(function(){stage(0)}, 16000);
-        setTimeout(function(){stage(4)}, 21000);
-        setTimeout(function(){stage(0)}, 26000);
-        setTimeout(function(){stage(1)}, 31000);
+        //setTimeout(function(){stage(0)}, 6000);
+        setTimeout(function(){showStage(2)}, 6000);
+        setTimeout(function(){hideStage(2)}, 11000);
+        setTimeout(function(){showStage(4)}, 16000);
+        setTimeout(function(){hideStage(4)}, 21000);
+        setTimeout(function(){stage(1)}, 26000);
       }, 3000);
     });
 
@@ -79,8 +80,9 @@
     window.onload = function() {
       initImageViews();
       flickingImageN = Math.floor(Math.random() * row * col);
-      triggerFlick();
-      flick();
+      
+        triggerFlick();
+        flick();
       showStage(1);
     }
 
@@ -112,8 +114,8 @@
       this.speed = 0.0012 * (0.5 + 2 * Math.random());
       this.time = 0;
       this.maxTime = 2;
-      this.opacity = 1;
       this.N = imageN;
+      this.opacity = parseFloat(document.getElementById('image'+this.N).style.opacity);
       this.shouldFlick = true;
 
       this.init = function() {
@@ -165,7 +167,7 @@
     }
 
     function startFlick() {
-      shouldFlick = true;
+      //shouldFlick = true;
       flicking = true;
     }
 
@@ -197,6 +199,7 @@
     }
 
     function stage(stage){
+      console.log('stage: ' + stage);
       hideStage();
       showStage(stage);
     }
@@ -209,13 +212,11 @@
         hideDiv(document.getElementById('image_container'));
         setTimeout(function(){hideAllImages();},2000);
       } else if (currentStage == 2) {
-        hideAllImages();
         hideDiv(document.getElementById('tagline'));
       } else if (currentStage == 3) {
         hideDiv(document.getElementById('image_container'));
         setTimeout(function(){hideAllImages();},2000);
-      } else if (currentStage == 2) {
-        hideAllImages();
+      } else if (currentStage == 4) {
         hideDiv(document.getElementById('tagline2'));
       }
     }
@@ -225,12 +226,12 @@
 
       } else if (stage == 1) {
         showDiv(document.getElementById('image_container'));
-        setTimeout(function(){showAllImages();}, 2000);
+        //setTimeout(function(){showAllImages();}, 2000);
         startFlick();
         currentStage = 1;
       } else if (stage == 2) {
         //setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
-        setTimeout(function(){showDiv(document.getElementById('tagline'))}, 4500);
+        showDiv(document.getElementById('tagline'));
         currentStage = 2;
       } else if (stage == 3) {
         showDiv(document.getElementById('image_container'));
@@ -238,7 +239,7 @@
         currentStage = 3;
       } else if (stage == 4) {
         //setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
-        setTimeout(function(){showDiv(document.getElementById('tagline2'))}, 4500);
+        showDiv(document.getElementById('tagline2'));
         currentStage = 4;
 
       }
