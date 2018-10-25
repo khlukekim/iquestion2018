@@ -51,7 +51,7 @@
         <div class="txt_wrap step result">
         {% if option.en %}
           <h2 class="iq_txt_ani showopacity3">Out of all the {{option.n_images}} pictures I have seen,</h2>
-          <h2 class="iq_txt_ani showopacity4">I would rank yours the {{option.rank}}{{['st', 'nd', 'rd'][option.rank%10] if option.rank%10 < 4 else 'th'}}.</h2>
+          <h2 class="iq_txt_ani showopacity4">I would rank yours the {{option.rank}}{{['th', 'st', 'nd', 'rd'][option.rank%10] if option.rank%10 < 5 else 'th'}}.</h2>
         {% else %}
           <h2 class="iq_txt_ani showopacity3">나는 지금까지 감상한 {{option.n_images}}장의 사진 중에서</h2>
           <h2 class="iq_txt_ani showopacity4">당신의 사진을 {{option.rank}}번째로 좋아합니다.</h2>

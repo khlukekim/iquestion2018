@@ -396,7 +396,7 @@ def exhibit(size, col, row, margin):
     image_ids = [str(x['_id']) for x in last_images]
     image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
     if len(image_ids) < N:
-      n = N-len(image_ids)
+      n = N-len(image_ids) - 1
       image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
       auth_scores = list(mongo.connection.iquestion.authImages.find().hint([('$natural',-1)]).limit(n))
       auth_scores = [x['prediction_point']*100 for x in auth_scores]

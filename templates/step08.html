@@ -48,7 +48,7 @@
 
       <div class="txt_wrap step result">
         {% if option.en %}
-        <h2 class="iq_txt_ani showopacity3">I like your picture {{option.rank}}{{['st', 'nd', 'rd'][option.rank%10] if option.rank%10 < 4 else 'th'}}</h2>
+        <h2 class="iq_txt_ani showopacity3">I like your picture {{option.rank}}{{['th', 'st', 'nd', 'rd'][option.rank%10] if option.rank%10 < 5 else 'th'}}</h2>
         <h2 class="iq_txt_ani showopacity4">out of the 600 recent pictures I have seen</h2>
         {% else %}
         <h2 class="iq_txt_ani showopacity3">나는 최근에 감상한 600장의 사진 중에서</h2>
