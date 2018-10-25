@@ -83,18 +83,21 @@ def index_0():
     return render_template('chrome.html', option=get_option())
   session['question_image'] = {}
   session['answer'] = {}
+  print('step0', session)
   return render_template('step00.html', option=get_option())
 
 @app.route('/<lang>')
 def index_lang(lang):
   if lang == 'en':
     session['en'] = 1
-  else :
+  elif lang == 'ko' :
     session['en'] = 0
+  print('step0lang', session, (lang))
   return render_template('step00.html', option=get_option())
 
 @app.route('/step01')
 def index_1():
+  print('step1',session)
   if 'image_1' not in session:
     image = math.floor(random.random() * 1000) + 1
     while check_duplicated_image(image, 1):

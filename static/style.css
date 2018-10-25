@@ -209,7 +209,7 @@ body{ height:100vh; padding-bottom:100px; background-color:#000000; }
 @keyframes showpic{ from{ transform:translateY(50px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
 
 .main .m_inner .txt_wrap{ margin-bottom:20px; }
-.main .m_inner .txt_wrap h2{ font-weight:100; text-transform:uppercase; color:#ffffff; }
+.main .m_inner .txt_wrap h2{ font-weight:100; color:#ffffff; }
 .main .m_inner .txt_wrap h2.showlater{ display:none; }
 .main .m_inner .txt_wrap p{ color:#ffffff; font-weight:100; }
 
