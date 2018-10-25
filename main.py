@@ -347,6 +347,10 @@ def exhibit(size, col, row, margin):
     if len(image_ids) < N:
       n = N-len(image_ids)
       image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+
+  for i in range(len(image_ids)):
+    if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
+      images_ids[i] = '%04d'%math.floor(math.random()*1000)
     
   return render_template('exhibit_plain.html', option=get_option({
     'size':size,
