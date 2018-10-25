@@ -392,7 +392,10 @@ def upload_image():
       filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
       dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
       file.save(filepath)
-      fix_orientation(filepath, True)
+      try:
+        fix_orientation(filepath, True)
+      except Exception:
+        pass
 
       while app.config['tf-in-use']:
         time.sleep(1)
@@ -526,7 +529,10 @@ def pf_upload_image():
       filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
       filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
       file.save(filepath)
-      fix_orientation(filepath, True)
+      try:
+        fix_orientation(filepath, True)
+      except Exception:
+        pass
       t = threading.Thread(target=process_image, args=(str(db_result.inserted_id),file.filename.split('.')[-1]))
       t.start()
 
