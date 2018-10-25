@@ -3,6 +3,7 @@
 <head>
   <title>iQuestion</title>
   <link rel="stylesheet" type="text/css" href="{{option.stylecss}}">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
   <script type="text/javascript">
     var currentStage = 0;
     var size = {{option.size}};
@@ -12,33 +13,96 @@
     var shouldFlick = false;
     var flickers = [];
     var image_ids = {{option.image_ids|safe}};
+    var image_scores = {{option.image_scores|safe}};
+    var rank600 = 0;
+    var rankAll = 0;
+    var sortedIds = [];
+    for(var i = 0; i<image_ids.length; i++) {
+      sortedIds.push(i);
+    }
+    sortedIds.sort(function(x,y){return image_scores[x] < image_scores[y]});
+
+    function reassignImages() {
+      for(var i = 0; i<col * row; i++) {
+        var img = document.getElementById('image'+i);
+        img.src = getImageAddress(colI * row + rowI);
+      }
+    }
+
+    function rearrangeImages(new_id, new_score) {
+      image_ids.splice(0, 1);
+      image_ids.push(new_id);
+      image_scores.splice(0, 1);
+      image_scores.push(new_score);
+      sortedIds = [];
+      for(var i = 0; i<image_ids.length; i++) {
+        sortedIds.push(i);
+      }
+      sortedIds.sort(function(x,y){return image_scores[x] < image_scores[y]});
+    }
+
+    var sessionHash = Math.random().toString(10);
+    var socket = io.connect('http://'+document.domain + ':' + location.port);
+    socket.on('connect', function() {
+      console.log('socket connected');
+      socket.emit('ex join', sessionHash);
+    });
+
+    socket.on('ex message', function(data) {
+      stage(0);
+      setTimeout(function(){
+        var m = data.split(':');
+        rearrangeImages(m[0], parseInt(m[1]))
+        reassignImages()
+        var i;
+        for(i = 0; i<col*row; i++) {
+          if (sortedIds[i] == col*row-1) {
+            break;
+          }
+        }
+        rank600 = i;
+        rankAll = parseInt(m[2]);
+        document.getElementById('tagline').innerHTML = '아이퀘스천은 600장의 사진 중에서 당신의 사진을 ' + (rank600+1) + '번째로 좋아합니다.';
+        document.getElementById('tagline2').innerHTML = '아이퀘스천은 지금까지 감상한 모든 사진 중에서 당신의 사진을 ' + (rankAll + 1) + '번째로 좋아합니다.';
+        showStage(3);
+        setTimeout(function(){stage(0)}, 6000);
+        setTimeout(function(){stage(2)}, 11000);
+        setTimeout(function(){stage(0)}, 16000);
+        setTimeout(function(){stage(4)}, 21000);
+        setTimeout(function(){stage(0)}, 26000);
+        setTimeout(function(){stage(1)}, 31000);
+      }, 3000);
+    });
+
+
 
     window.onload = function() {
       initImageViews();
-      document.onclick = function(e) {
-        nextStage();
-      }
       flickingImageN = Math.floor(Math.random() * row * col);
       triggerFlick();
       flick();
+      showStage(1);
     }
 
+    var flicking = true;
     function triggerFlick() {
-      var done = false;
-      var counter = 0;
-      while (!done && counter < 640) {
-        var n = Math.floor(Math.random() * row * col);
-        var ex = false;
-        for (var i = 0; i<flickers.length; i++) {
-          if (flickers[i].N == n) {
-            ex = true;
+      if( flicking){
+        var done = false;
+        var counter = 0;
+        while (!done && counter < 640) {
+          var n = Math.floor(Math.random() * row * col);
+          var ex = false;
+          for (var i = 0; i<flickers.length; i++) {
+            if (flickers[i].N == n) {
+              ex = true;
+            }
           }
+          if (!ex) {
+            flickers.push(new Flick(n));
+            done = true;
+          }
+          counter ++;
         }
-        if (!ex) {
-          flickers.push(new Flick(n));
-          done = true;
-        }
-        counter ++;
       }
       setTimeout(triggerFlick, Math.floor(Math.random() * 50))
     }
@@ -86,6 +150,7 @@
       flickingImageN = Math.floor(Math.random() * col * row);
     }
 
+
     function flick() {
       for(var i = 0; i<flickers.length; i++) {
         var f = flickers[i];
@@ -101,12 +166,14 @@
 
     function startFlick() {
       shouldFlick = true;
+      flicking = true;
     }
 
     function stopFlick() {
-      shouldFlick = false;
-      document.getElementById('image'+flickingImageN).style.opacity = 1;
-      initFlick();
+      for(var i = 0; i<flickers.length; i++) {
+        flickers[i].shouldFlick = false;
+      }
+      flicking = false;
     }
 
     function nextStage() {
@@ -129,6 +196,54 @@
       }
     }
 
+    function stage(stage){
+      hideStage();
+      showStage(stage);
+    }
+
+    function hideStage() {
+      if (currentStage == 0) {
+        //hideDiv(document.getElementById('image_container'));
+      } else if (currentStage == 1) {
+        stopFlick()
+        hideDiv(document.getElementById('image_container'));
+        setTimeout(function(){hideAllImages();},2000);
+      } else if (currentStage == 2) {
+        hideAllImages();
+        hideDiv(document.getElementById('tagline'));
+      } else if (currentStage == 3) {
+        hideDiv(document.getElementById('image_container'));
+        setTimeout(function(){hideAllImages();},2000);
+      } else if (currentStage == 2) {
+        hideAllImages();
+        hideDiv(document.getElementById('tagline2'));
+      }
+    }
+
+    function showStage(stage) {
+      if (stage == 0) {
+
+      } else if (stage == 1) {
+        showDiv(document.getElementById('image_container'));
+        setTimeout(function(){showAllImages();}, 2000);
+        startFlick();
+        currentStage = 1;
+      } else if (stage == 2) {
+        //setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
+        setTimeout(function(){showDiv(document.getElementById('tagline'))}, 4500);
+        currentStage = 2;
+      } else if (stage == 3) {
+        showDiv(document.getElementById('image_container'));
+        showImage(rank600);
+        currentStage = 3;
+      } else if (stage == 4) {
+        //setTimeout(function(){showImage(Math.floor(Math.random()*row*col))}, 3500);
+        setTimeout(function(){showDiv(document.getElementById('tagline2'))}, 4500);
+        currentStage = 4;
+
+      }
+    }
+
     function buildStyle(styleDict) {
       var styleString = '';
       for (var k in styleDict) {
@@ -138,7 +253,7 @@
     }
 
     function getImageAddress(index) {
-      var filename = image_ids[index] + '';
+      var filename = image_ids[sortedIds[index]] + '';
       while (filename.length < 4) {
         filename = '0' + filename;
       }
@@ -239,6 +354,9 @@
     <div id='image_container' class='exhibit-container hidden'>
     </div>
     <div id='tagline' class='exhibit-tagline hidden'>
+      I Question이 당신의 사진을 좋아합니다.
+    </div>
+    <div id='tagline2' class='exhibit-tagline hidden'>
       I Question이 당신의 사진을 좋아합니다.
     </div>
   </div>

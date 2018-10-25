@@ -340,7 +340,7 @@ def index_9():
     image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
     if 'user_score' not in session:
       session['user_score'] = 0
-    if 'user_score' in session and ['user_score'] in image_scores:
+    if 'user_score' in session and session['user_score'] in image_scores:
       scores = image_scores
     else :
       scores = image_scores + [session['user_score']]
@@ -350,36 +350,21 @@ def index_9():
 
   if 'local' in session and session['local'] ==1 :
     session['local'] = 0
-    with MongoDBConnection(database_information[0], database_information[1]) as mongo:
-      col = 60
-      row = 10
-      coll = mongo.connection.iquestion.userImages
-      N = col * row
-      last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
-      image_ids = [str(x['_id']) for x in last_images]
-      if len(image_ids) < N:
-        n = N-len(image_ids)
-        image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
-
-    for i in range(len(image_ids)):
-      if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
-        image_ids[i] = '%04d'%math.floor(random.random()*1000)
-    
-
-    t = threading.Thread(target=update_print_image, args=(image_ids,))
+    t = threading.Thread(target=update_print_image)
     t.start()
+    
+    if 'user_image' in session:
+      socketio.emit('ex message', session['user_image']+':'+str(session['user_score'])+':'+sorted_scores.index(session['user_score']), room='ex')
 
   return render_template('step09.html', option=get_option({
       'n_images': len(scores),
       'rank': sorted_scores.index(session['user_score'])
     }))
 
-def update_print_image(image_ids):
-  app.config['print-image'] = make_print_image.main(image_ids)
-
-@app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
-def exhibit(size, col, row, margin):
+def update_print_image():
   with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    col = 60
+    row = 10
     coll = mongo.connection.iquestion.userImages
     N = col * row
     last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
@@ -391,13 +376,44 @@ def exhibit(size, col, row, margin):
   for i in range(len(image_ids)):
     if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
       image_ids[i] = '%04d'%math.floor(random.random()*1000)
+
+  app.config['print-image'] = make_print_image.main(image_ids)
+
+@app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
+def exhibit(size, col, row, margin):
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.userImages
+    N = col * row
+    last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
+    image_ids = [str(x['_id']) for x in last_images]
+    image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
+    if len(image_ids) < N:
+      n = N-len(image_ids)
+      image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+
+    coll = mongo.connection.iquestion.userImages
+    last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
+    image_ids = [str(x['_id']) for x in last_images]
+    image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
+    if len(image_ids) < N:
+      n = N-len(image_ids)
+      image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+      auth_scores = list(mongo.connection.iquestion.authImages.find().hint([('$natural',-1)]).limit(n))
+      auth_scores = [x['prediction_point'] for x in auth_scores]
+      auth_scores.reverse()
+      image_scores = auth_scores + image_scores
+
+  for i in range(len(image_ids)):
+    if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
+      image_ids[i] = '%04d'%math.floor(random.random()*1000)
     
   return render_template('exhibit_plain.html', option=get_option({
     'size':size,
     'col': col,
     'row': row,
     'margin': margin,
-    'image_ids': image_ids
+    'image_ids': image_ids,
+    'image_scores': image_scores,
     }))
 
 @app.route('/image', methods=['POST'])
@@ -671,6 +687,12 @@ def onsockcon():
 @socketio.on_error()
 def socketerror(e):
   print(e)
+
+@socketio.on('ex join')
+def handle_ex_join(sessionHash):
+  print('ex joined: ' + sessionHash)
+  room = 'ex'
+  join_room(room)
 
 class MongoDBConnection(object):
  # MongoDB Connection class for context manager
