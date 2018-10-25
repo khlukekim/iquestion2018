@@ -365,12 +365,17 @@ def index_9():
       if not os.path.exists('static/images/size_original/' + image_ids[i] + '.jpg'):
         image_ids[i] = '%04d'%math.floor(random.random()*1000)
     
-    app.config['print-image'] = make_print_image.main(image_ids)
+
+    t = threading.Thread(target=update_print_image, args=(image_ids))
+    t.start()
 
   return render_template('step09.html', option=get_option({
       'n_images': len(scores),
       'rank': sorted_scores.index(session['user_score'])
     }))
+
+def update_print_image(image_ids):
+  app.config['print-image'] = make_print_image.main(image_ids)
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
