@@ -320,15 +320,21 @@ def index_8():
 def index_9():
   with MongoDBConnection(database_information[0], database_information[1]) as mongo:
     coll = mongo.connection.iquestion.userImages
-    last_images = list(coll.find({},{'prediction_point':1}))
+    last_images = list(coll.find({},projection={'prediction_point':1}))
     image_scores = [x['prediction_point'] if 'prediction_point' in x else 0 for x in last_images]
-    scores = image_scores + [session['user_score']]
+    if 'user_score' not in session:
+      session['user_score'] = 0
+    if 'user_score' in session and ['user_score'] in image_scores:
+      scores = image_scores
+    else :
+      scores = image_scores + [session['user_score']]
     positions = list(range(len(scores)))
     sorted_positions = sorted(positions, key=lambda x:scores[x], reverse=True)
+    sorted_scores = sorted(scores, reverse=True)
 
   return render_template('step09.html', option=get_option({
-      'n_images': len(positions),
-      'rank': sorted_positions.index(len(positions)-1)+1
+      'n_images': len(scores),
+      'rank': sorted_scores.index(session['user_score'])
     }))
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
