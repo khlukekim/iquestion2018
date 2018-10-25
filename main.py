@@ -339,12 +339,21 @@ def index_9():
 
 @app.route('/ex/<int:size>/<int:col>/<int:row>/<int:margin>')
 def exhibit(size, col, row, margin):
+  with MongoDBConnection(database_information[0], database_information[1]) as mongo:
+    coll = mongo.connection.iquestion.userImages
+    N = col * row
+    last_images = list(coll.find().hint([('$natural',-1)]).limit(N))
+    image_ids = [str(x['_id']) for x in last_images]
+    if len(image_ids) < N:
+      n = N-len(image_ids)
+      image_ids = ['%04d'%x for x in range(1000 - n, 1001)] + image_ids
+    
   return render_template('exhibit_plain.html', option=get_option({
-    'stylecss': url_for('static', filename='style.css'),
     'size':size,
     'col': col,
     'row': row,
     'margin': margin,
+    'image_ids': image_ids
     }))
 
 @app.route('/image', methods=['POST'])

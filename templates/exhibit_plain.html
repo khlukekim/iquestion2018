@@ -11,6 +11,7 @@
     var margin = {{option.margin}};
     var shouldFlick = false;
     var flickers = [];
+    var image_ids = {{option.image_ids|safe}};
 
     window.onload = function() {
       initImageViews();
@@ -137,7 +138,7 @@
     }
 
     function getImageAddress(index) {
-      var filename = (index+1) + '';
+      var filename = image_ids[index] + '';
       while (filename.length < 4) {
         filename = '0' + filename;
       }
