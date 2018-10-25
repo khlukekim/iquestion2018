@@ -59,9 +59,8 @@
         }
       }
       rank600 = i;
-      document.getElementById('image'+i).src = getImageAddress(rank600);
       console.log(data)
-      setTimeout(function(){
+      document.getElementById('image'+rank600).onload = function(){
         reassignImages()
         rankAll = parseInt(m[2]);
         document.getElementById('tagline').innerHTML = '아이퀘스천은 ' + (col * row) + '장의 사진 중에서 당신의 사진을 ' + (rank600+1) + '번째로 좋아합니다.';
@@ -73,7 +72,9 @@
         setTimeout(function(){showStage(4)}, 16000);
         setTimeout(function(){hideStage(4)}, 21000);
         setTimeout(function(){stage(1)}, 26000);
-      }, 5000);
+        document.getElementById('image'+rank600).onload = null;
+      }
+      document.getElementById('image'+rank600).src = getImageAddress(rank600);
     });
 
 
