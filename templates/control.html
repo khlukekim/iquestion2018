@@ -31,7 +31,9 @@
         if (data.r == 's') {
           $('#tagsText').val(data.t.join(' '));
           $('#captionText').val(data.c);
-        }
+	} else {
+          $('#tagsText').val('에러');
+	}
       }
     });
   }

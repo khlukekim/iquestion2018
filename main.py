@@ -507,14 +507,17 @@ def control():
 
 @app.route('/pf-get-tags/<file>')
 def pfGetTags(file):
+  while app.config['tf-in-use']:
+    time.sleep(1)
   with lock:
     try:
       app.config['tf-in-use'] = True
       tags, caption = test_model.run(os.path.join(USER_IMAGE_FOLDER,file))
       app.config['tf-in-use'] = False
-    except Eception:
+    except Exception as e:
       app.config['tf-in-use'] = False
-      return jsonify({'r':'f', 't':'실패', 'c': ''})
+      print(e)
+      return jsonify({'r':'f', 't':'실패', 'c': str(e)})
   return jsonify({'r':'s','t':tags, 'c':caption})
 
 @app.route('/pf-update/<sessionHash>')
