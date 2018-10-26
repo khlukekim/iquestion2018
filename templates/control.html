@@ -14,7 +14,10 @@
 
   var userImages = [];
   var userScores = [];
-  function send(val) {
+  function send(val, target) {
+    if (target) {
+      //target.innerText += ' 전송중...';
+    }
     socket.emit('control message', val);
     /*$.ajax({
       url: '/pf-message/'+val,
@@ -24,21 +27,24 @@
     });*/
   }
 
-  function getTags() {
+  function getTags(target) {
+    target.innerText += ' 전송중...';
     $.ajax({    
       url: '/pf-get-tags/' + userImages[parseInt($('#tagNumber').val())],
       success: function(data) {
         if (data.r == 's') {
           $('#tagsText').val(data.t.join(' '));
           $('#captionText').val(data.c);
-	} else {
+	      } else {
           $('#tagsText').val('에러');
-	}
+	      }
+        target.innerText = target.innerText.split(' 전송중...')[0];
       }
     });
   }
 
-  function updateImages() {
+  function updateImages(target) {
+    target.innerText += ' 전송중...';
     $.ajax({    
       url: '/pf-update-image',
       success: function(data) {
@@ -59,25 +65,32 @@
             userScores.push(data.s[i]);
           }
         }
+        target.innerText = target.innerText.split(' 전송중...')[0];
       }
     })
   }
 
-  function w2w() {
+  function w2w(target) {
+    target.innerText += ' 전송중...';
     $.ajax({
       url: '/pf-w2w/'+encodeURIComponent($('#w2winput').val()),
       success: function(data) {
         if (data.r == 's') {
           $('#w2woutput').val(data.w);
+        } else {
+          $('#w2woutput').val('에러');
         }
+        target.innerText = target.innerText.split(' 전송중...')[0];
       }
     });
   }
 
-  function reset() {
+  function reset(target) {
+    target.innerText += ' 전송중...';
     $.ajax({
       url: '/pf-reset',
       success: function(data){
+        target.innerText = target.innerText.split(' 전송중...')[0];
       }
     });
   }
@@ -85,7 +98,7 @@
 
   <input id='inputText' type="text">
   <button onclick="send(document.getElementById('inputText').value)"> Send</button><br>
-  <button onclick="send('stage:0')"> Stage 0 (mute) </button><br>
+  <button id='stage0button' onclick="send('stage:0')"> Stage 0 (mute) </button><br>
   <button onclick="send('stage:1')"> Stage 1 (slide) </button><br>
   <button onclick="send('stage:2')"> Stage 2 (all) </button><br>
   <input id='stage3number' type="number" value="0" step="1">
@@ -95,14 +108,14 @@
   <textarea id='wordsText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('wordsText').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('wordsText').value)); send('stage:5');"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
-  <button onclick="updateImages()">사용자가 올린 이미지 가져오기</button><br>
+  <button onclick="updateImages(event.target)">사용자가 올린 이미지 가져오기</button><br>
   <div id='imagesDiv'></div><br>
   <button onclick="send('images:'+userImages.join(',')); send('scores:'+userScores.join(','));">사용자 올린 이미지를 퍼포먼스 페이지에 반영</button><br>
   <button onclick="send('rank:show');">랭킹 보이기</button>
   <button onclick="send('rank:hide');">랭킹 숨기기</button>
-  <button onclick="reset()">이미지 리셋</button>
+  <button onclick="reset(event.target)">이미지 리셋</button>
   <input id='tagNumber' type="number" value="0" step="1">
-  <button onclick="getTags()"> 태그 가져오기 </button><br>
+  <button onclick="getTags(event.target)"> 태그 가져오기 </button><br>
   <textarea id='tagsText' type='text' ></textarea>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('tagsText').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('tagsText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
@@ -110,7 +123,7 @@
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('captionText').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('captionText').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
   <textarea id='w2winput' type='text' ></textarea>
-  <button onclick="w2w()"> 비슷한 단어 찾기</button>
+  <button onclick="w2w(event.target)"> 비슷한 단어 찾기</button>
   <textarea id='w2woutput' type='text' ></textarea>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value))"> Stage5에 적용 </button>
   <button onclick="send('words:' + encodeURIComponent(document.getElementById('w2woutput').value)); send('stage:5')"> Stage5에 적용하고 스테이지5로 변경 </button> <br>
