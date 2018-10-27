@@ -444,7 +444,7 @@ def upload_image():
       db_result = coll.insert_one(data)
 
       filename = str(db_result.inserted_id)
-      fileext = file.filename.split('.')[-1]
+      fileext = 'jpg'#file.filename.split('.')[-1]
       filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename + '.' + fileext)
       dirpath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
       file.save(filepath)
@@ -585,14 +585,15 @@ def pf_upload_image():
       }
       db_result = coll.insert_one(data)
 
-      filename = str(db_result.inserted_id) + '.' + file.filename.split('.')[-1]
+      filename = str(db_result.inserted_id) + '.jpg'# + file.filename.split('.')[-1]
       filepath = os.path.join(app.config['USER_IMAGE_FOLDER'], filename)
+      print(filepath)
       file.save(filepath)
       try:
         fix_orientation(filepath, True)
       except Exception:
         pass
-      t = threading.Thread(target=process_image, args=(str(db_result.inserted_id),file.filename.split('.')[-1]))
+      t = threading.Thread(target=process_image, args=(str(db_result.inserted_id),'jpg'))#file.filename.split('.')[-1]))
       t.start()
 
       return jsonify({
@@ -611,7 +612,7 @@ def process_image(filename, fileext):
       app.config['tf-in-use'] = True
       score, feature = gradient_ascent.run(filepath, dirpath)
       app.config['tf-in-use'] = False
-    except Eception:
+    except Exception:
       app.config['tf-in-use'] = False
       print('processing_failed')
       return False
@@ -637,7 +638,7 @@ def pf_w2w(word):
       app.config['tf-in-use'] = True
       words = word2word.main(word)
       app.config['tf-in-use'] = False
-    except Eception:
+    except Exception:
       app.config['tf-in-use'] = False
       return jsonify({'r':'f', 'w':'실패'})
   print(word, words)
